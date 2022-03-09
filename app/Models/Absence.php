@@ -1,0 +1,31 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class Absence extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [
+        'auto_ecole_id',
+        'employe_id',
+        'justfication',
+        'image',
+        'date_debut',
+        'date_fin',
+        'remarques',
+    ];
+
+    public function employe()
+    {
+        return $this->belongsTo(Employe::class);
+    }
+
+    public function autoEcole()
+    {
+        return $this->belongsTo(AutoEcole::class);
+    }
+}

@@ -27,23 +27,24 @@ class AuthController extends Controller
 
 
     public function register(Request $request)
-    {    //dd($request->image);
-        //  $data = request()->validate([
+    {     
+       //var_dump($request->all());
+         $data = request()->validate([
 
-        //     'email' => 'required|string|email|max:255|unique:users',
-        //     'password' => 'required',
-        //  ]);
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required',
+         ]);
          // create user inside table users
-        // $user = User::create([
-        //     'login' => strstr($request->email,'@',true),
-        //     'email' => $request->email,
-        //     'password' => Hash::make($request->password)
-        // ]);
-        // image
-         if($request->image != ''){
+        $user = User::create([
+            'login' => strstr($request->email,'@',true),
+            'email' => $request->email,
+            'password' => Hash::make($request->password)
+        ]);
+        //image
+        if($request->image != ''){
             $name_image = time().'.' . explode('/', explode(':', substr($request->image, 0, strpos($request->image, ';')))[1])[1];
             \Image::make($request->image)->save(public_path('images/').$name_image);
-         }
+        }
         //  image rc 
          if($request->image_rc != ''){
             $name_image_rc = time().'.' . explode('/', explode(':', substr($request->image_rc, 0, strpos($request->image_rc, ';')))[1])[1];
@@ -59,73 +60,46 @@ class AuthController extends Controller
             $name_image_cin = time().'.' . explode('/', explode(':', substr($request->image_cin, 0, strpos($request->image_cin, ';')))[1])[1];
             \Image::make($request->image_cin)->save(public_path('image_cin/').$name_image_cin);
          }
-        // get image auto ecole 
-        // if($request->hasFile('image') && $request->image != '')
-        //     {
-        //         $imagePath = $request->image->store('images', 'public');
-        //          $image=Image::make(public_path("storage/{$imagePath}"))->resize(320, 240)->save();
-        //          $image->save();
-        //          $imagename = $request->image->hashName();
-        //     }
-        //     else{
-        //         dd('image doesnt exist');
-        //     }
-        // if($request->hasFile('image') && $request->image != '')
-        //     {   
-        //        $completeFileName = $request->file('image')->getClientOriginalName();
-        //        dd($completeFileName);
-        //     }
-        // if(request('image_rc') != ''){
-        //     $image= $request->image_rc;
-        //     $image_rc_name = time() . '.' .$image->getClientOriginalExtension();
-        //     $request->image_rc->move('image_rc', $image_rc_name);
-        // }
-        // if(request('image_cin') != ''){
-        //     $image= $request->image_cin;
-        //     $image_cin_name = time() . '.' .$image->getClientOriginalExtension();
-        //     $request->image_cin->move('image_cin', $image_cin_name);
-        // }
-        // if(request('image_agrement') != ''){
-        //     $image= $request->image_agrement;
-        //     $image_agrement_name = time() . '.' .$image->getClientOriginalExtension();
-        //     $request->image_agrement->move('image_agrement', $image_agrement_name);
-        // }
+         
+        
+        
+       
         // get the id of this user 
-        // $user= User::find($user->id);
+        $user= User::find($user->id);
    
         // create auto ecole
-        // $ecole = ModelsAutoEcole::create([
-        //      'user_id' => $user->id,
-        //     'nom_auto_ecole' => $request->nom_auto_ecole,
-        //     'telephone' => $request->telephone,
-        //     'pays' => $request->pays,
-        //     'ville' => $request->ville,
-        //     'fax' => $request->fax,
-        //     'site_web' => $request->site_web,
-        //     'adresse' => $request->adresse,
-        //     'image' => $imagename,
-        //     'image_rc' => '$image_rc_name.png',
-        //     'image_cin' => '$image_cin_name.png',
-        //     'image_agrement' => '$image_agrement_name.png',
-        //     'n_cnss' => $request->n_cnss,
-        //     'ice' => $request->ice,
-        //     'tva' => $request->tva,
-        //     'n_register_de_commerce' => $request->n_register_de_commerce,
-        //     'n_compte_bancaire' => $request->n_compte_bancaire,
-        //     'n_agrement' => $request->n_agrement,
-        //     'n_patente' => $request->n_patente,
-        //     'date_autorisation' => $request->date_autorisation,
-        //     'date_ouverture' => $request->date_ouverture,
-        //     'identification_fiscale' => $request->identification_fiscale,
-        //     'cin_responsable' => $request->cin_responsable,
-        //     'nom_responsable' => $request->nom_responsable,
-        //     'prenom_responsable' => $request->prenom_responsable,
-        //     'tel_responsable' => $request->tel_responsable,
-        //     'adresse_responsable' => $request->adresse_responsable,
-        // ]);
-        // $ecole->save();
-        // $user-> autoEcoles()->save($ecole);
-
+        $ecole = ModelsAutoEcole::create([
+             'user_id' => $user->id,
+            'nom_auto_ecole' => $request->nom_auto_ecole,
+            'telephone' => $request->telephone,
+            'pays' => $request->pays,
+            'ville' => $request->ville,
+            'fax' => $request->fax,
+            'site_web' => $request->site_web,
+            'adresse' => $request->adresse,
+            'image' => $name_image,
+            'image_rc' => $name_image_rc,
+            'image_cin' => $name_image_cin,
+            'image_agrement' =>  $name_image_agrement,
+            'n_cnss' => $request->n_cnss,
+            'ice' => $request->ice,
+            'tva' => $request->tva,
+            'n_register_de_commerce' => $request->n_register_de_commerce,
+            'n_compte_bancaire' => $request->n_compte_bancaire,
+            'n_agrement' => $request->n_agrement,
+            'n_patente' => $request->n_patente,
+            'date_autorisation' => $request->date_autorisation,
+            'date_ouverture' => $request->date_ouverture,
+            'identification_fiscale' => $request->identification_fiscale,
+            'cin_responsable' => $request->cin_responsable,
+            'nom_responsable' => $request->nom_responsable,
+            'prenom_responsable' => $request->prenom_responsable,
+            'tel_responsable' => $request->tel_responsable,
+            'adresse_responsable' => $request->adresse_responsable,
+        ]);
+        $ecole->save();
+        $user-> autoEcoles()->save($ecole);
+          
         return response()->json(['message' => 'user added', 'user' => $request->all()], 200);
     }
 

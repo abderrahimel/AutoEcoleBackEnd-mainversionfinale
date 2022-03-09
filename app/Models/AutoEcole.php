@@ -28,6 +28,7 @@ class AutoEcole extends Model
         'n_register_de_commerce',
         'n_compte_bancaire',
         'n_agrement',
+        'n_cnss',
         'n_patente',
         'date_autorisation',
         'date_ouverture',
@@ -37,6 +38,7 @@ class AutoEcole extends Model
         'prenom_responsable',
         'tel_responsable',
         'adresse_responsable',
+        'contrat'
     ]; 
 
     public function user()

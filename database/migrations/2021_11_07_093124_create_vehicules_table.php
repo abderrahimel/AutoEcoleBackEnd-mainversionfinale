@@ -18,6 +18,7 @@ class CreateVehiculesTable extends Migration
             $table->foreignId('auto_ecole_id')->constrained()
                   ->onUpdate('cascade')
                   ->onDelete('cascade');
+           
             $table->string('matricule');
             $table->string('type');
             $table->string('marque');

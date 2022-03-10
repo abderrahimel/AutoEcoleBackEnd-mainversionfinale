@@ -38,7 +38,8 @@ class AuthController extends Controller
         $user = User::create([
             'login' => strstr($request->email,'@',true),
             'email' => $request->email,
-            'password' => Hash::make($request->password)
+            'password' => Hash::make($request->password),
+             'name' => $request->nom_responsable
         ]);
         //image
         if($request->image != ''){
@@ -105,18 +106,15 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-        if (!Auth::attempt($request->only('email', 'password'))) {
+        if (! $token = Auth::attempt($request->only('email', 'password'))) {
             return response([
-                'message' => 'Invalid credentials!'
+                'error' => 'This information does not match our records.'
             ], Response::HTTP_UNAUTHORIZED);
         }
         $user = Auth::user();
         $user = User::where('email', $request['email'])->firstOrFail();
-        $token = $user->createToken('token')->plainTextToken;
-        return response()->json([
-                 'access_token' => $token,
-                 'token_type' => 'Bearer',
-        ]);
+        // $token = $user->createToken('token')->plainTextToken;
+        return $this->respondWithToken($token);
     }
 
     public function logged()

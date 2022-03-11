@@ -123,8 +123,8 @@ class AuthController extends Controller
     }
 
     public function logout(Request $request)
-    {
-        $request->user()->currentAccessToken()->delete();
+    {   $user= User::find($request->id);
+        $user->tokens()->delete();
         return response([
             'message' => 'Success'
         ]);

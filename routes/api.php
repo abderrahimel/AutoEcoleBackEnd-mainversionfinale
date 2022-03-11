@@ -48,10 +48,11 @@ Route::post('register', [AuthController::class, 'register']);
 Route::post('login', [AuthController::class, 'login']);
 // login and logout
 Route::get('/logged', [AuthController::class,'logged']);
+Route::post('/logout', [AuthController::class,'logout']);
 
 Route::group(['middleware' => 'api'], function ($router){
     Route::post('login', [AuthController::class, 'login']);
-    Route::post('logout', [AuthController::class, 'logout']);
+    // Route::post('logout', [AuthController::class, 'logout']);
 });
 //Authentication
 // Route::post('/login', [AuthController::class,'login']);

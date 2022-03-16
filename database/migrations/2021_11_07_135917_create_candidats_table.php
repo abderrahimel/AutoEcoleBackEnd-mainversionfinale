@@ -18,22 +18,36 @@ class CreateCandidatsTable extends Migration
             $table->foreignId('auto_ecole_id')->constrained()
                   ->onUpdate('cascade')
                   ->onDelete('cascade');
-            $table->string('nom');
-            $table->string('prenom');
-            $table->string('photo')->nullable();
-            $table->string('CIN');
-            $table->text('lieu_naissance');
-            $table->date('date_naissance');
-            $table->string('nationalite');
-            $table->string('telephone');
-            $table->string('email')->unique();
-            $table->date('date_insc');
-            $table->string('permis');
-            $table->text('connaissance');
-            $table->text('adresse');
-            $table->string('num_dossier');
-            $table->string('langue');
-            $table->string('type');
+                  $table->string('cin')->nullable();
+                  $table->string('date_inscription')->nullable();
+                  $table->string('numero_contrat')->nullable();
+                  $table->string('ref_web')->nullable();
+                  $table->string('nom_fr')->nullable();
+                  $table->string('prenom_fr')->nullable();
+                  $table->string('nom_ar')->nullable();
+                  $table->string('prenom_ar')->nullable();
+                  $table->string('date_naissance')->nullable();
+                  $table->longText('lieu_naissance')->nullable();
+                  $table->longText('adresse_fr')->nullable();
+                  $table->longText('adresse_ar')->nullable();
+                  $table->string('telephone')->nullable();
+                  $table->string('email')->nullable();
+                  $table->string('profession')->nullable();
+                  $table->string('langue')->nullable();
+                  $table->string('image')->nullable();
+                  $table->string('date_fin_contrat')->nullable();
+                  $table->string('categorie_demandee')->nullable();
+                  $table->integer('nbr_heure_pratique')->nullable();
+                  $table->integer('nbr_heure_theorique')->nullable();
+                  $table->string('possede_permis')->nullable();
+                  $table->string('date_obtention')->nullable();
+                  $table->longText('lieu_obtention_fr')->nullable();
+                  $table->longText('lieu_obtention_ar')->nullable();
+                  $table->double('montant')->nullable();
+                  $table->string('pcn')->nullable();
+                  $table->string('categorie')->nullable();
+                  $table->longText('observations')->nullable();
+                  $table->boolean('actif')->default(1);
             $table->foreignId('moniteur_theorique_id')->constrained()
                   ->onUpdate('cascade')
                   ->onDelete('cascade');
@@ -43,13 +57,7 @@ class CreateCandidatsTable extends Migration
             $table->foreignId('vehicule_id')->constrained()
                   ->onUpdate('cascade')
                   ->onDelete('cascade');
-            $table->integer('nbr_theo');
-            $table->integer('nbr_pra');
-            $table->double('frais_insc');
-            $table->double('frais_heure');
-            $table->date('date_dossier');
-            $table->double('frais_examen');
-            $table->double('avance');
+      
             $table->timestamps();
         });
     }

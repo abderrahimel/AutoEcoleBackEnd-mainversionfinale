@@ -50,10 +50,10 @@ Route::post('login', [AuthController::class, 'login']);
 Route::get('/logged', [AuthController::class,'logged']);
 Route::post('/logout', [AuthController::class,'logout']);
 
-Route::group(['middleware' => 'api'], function ($router){
-    Route::post('login', [AuthController::class, 'login']);
-    // Route::post('logout', [AuthController::class, 'logout']);
-});
+// Route::group(['middleware' => 'api'], function ($router){
+//     Route::post('login', [AuthController::class, 'login']);
+//     Route::post('logout', [AuthController::class, 'logout']);
+// });
 //Authentication
 // Route::post('/login', [AuthController::class,'login']);
 
@@ -82,7 +82,7 @@ Route::post('/add-auto-ecole/{user_id}', [AutoEcole::class,'addAutoEcole']);
 Route::put('/update-auto-ecole/{id}', [AutoEcole::class,'updateAutoEcole']);
 Route::delete('/delete-auto-ecole/{id}', [AutoEcole::class,'deleteAutoEcole']);
 
-
+// this.api +'/auto-ecole/'+ecole_id+'/vehicule'
 //Vehicule routes
 Route::get('/auto-ecole/{ecole_id}/vehicule', [VehiculeController::class,'getVehicule']);
 Route::get('/vehicule/{id}', [VehiculeController::class,'getVehiculeById']);

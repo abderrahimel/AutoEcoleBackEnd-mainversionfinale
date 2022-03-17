@@ -9,13 +9,14 @@ use Illuminate\Http\Request;
 class VehiculeController extends Controller
 {
     public function getVehicule($ecole_id)
-    {
-        $ecole=AutoEcole::find($ecole_id);
-        if (is_null($ecole_id)) {
-            return response()->json(['message'=>"Auto Ecole n'est pas trouvée"],404);
-        }
-        $vehicules = $ecole->vehicules;
-        return response()->json($vehicules,200);
+    {   dd('get vehicule');
+        // $ecole=AutoEcole::find($ecole_id);
+        // if (is_null($ecole_id)) {
+        //     return response()->json(['message'=>"Auto Ecole n'est pas trouvée"],404);
+        // }
+        // $vehicules = $ecole->vehicules;
+        // $datavehicule = DB::table('vehicules')->get();
+        return response()->json(['message'=>'success'],200);
         
     }
 

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\AutoEcole;
 use App\Models\MoniteurPratique;
 use App\Models\MoniteurTheorique;
+use App\Models\Vehicule;
 
 class CandidatController extends Controller
 {
@@ -36,19 +37,65 @@ class CandidatController extends Controller
     public function addCandidat($ecole_id,Request $request)
     {
         $ecole=AutoEcole::find($ecole_id);
+        if($request->image != ''){
+            $name_image = time().'.' . explode('/', explode(':', substr($request->image, 0, strpos($request->image, ';')))[1])[1];
+            \Image::make($request->image)->save(public_path('candidat_img/').$name_image);
+        }
         $idt = (int) $request->moniteur_theorique_id;
         $idp = (int) $request->moniteur_pratique_id;
-        $moniteurt =MoniteurTheorique::find($idt);
-        $moniteurp =MoniteurPratique::find($idp);
-        $candidat = new Candidat($request->all()); 
-        $ecole -> candidats()->save($candidat);
-        if($moniteurt != null && $moniteurp != null) {
-            $moniteurt-> candidats()->save($candidat);
-            $moniteurp-> candidats()->save($candidat); 
-        }
-        $candidat-> moniteurPratique; 
-        $candidat-> moniteurTheorique;
-        return response()->json($candidat,200);
+        $idv = (int) $request->vehicule_id;
+        $moniteurt =MoniteurTheorique::find(1);
+        $moniteurp =MoniteurPratique::find(1);
+        $vehicule =Vehicule::find(1);
+        // $ecole -> candidats()->save($candidat);
+        // if($moniteurt != null && $moniteurp != null) {
+        //     $moniteurt-> candidats()->save($candidat);
+        //     $moniteurp-> candidats()->save($candidat); 
+        // }
+        // $candidat-> moniteurPratique; 
+        // $candidat-> moniteurTheorique;
+        $candidat = new Candidat(
+            [
+                'auto_ecole_id' => $ecole->id ,
+                'cin' =>$request->cin,
+                'date_inscription' =>$request->date_inscription,
+                'numero_contrat' =>$request->numero_contrat,
+                'ref_web' =>$request->ref_web,
+                'nom_fr' =>$request->nom_fr,
+                'prenom_fr' =>$request->prenom_fr,
+                'nom_ar' =>$request->nom_ar,
+                'prenom_ar' =>$request->prenom_ar,
+                'date_naissance' =>$request->date_naissance,
+                'lieu_naissance' =>$request->lieu_naissance,
+                'adresse_fr' =>$request->adresse_fr,
+                'adresse_ar' =>$request->adresse_ar,
+                'telephone' =>$request->telephone,
+                'email' =>$request->email,
+                'profession' =>$request->profession,
+                'langue' =>$request->langue,
+                'image' => $name_image,
+                'date_fin_contrat' =>$request->date_fin_contrat,
+                'categorie_demandee' =>$request->categorie_demandee,
+                'nbr_heure_pratique' =>$request->nbr_heur_pratique,
+                'nbr_heure_theorique' =>$request->nbr_heur_theorique,
+                'possede_permis' =>$request->permis,
+                'date_obtention' =>null,
+                'lieu_obtention_fr' =>null,
+                'lieu_obtention_ar' =>null,
+                'montant' =>$request->montant,
+                'pcn' =>null,
+                'categorie' =>$request->categorie_demandee,
+                'observations' =>$request->observations,
+                'moniteur_theorique_id' => 1, //(int) $request->moniteur_theorique_id,
+                'moniteur_pratique_id' => 1, // (int) $request->moniteur_pratique_id,
+                'vehicule_id' => 1, // (int) $request->vehicule_id,
+            ]
+        ); 
+        $candidat->save();
+        $moniteurt-> candidats()->save($candidat);
+        $moniteurp-> candidats()->save($candidat); 
+        // $vehicule-> candidats()->save($candidat); 
+        return response()->json($request->all(),200);
     }
 
     public function updateCandidat($id,Request $request)

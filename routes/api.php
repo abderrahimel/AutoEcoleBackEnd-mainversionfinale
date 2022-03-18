@@ -83,7 +83,7 @@ Route::put('/update-auto-ecole/{id}', [AutoEcole::class,'updateAutoEcole']);
 Route::delete('/delete-auto-ecole/{id}', [AutoEcole::class,'deleteAutoEcole']);
 
 // this.api +'/auto-ecole/'+ecole_id+'/vehicule'
-//Vehicule routes
+//Vehicule routes http://127.0.0.1:8000/auto-ecole/1/vehicule
 Route::get('/auto-ecole/{ecole_id}/vehicule', [VehiculeController::class,'getVehicule']);
 Route::get('/vehicule/{id}', [VehiculeController::class,'getVehiculeById']);
 Route::post('/add-vehicule/{ecole_id}', [VehiculeController::class,'addVehicule']);

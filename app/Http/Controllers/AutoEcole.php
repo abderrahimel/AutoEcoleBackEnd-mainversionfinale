@@ -5,14 +5,15 @@ namespace App\Http\Controllers;
 use App\Models\AutoEcole as ModelsAutoEcole;
 use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 
 class AutoEcole extends Controller
 {
     public function getAutoEcole($user_id)
     {
-       // $ecole = ModelsAutoEcole::all()->where('user_id',$user_id);
-        $user= User::find($user_id);
-        $ecole=$user->autoEcoles;
+        $ecole = DB::table('auto_ecoles')->where('user_id', $user_id)->get();
+        // $user= User::find($user_id);
+        // $ecole=$user->autoEcoles;
         return response()->json($ecole,200);
         
     }

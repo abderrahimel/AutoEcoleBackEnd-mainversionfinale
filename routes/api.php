@@ -100,11 +100,11 @@ Route::put('/update-employe/{id}', [EmployeController::class,'updateEmploye']);
 Route::delete('/delete-employe/{id}', [EmployeController::class,'deleteEmploye']);
 
 //Moniteur routes
-Route::get('/auto-ecole/{ecole_id}/moniteur-pratique', [MoniteurPratiqueController::class,'getMoniteurp']);
-Route::get('/moniteur-pratique/{id}', [MoniteurPratiqueController::class,'getMoniteurpById']);
-Route::post('/add-moniteur-pratique/{ecole_id}', [MoniteurPratiqueController::class,'addMoniteurp']);
-Route::put('/update-moniteur-pratique/{id}', [MoniteurPratiqueController::class,'updateMoniteurp']);
-Route::delete('/delete-moniteur-pratique/{id}', [MoniteurPratiqueController::class,'deleteMoniteurp']);
+// Route::get('/auto-ecole/{ecole_id}/moniteur-pratique', [MoniteurPratiqueController::class,'getMoniteurP']);
+// Route::get('/moniteur-pratique/{id}', [MoniteurPratiqueController::class,'getMoniteurpById']);
+// Route::post('/add-moniteur-pratique/{ecole_id}', [MoniteurPratiqueController::class,'addMoniteurp']);
+// Route::put('/update-moniteur-pratique/{id}', [MoniteurPratiqueController::class,'updateMoniteurp']);
+// Route::delete('/delete-moniteur-pratique/{id}', [MoniteurPratiqueController::class,'deleteMoniteurp']);
 
 
 //Candidat routes
@@ -229,13 +229,13 @@ Route::delete('/delete-examen/{id}', [ExamenController::class,'deleteExamen']);
 
 
 //Moniteurs routes
-Route::get('/auto-ecole/{ecole_id}/moniteur-theorique', [MoniteurController::class,'getMoniteurt']);
+Route::get('/auto-ecole/{ecole_id}/moniteur-theorique', [MoniteurController::class,'getMoniteurT']);
 Route::get('/moniteur-theorique/{id}', [MoniteurController::class,'getMoniteurtById']);
 Route::post('/add-moniteur-theorique/{ecole_id}', [MoniteurController::class,'addMoniteurt']);
 Route::put('/update-moniteur-theorique/{id}', [MoniteurController::class,'updateMoniteurt']);
 Route::delete('/delete-moniteur-theorique/{id}', [MoniteurController::class,'deleteMoniteurt']);
 
-Route::get('/auto-ecole/{ecole_id}/moniteur-pratique', [MoniteurController::class,'getMoniteurp']);
+Route::get('/auto-ecole/{ecole_id}/moniteur-pratique', [MoniteurController::class,'getMoniteurP']);
 Route::get('/moniteur-pratique/{id}', [MoniteurController::class,'getMoniteurpById']);
 Route::post('/add-moniteur-pratique/{ecole_id}', [MoniteurController::class,'addMoniteurp']);
 Route::put('/update-moniteur-pratique/{id}', [MoniteurController::class,'updateMoniteurp']);

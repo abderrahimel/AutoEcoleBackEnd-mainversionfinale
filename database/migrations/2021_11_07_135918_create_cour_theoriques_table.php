@@ -21,11 +21,11 @@ class CreateCourTheoriquesTable extends Migration
             $table->foreignId('moniteur_theorique_id')->constrained()
                   ->onUpdate('cascade')
                   ->onDelete('cascade');
-            $table->string('jour');
+            $table->string('permis');
             $table->date('date_debut');
             $table->date('date_fin');
-            $table->integer('nombre_place');
-            $table->text('description');
+            $table->date('date');
+            $table->string('type');
             $table->timestamps();
         });
     }

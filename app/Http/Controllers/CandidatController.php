@@ -14,7 +14,7 @@ class CandidatController extends Controller
     public function getCandidat($ecole_id)
     {
         $ecole=AutoEcole::find($ecole_id);
-        if (is_null($ecole_id)) {
+        if ($ecole == "null") {
             return response()->json(['message'=>"Auto Ecole n'est pas trouvée"],404);
         }
         $candidats = $ecole->candidats;
@@ -44,16 +44,11 @@ class CandidatController extends Controller
         $idt = (int) $request->moniteur_theorique_id;
         $idp = (int) $request->moniteur_pratique_id;
         $idv = (int) $request->vehicule_id;
-        $moniteurt =MoniteurTheorique::find(1);
-        $moniteurp =MoniteurPratique::find(1);
-        $vehicule =Vehicule::find(1);
+        $moniteurt =MoniteurTheorique::find($idt);
+        $moniteurp =MoniteurPratique::find($idp);
+        $vehicule =Vehicule::find($idv);
         // $ecole -> candidats()->save($candidat);
-        // if($moniteurt != null && $moniteurp != null) {
-        //     $moniteurt-> candidats()->save($candidat);
-        //     $moniteurp-> candidats()->save($candidat); 
-        // }
-        // $candidat-> moniteurPratique; 
-        // $candidat-> moniteurTheorique;
+ 
         $candidat = new Candidat(
             [
                 'auto_ecole_id' => $ecole->id ,
@@ -86,16 +81,23 @@ class CandidatController extends Controller
                 'pcn' =>null,
                 'categorie' =>$request->categorie_demandee,
                 'observations' =>$request->observations,
-                'moniteur_theorique_id' => 1, //(int) $request->moniteur_theorique_id,
-                'moniteur_pratique_id' => 1, // (int) $request->moniteur_pratique_id,
-                'vehicule_id' => 1, // (int) $request->vehicule_id,
+                'moniteur_theorique_id' =>  $idt, 
+                'moniteur_pratique_id' =>  $idp, 
+                'vehicule_id' =>  $idv,
             ]
         ); 
         $candidat->save();
-        $moniteurt-> candidats()->save($candidat);
-        $moniteurp-> candidats()->save($candidat); 
+
+        if($moniteurt != null && $moniteurp != null) {
+            $moniteurt-> candidats()->save($candidat);
+            $moniteurp-> candidats()->save($candidat); 
+        }
+        $candidat-> moniteurPratique; 
+        $candidat-> moniteurTheorique;
+
+
         // $vehicule-> candidats()->save($candidat); 
-        return response()->json($request->all(),200);
+        return response()->json(['message'=>'candidat added to table'],200);
     }
 
     public function updateCandidat($id,Request $request)

@@ -12,11 +12,11 @@ class CourTheorique extends Model
     protected $fillable = [
         'auto_ecole_id',
         'moniteur_theorique_id',
-        'jour',
+        'date',
         'date_debut',
         'date_fin',
-        'nombre_place',
-        'description',
+        'permis',
+        'type',
     ];
     
     public function autoEcole()

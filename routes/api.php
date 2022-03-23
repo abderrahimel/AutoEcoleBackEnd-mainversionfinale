@@ -107,7 +107,7 @@ Route::delete('/delete-employe/{id}', [EmployeController::class,'deleteEmploye']
 // Route::delete('/delete-moniteur-pratique/{id}', [MoniteurPratiqueController::class,'deleteMoniteurp']);
 
 
-//Candidat routes
+//Candidat routes http://127.0.0.1:8000/api/auto-ecole/'+id_auto_ecole+'/candidat
 Route::get('/auto-ecole/{ecole_id}/candidat', [CandidatController::class,'getCandidat']);
 Route::get('/candidat/{id}', [CandidatController::class,'getCandidatById']);
 Route::post('/add-candidat/{ecole_id}', [CandidatController::class,'addCandidat']);

@@ -12,11 +12,12 @@ class CourPratique extends Model
     protected $fillable = [
         'auto_ecole_id',
         'moniteur_pratique_id',
-        'jour',
-        'nombre_place',
+        'date',
+        'type',
         'date_debut',
         'date_fin',
-        'description',
+        'permis',
+        'candidat',
         'vehicule_id'
     ];
 

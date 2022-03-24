@@ -26,6 +26,7 @@ class CreateCourTheoriquesTable extends Migration
             $table->date('date_fin');
             $table->date('date');
             $table->string('type');
+            $table->string('candidat');
             $table->timestamps();
         });
     }

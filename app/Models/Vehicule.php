@@ -14,6 +14,7 @@ class Vehicule extends Model
         'matricule',
         'type',
         'marque',
+        'fourniseur'
         'modele',
         'date_visite',
         'date_vidange',

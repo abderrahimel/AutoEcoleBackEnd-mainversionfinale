@@ -114,7 +114,6 @@ Route::post('/add-candidat/{ecole_id}', [CandidatController::class,'addCandidat'
 Route::put('/update-candidat/{id}', [CandidatController::class,'updateCandidat']);
 Route::delete('/delete-candidat/{id}', [CandidatController::class,'deleteCandidat']);
 
-
 //Categorie depence routes
 Route::get('/auto-ecole/{ecole_id}/categorie-depence', [CategorieDepenceController::class,'getCategorieDepence']);
 Route::get('/categorie-depence/{id}', [CategorieDepenceController::class,'getCategorieDepenceById']);

@@ -24,6 +24,7 @@ class CreateVehiculesTable extends Migration
             $table->string('marque');
             $table->string('modele');
             $table->date('date_visite');
+            $table->date('fourniseur');
             $table->date('date_vidange');
             $table->text('carte_grise');
             $table->text('vignette');

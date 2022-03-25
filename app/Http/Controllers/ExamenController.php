@@ -41,7 +41,17 @@ class ExamenController extends Controller
     public function addExamen($ecole_id,Request $request)
     {
         $ecole=AutoEcole::find($ecole_id);
-        $examen = new Examen($request->all()); 
+        if (is_null($ecole_id)) {
+            return response()->json(['message'=>"Auto Ecole n'est pas trouvée"],404);
+        }
+        $examen = Examen::create([
+        'auto_ecole_id'=>$ecole_id,
+        'candidat_id'=> $request->candidat_id,
+        'categorie_permis_id'=> $request->categorie_permis_id,
+        'date_examen'=> $request->date_examen,
+        'date_depot'=> $request->date_depot,
+        ]);
+        $examen->save();
         $ecole -> rapports()->save($examen);
         $examen->candidat;
         $examen->permis;

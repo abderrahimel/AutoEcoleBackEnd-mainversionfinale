@@ -11,6 +11,7 @@ class CreateEmployesTable extends Migration
      *
      * @return void
      */
+     
     public function up()
     {
         Schema::create('employes', function (Blueprint $table) {
@@ -20,16 +21,17 @@ class CreateEmployesTable extends Migration
                   ->onDelete('cascade');
             $table->string('nom');
             $table->string('prenom');
-            $table->string('CIN');
+            $table->string('cin');
             $table->string('role');
             $table->date('date_naissance');
             $table->text('lieu_naissance');
             $table->string('email');
+            $table->string('type');
             $table->string('telephone');
             $table->date('date_embauche');
-            $table->string('poste');
-            $table->string('CAPN');
+            $table->string('capn');
             $table->text('adresse');
+            $table->text('conduire');
             $table->text('observations');
             $table->timestamps();
         });

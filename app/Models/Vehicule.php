@@ -14,7 +14,7 @@ class Vehicule extends Model
         'matricule',
         'type',
         'marque',
-        'fourniseur'
+        'fourniseur',
         'modele',
         'date_visite',
         'date_vidange',
@@ -42,5 +42,9 @@ class Vehicule extends Model
     public function controles()
     {
         return $this->hasMany(Controle::class);
+    }
+    public function vidange()
+    {
+        return $this->belongsTo(Vidange::class);
     }
 }

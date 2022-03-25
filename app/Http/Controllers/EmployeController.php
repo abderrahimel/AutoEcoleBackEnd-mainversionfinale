@@ -39,19 +39,45 @@ class EmployeController extends Controller
         }
         return response()->json($employe,200);
     }
-
+   
 
     public function addEmploye($ecole_id,Request $request)
     {
         $ecole=AutoEcole::find($ecole_id);
-        $employe = new Employe($request->all()); 
-        $ecole -> employes()->save($employe);
+        // $employe = new Employe($request->all()); 
+        $employe = Employe::create([
+        'auto_ecole_id'=> $ecole_id,
+        'nom'=> $request->nom,
+        'prenom'=>$request->prenom,
+        'cin'=>$request->cin,
+        'role'=>$request->role,
+        'type'=>$request->type,
+        'date_naissance'=>$request->date_naissance,
+        'lieu_naissance'=>$request->lieu_naissance,
+        'email'=>$request->lieu_naissance,
+        'telephone'=>$request->telephone,
+        'date_embauche'=>$request->date_embauche,
+        'capn'=>$request->capn,
+        'conduire'=>$request->conduire,
+        'adresse'=>$request->adresse,
+        'observations'=>$request->observations,
+        ]);
+        $employe->save();
+        $ecole ->employes()->save($employe);
         if($request->role=="moniteur pratique"){
-            $moniteurp = MoniteurPratique::create(["auto_ecole_id"=>$ecole->id,"employe_id"=>$employe->id]);
+            $moniteurp = MoniteurPratique::create([
+                "auto_ecole_id"=>$ecole->id,
+                "employe_id"=>$employe->id
+            ]);
+            $moniteurp->save();
             $employe->MoniteurPratique;
         }
         if($request->role=="moniteur théorique"){
-            $moniteurt = MoniteurTheorique::create(["auto_ecole_id"=>$ecole->id,"employe_id"=>$employe->id]);
+            $moniteurt = MoniteurTheorique::create([
+                "auto_ecole_id"=>$ecole->id,
+                "employe_id"=>$employe->id
+            ]);
+            $moniteurt->save();
             $employe->MoniteurTheorique;
         }
         return response()->json($employe,201);

@@ -41,17 +41,20 @@ class AbsenceController extends Controller
     public function addAbsence($ecole_id,Request $request)
     {
         $ecole=AutoEcole::find($ecole_id);
-        $absence = new Absence($request->all());
+        if(is_null($ecole)){
+            return response()->json(['message'=> "Ecole n'est pas trouvé"],404);
+        }
+        $absence = Absence::create([
+            'auto_ecole_id'=>$ecole_id,
+            'employe_id'=>$request->$employe_id,
+            'type_absence'=>$request->type_absence,
+            'date_debut'=>$request->date_debut,
+            'date_fin'=>$request->date_fin,
+            'remarque'=>$request->remarque,
+        ]);
+        $absence->save();
         $ecole -> absences()->save($absence);
-        if($request->hasFile('image')){
-            $completeFileName = $request->file('image')->getClientOriginalName();
-            $fileNameOnly= pathinfo($completeFileName, PATHINFO_FILENAME);
-            $extension = $request->file('image')->getClientOriginalExtension();
-            $compPic= str_replace(' ','_',$fileNameOnly).'-'.rand().'_'.time().'.'.$extension;
-            $path = $request->file('image')->storeAs('public/absence',$compPic);
-            $absence->image = $compPic;
-            $absence->save();
-        } 
+    
         $absence->employe;
         return response($absence,201);
     }

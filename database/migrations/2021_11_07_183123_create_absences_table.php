@@ -21,11 +21,10 @@ class CreateAbsencesTable extends Migration
             $table->foreignId('employe_id')->constrained()
                   ->onUpdate('cascade')
                   ->onDelete('cascade');
-            $table->boolean('justfication');
-            $table->string('image')->nullable();
+            $table->boolean('type_absence');
             $table->date('date_debut');
             $table->date('date_fin');
-            $table->text('remarques');
+            $table->text('remarque');
             $table->timestamps();
         });
     }

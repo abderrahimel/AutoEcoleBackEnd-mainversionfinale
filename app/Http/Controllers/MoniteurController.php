@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 use App\Models\AutoEcole;
-use App\Models\MoniteurPratique;
+use App\Models\MoniteurPratique; 
+use App\Models\Employe; 
 use App\Models\MoniteurTheorique;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -69,19 +70,69 @@ class MoniteurController extends Controller
     public function addMoniteurt($ecole_id,Request $request)
     {
         $ecole=AutoEcole::find($ecole_id);
-        $moniteur = new MoniteurTheorique($request->all());
-        $ecole -> moniteurTheoriques()->save($moniteur);
-        $moniteur->employe;
+        if(is_null($ecole)){
+            return response()->json(['message'=> "ecole n'est pas trouvé"],404);
+        }
+        $employe = Employe::create([
+            'auto_ecole_id'=>$ecole_id,
+            'nom'=>$request->nom,
+            'prenom'=>$request->prenom,
+            'cin'=>$request->cin,
+            'role'=>$request->role,
+            'type'=>$request->type,
+            'date_naissance'=>$request->date_naissance,
+            'lieu_naissance'=>$request->lieu_naissance,
+            'email'=>$request->email,
+            'telephone'=>$request->telephone,
+            'date_embauche'=>$request->date_embauche,
+            'capn'=>$request->capn,
+            'conduire'=>$request->conduire,
+            'adresse'=>$request->adresse,
+            'observations'=>$request->observations
+        ]);
+        $employe->save();
+        $moniteurt = MoniteurTheorique::create([
+            'employe_id'=>$employe->id,
+            'auto_ecole_id'=>$ecole_id,
+        ]);
+        $moniteurt->save();
+        $ecole->moniteurTheoriques()->save($moniteurt);
+        $moniteurt->employe;
         return response($moniteur,201);
     }
 
     public function addMoniteurp($ecole_id,Request $request)
     {
         $ecole=AutoEcole::find($ecole_id);
-        $moniteur = new MoniteurPratique($request->all());
-        $ecole -> moniteurPratiques()->save($moniteur);
-        $moniteur->employe;
-        return response($moniteur,201);
+        if(is_null($ecole)){
+            return response()->json(['message'=> "ecole n'est pas trouvé"],404);
+        }
+        $employe = Employe::create([
+            'auto_ecole_id'=>$ecole_id,
+            'nom'=>$request->nom,
+            'prenom'=>$request->prenom,
+            'cin'=>$request->cin,
+            'role'=>$request->role,
+            'type'=>$request->type,
+            'date_naissance'=>$request->date_naissance,
+            'lieu_naissance'=>$request->lieu_naissance,
+            'email'=>$request->email,
+            'telephone'=>$request->telephone,
+            'date_embauche'=>$request->date_embauche,
+            'capn'=>$request->capn,
+            'conduire'=>$request->conduire,
+            'adresse'=>$request->adresse,
+            'observations'=>$request->observations
+        ]);
+        $employe->save();
+        $moniteurp = MoniteurPratique::create([
+            'employe_id'=>$employe->id,
+            'auto_ecole_id'=>$ecole_id,
+        ]);
+        $moniteurp->save();
+        $ecole -> moniteurPratiques()->save($moniteurp);
+        $moniteurp->employe;
+        return response($moniteurp,201);
     }
 
 }

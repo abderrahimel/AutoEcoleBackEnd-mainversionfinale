@@ -11,6 +11,7 @@ class CreateMoniteurTheoriquesTable extends Migration
      *
      * @return void
      */
+    
     public function up()
     {
         Schema::create('moniteur_theoriques', function (Blueprint $table) {

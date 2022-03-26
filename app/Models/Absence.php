@@ -12,11 +12,10 @@ class Absence extends Model
     protected $fillable = [
         'auto_ecole_id',
         'employe_id',
-        'justfication',
-        'image',
+        'type_absence',
         'date_debut',
         'date_fin',
-        'remarques',
+        'remarque',
     ];
 
     public function employe()

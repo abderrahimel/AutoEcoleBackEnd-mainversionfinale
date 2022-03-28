@@ -60,6 +60,15 @@ class AutoEcole extends Model
     {
         return $this->hasMany(Employe::class);
     }
+    
+    public function notes()
+    {
+        return $this->hasMany(Note::class);
+    }
+    public function devis()
+    {
+        return $this->hasMany(Devis::class);
+    }
 
     public function moniteurPratiques()
     {

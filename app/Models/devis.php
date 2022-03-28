@@ -5,29 +5,17 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Facture extends Model
+class Devis extends Model
 {
     use HasFactory;
-
     protected $fillable = [
         'auto_ecole_id',
-        'montant',
-        'date',
         'candidat_id',
+        'numero',
+        'date',
         'societe',
+        'montant_ht',
+        'montant_ttc',
         'remarque'
     ];
-
-   
-    public function candidat()
-    {
-        return $this->belongsTo(Candidat::class);
-    }
-
-    public function autoEcole()
-    {
-        return $this->belongsTo(AutoEcole::class);
-    }
-
-
 }

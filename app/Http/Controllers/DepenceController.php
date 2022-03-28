@@ -35,7 +35,17 @@ class DepenceController extends Controller
     public function addDepence($ecole_id,Request $request)
     {
         $ecole=AutoEcole::find($ecole_id);
-        $depence = new Depence($request->all()); 
+        if(is_null($ecole)){
+            return response()->json(['message'=> "Ecole n'est pas trouvé"],404);
+        }
+        $depence = Depence::create([
+            'auto_ecole_id'=>$ecole_id,
+            'categorie_depence_id'=>$request->categorie_depence_id,
+            'employe_id'=>$request->employe_id,
+            'date'=>$request->date,
+            'montant'=>$request->montant,
+            'remarques'=>$request->remarque
+        ]);
         $ecole -> depences()->save($depence);
         $categorie = CategorieDepence::find($depence->categorie_depence_id);
         $depence->employe;

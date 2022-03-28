@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateFacturesTable extends Migration
+class CreateDevisTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,19 +13,20 @@ class CreateFacturesTable extends Migration
      */
     public function up()
     {
-        Schema::create('factures', function (Blueprint $table) {
+        Schema::create('devis', function (Blueprint $table) {
             $table->id();
+            $table->string('numero')->nullable();
+            $table->string('date')->nullable();
+            $table->string('societe')->nullable();
+            $table->double('montant_ht')->nullable();
+            $table->double('montant_ttc')->nullable();
+            $table->longText('remarques')->nullable();
             $table->foreignId('auto_ecole_id')->constrained()
                   ->onUpdate('cascade')
                   ->onDelete('cascade');
-            $table->double('montant');
-            $table->date('date');
-            $table->foreignId('candidat_id')->nullable()
-                  ->constrained()
+            $table->foreignId('candidat_id')->constrained()
                   ->onUpdate('cascade')
                   ->onDelete('cascade');
-            $table->string('societe')->nullable();
-            $table->text('remarque');
             $table->timestamps();
         });
     }
@@ -37,6 +38,6 @@ class CreateFacturesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('factures');
+        Schema::dropIfExists('devis');
     }
 }

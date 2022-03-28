@@ -25,7 +25,8 @@ use App\Http\Controllers\MoniteurController;
 use App\Http\Controllers\ProduitController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CourController;
-
+use App\Http\Controllers\DevisController;
+use App\Http\Controllers\NoteController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -137,6 +138,11 @@ Route::post('/add-facture/{ecole_id}', [FactureController::class,'addFacture']);
 Route::put('/update-facture/{id}', [FactureController::class,'updateFacture']);
 Route::delete('/delete-facture/{id}', [FactureController::class,'deleteFacture']);
 
+// add-devis
+Route::post('/add-devis/{ecole_id}', [DevisController::class,'addDevis']);
+
+// /add-notes/
+Route::post('/add-notes/{ecole_id}', [NoteController::class,'addNote']);
 
 //Recette
 Route::get('/auto-ecole/{ecole_id}/recette', [RecetteController::class,'getFacture']);

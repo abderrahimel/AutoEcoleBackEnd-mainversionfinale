@@ -31,7 +31,19 @@ class FactureController extends Controller
     public function addFacture($ecole_id,Request $request)
     {
         $ecole=AutoEcole::find($ecole_id);
-        $facture = new Facture($request->all()); 
+        $ecole=AutoEcole::find($ecole_id);
+        if(is_null($ecole)){
+            return response()->json(['message'=> "Ecole n'est pas trouvé"],404);
+        }
+        $facture = Facture::create([
+                    'auto_ecole_id'=>$ecole_id,
+                    'montant'=>$request->montant,
+                    'date'=>$request->date,
+                    'candidat_id'=>$request->candidat_id,
+                    'societe'=>$request->societe,
+                    'remarque'=>$request->remarque
+        ]);
+
         $ecole -> factures()->save($facture);
         $facture = Facture::find($facture->id);
         $facture -> candidat;

@@ -33,8 +33,15 @@ class CategorieDepenceController extends Controller
     public function addCategorieDepence($ecole_id,Request $request)
     {
         $ecole=AutoEcole::find($ecole_id);
-        $categorie = new CategorieDepence($request->all()); 
-        $ecole -> CategorieDepence()->save($categorie);
+        if(is_null($ecole)){
+            return response()->json(['message'=> "Ecole n'est pas trouvé"],404);
+        }
+        $categorie = addCategorieDepence::create([
+            'auto_ecole_id'=>$ecole_id,
+            'categorie'=>$request->categorie
+        ]);
+        $categorie->save();
+        $ecole->CategorieDepence()->save($categorie);
         $categorie = CategorieDepence::find($categorie->id);
         return response($categorie,201);
     }

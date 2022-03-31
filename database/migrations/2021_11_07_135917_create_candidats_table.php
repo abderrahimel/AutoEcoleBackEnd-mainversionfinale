@@ -47,7 +47,7 @@ class CreateCandidatsTable extends Migration
                   $table->string('pcn')->nullable();
                   $table->string('categorie')->nullable();
                   $table->longText('observations')->nullable();
-                  $table->boolean('actif')->default(1);
+                  $table->integer('actif')->default(1);
             $table->foreignId('moniteur_theorique_id')->constrained()
                   ->onUpdate('cascade')
                   ->onDelete('cascade');
@@ -57,7 +57,7 @@ class CreateCandidatsTable extends Migration
             $table->foreignId('vehicule_id')->constrained()
                   ->onUpdate('cascade')
                   ->onDelete('cascade');
-      
+                  
             $table->timestamps();
         });
     }

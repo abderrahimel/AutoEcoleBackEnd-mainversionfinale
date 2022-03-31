@@ -8,6 +8,7 @@ use App\Models\AutoEcole;
 use App\Models\MoniteurPratique;
 use App\Models\MoniteurTheorique;
 use App\Models\Vehicule;
+use Illuminate\Support\Facades\DB;
 
 class CandidatController extends Controller
 {
@@ -18,10 +19,33 @@ class CandidatController extends Controller
             return response()->json(['message'=>"Auto Ecole n'est pas trouvée"],404);
         }
         $candidats = $ecole->candidats;
+        $candidat = DB::table('candidats')->where('deleted_at','=',NULL);
         return response()->json($candidats,200);
         
     }
-
+    public function historiquecandidat($ecole_id)
+    {
+        $ecole=AutoEcole::find($ecole_id);
+        if ($ecole == "null") {
+            return response()->json(['message'=>"Auto Ecole n'est pas trouvée"],404);
+        }
+        $candidats = $ecole->candidats;
+        $candidat = DB::table('candidats')->where('deleted_at', NULL);
+        return response()->json($candidats,200);
+        
+    }
+    public function getarchivecandidat($ecole_id)
+    {
+        $ecole=AutoEcole::find($ecole_id);
+        if ($ecole == "null") {
+            return response()->json(['message'=>"Auto Ecole n'est pas trouvée"],404);
+        }
+        // $candidats = $ecole->candidats;
+        // $candidats = DB::table('candidats')->where('deleted_at', '!=', NULL);
+        $candidats = DB::table('candidats')->whereNotNull('deleted_at')->get();
+        return response()->json($candidats,200);
+        
+    }
     public function getCandidatById($id)
     {
         $candidat= Candidat::find($id);
@@ -66,6 +90,7 @@ class CandidatController extends Controller
                 'adresse_ar' =>$request->adresse_ar,
                 'telephone' =>$request->telephone,
                 'email' =>$request->email,
+                'type_formation' =>'',
                 'profession' =>$request->profession,
                 'langue' =>$request->langue,
                 'image' => $name_image,
@@ -138,8 +163,6 @@ class CandidatController extends Controller
         return response($candidat,200);
     }
 
-
-
     public function deleteCandidat($id)
     {
         $candidat = Candidat::find($id);
@@ -148,5 +171,26 @@ class CandidatController extends Controller
         }
         $candidat->delete();
         return response()->json(null,204);
+    }
+    
+    public function desactiverCandidat($id)
+    {   
+        $candidat = Candidat::find($id);
+        if (is_null($candidat)) {
+            return response()->json(['message'=>"Candidat n'est pas trouvée"],404);
+        }
+        $candidat->actif = 0;
+        $candidat->save();
+        return response()->json($candidat,200);
+    }
+    public function activerCandidat($id)
+    {   
+        $candidat = Candidat::find($id);
+        if (is_null($candidat)) {
+            return response()->json(['message'=>"Candidat n'est pas trouvée"],404);
+        }
+        $candidat->actif = 1;
+        $candidat->save();
+        return response()->json($candidat,200);
     }
 }

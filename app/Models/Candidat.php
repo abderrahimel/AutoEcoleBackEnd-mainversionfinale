@@ -3,11 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Model;
 
 class Candidat extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $fillable = [
         'auto_ecole_id',
@@ -25,6 +26,7 @@ class Candidat extends Model
         'adresse_ar',
         'telephone',
         'email',
+        'type_formation',
         'profession',
         'langue',
         'image',

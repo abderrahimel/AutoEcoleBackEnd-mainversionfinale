@@ -57,16 +57,26 @@ class CourController extends Controller
     }
 
     public function addcourT($ecole_id,Request $request)
-    {
+    {    
         $ecole=AutoEcole::find($ecole_id);
-        $cour = new CourTheorique($request->all()); 
-        $ecole -> courTheriques()->save($cour);
+        $cour = CourTheorique::create([
+            'auto_ecole_id'=>$ecole_id,
+            'moniteur_theorique_id'=>$request->moniteur_theorique_id,
+            'date'=>$request->date,
+            'date_debut'=>$request->date_debut,
+            'date_fin'=>$request->date_fin,
+            'permis'=>$request->permis,
+            'type'=>$request->type,
+            'candidat'=>$request->candidat,
+        ]);
+        $cour->save();
+        $ecole ->courTheriques()->save($cour);
         $cour ->moniteurTherique;
         return response($cour,201);
     }
 
     public function addcourP($ecole_id,Request $request)
-    {
+    {   
         $ecole=AutoEcole::find($ecole_id);
         $cour = new CourPratique($request->all()); 
         $ecole -> courPratiques()->save($cour);

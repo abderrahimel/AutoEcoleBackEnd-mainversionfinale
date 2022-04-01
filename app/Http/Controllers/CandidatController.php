@@ -175,21 +175,24 @@ class CandidatController extends Controller
     
     public function desactiverCandidat($id)
     {   
-        $candidat = Candidat::find($id);
-        if (is_null($candidat)) {
-            return response()->json(['message'=>"Candidat n'est pas trouvée"],404);
-        }
+        var_dump("desqctiver");
+        $candidat = Candidat::findOrFail($id);
         $candidat->actif = 0;
         $candidat->save();
         return response()->json($candidat,200);
     }
     public function activerCandidat($id)
     {   
-        $candidat = Candidat::find($id);
-        if (is_null($candidat)) {
-            return response()->json(['message'=>"Candidat n'est pas trouvée"],404);
-        }
+        $candidat = Candidat::findOrFail($id);
         $candidat->actif = 1;
+        $candidat->save();
+        return response()->json($candidat,200);
+    }
+    // 
+    public function recupererCandidat($id)
+    {   
+        $candidat = Candidat::onlyTrashed()->findOrFail($id);
+        $candidat->restore();
         $candidat->save();
         return response()->json($candidat,200);
     }

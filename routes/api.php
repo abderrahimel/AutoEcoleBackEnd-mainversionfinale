@@ -116,8 +116,9 @@ Route::get('/candidat/{id}', [CandidatController::class,'getCandidatById']);
 Route::post('/add-candidat/{ecole_id}', [CandidatController::class,'addCandidat']);
 Route::put('/update-candidat/{id}', [CandidatController::class,'updateCandidat']);
 Route::delete('/delete-candidat/{id}', [CandidatController::class,'deleteCandidat']);
-Route::delete('/desactiver-candidat/{id}', [CandidatController::class,'desactiverCandidat']);
+Route::post('/desactiver-candidat/{id}', [CandidatController::class,'desactiverCandidat']);
 Route::post('/activer-candidat/{id}', [CandidatController::class,'activerCandidat']);
+Route::post('/recuperer-candidat/{id}', [CandidatController::class,'recupererCandidat']);
 // 
 //Categorie depence routes
 Route::get('/auto-ecole/{ecole_id}/categorie-depence', [CategorieDepenceController::class,'getCategorieDepence']);

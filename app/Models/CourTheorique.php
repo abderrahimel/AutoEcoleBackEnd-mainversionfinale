@@ -13,13 +13,15 @@ class CourTheorique extends Model
         'auto_ecole_id',
         'moniteur_theorique_id',
         'date',
-        'date_debut',`
+        'date_debut',
         'date_fin',
         'permis',
         'type',
         'candidat'
     ];
-    
+     protected $casts = [
+         'candidat' => 'array'
+     ];
     public function autoEcole()
     {
         return $this->belongsTo(AutoEcole::class);

@@ -80,7 +80,7 @@ class AutoEcole extends Model
         return $this->hasMany(MoniteurTheorique::class);
     }
 
-    public function courThoeriques()
+    public function courTheriques()
     {
         return $this->hasMany(CourTheorique::class);
     }

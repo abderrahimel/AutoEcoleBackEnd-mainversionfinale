@@ -260,7 +260,7 @@ Route::put('/update-produit/{id}', [ProduitController::class,'updateProduit']);
 Route::delete('/delete-produit/{id}', [ProduitController::class,'deleteProduit']);
 
 
-//Cours routes
+//Cours routes http://127.0.0.1:8000/auto-ecole/1/cour-theorique
 Route::get('/auto-ecole/{ecole_id}/cour-theorique', [CourController::class,'getcourT']);
 Route::get('/cour-theorique/{id}', [CourController::class,'getcourTById']);
 Route::post('/add-cour-theorique/{ecole_id}', [CourController::class,'addcourT']);

@@ -4,18 +4,18 @@ namespace App\Http\Controllers;
 use App\Models\AutoEcole;
 use App\Models\CourPratique;
 use App\Models\CourTheorique;
+use App\Models\MoniteurTheorique;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class CourController extends Controller
 {
     public function getcourT($ecole_id)
-    {
+    {  
         $ecole=AutoEcole::find($ecole_id);
-        if (is_null($ecole_id)) {
-            return response()->json(['message'=>"Auto Ecole n'est pas trouvée"],404);
-        }
-        $cour = $ecole->courThoeriques;
-        $cour ->moniteurTherique;
+        $cour = $ecole->courTheriques;
+        
+        // $cour->moniteurTherique;
         return response()->json($cour,200);
         
     }
@@ -59,15 +59,22 @@ class CourController extends Controller
     public function addcourT($ecole_id,Request $request)
     {    
         $ecole=AutoEcole::find($ecole_id);
+        $array = array_map('intval', explode(',', $request->candidat));
+        
+        foreach( $array as $val){
+            if($val != null){
+                $items[] = $val;
+            }
+        }
         $cour = CourTheorique::create([
             'auto_ecole_id'=>$ecole_id,
-            'moniteur_theorique_id'=>$request->moniteur_theorique_id,
             'date'=>$request->date,
             'date_debut'=>$request->date_debut,
             'date_fin'=>$request->date_fin,
             'permis'=>$request->permis,
             'type'=>$request->type,
-            'candidat'=>$request->candidat,
+            'candidat'=>$items,
+            'moniteur_theorique_id'=>$request->moniteur_theorique_id
         ]);
         $cour->save();
         $ecole ->courTheriques()->save($cour);

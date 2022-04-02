@@ -22,11 +22,11 @@ class CreateCourTheoriquesTable extends Migration
                   ->onUpdate('cascade')
                   ->onDelete('cascade');
             $table->string('permis');
-            $table->date('date_debut');
-            $table->date('date_fin');
-            $table->date('date');
+            $table->string('date_debut');
+            $table->string('date_fin');
+            $table->string('date')->nullable();
             $table->string('type');
-            $table->string('candidat');
+            $table->text('candidat');
             $table->timestamps();
         });
     }

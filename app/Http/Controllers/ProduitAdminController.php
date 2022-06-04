@@ -30,8 +30,8 @@ class ProduitAdminController extends Controller
             $name_image = time().'.' . explode('/', explode(':', substr($request->image, 0, strpos($request->image, ';')))[1])[1];
             \Image::make($request->image)->save(public_path('produitsAdmin/').$name_image);
         }
-
-        $produit->nomCategorie = $request->nomCategorie;
+        
+        $produit->nomCategorie = $request->categorie;
         $produit->titre = $request->titre;
         $produit->prix = $request->prix;
         $produit->marque = $request->marque;
@@ -45,12 +45,11 @@ class ProduitAdminController extends Controller
         return response()->json($produit, 200);
     }
     public function newProduit(Request $request)
-    {
+    {  
         if($request->image != ''){
             $name_image = time().'.' . explode('/', explode(':', substr($request->image, 0, strpos($request->image, ';')))[1])[1];
             \Image::make($request->image)->save(public_path('produitsAdmin/').$name_image);
         }
-
         $produit = Produit_admin_auto_ecole::create([
             'nomCategorie'=> $request->categorie,
             'titre' => $request->titre,

@@ -15,16 +15,16 @@ class CreateProduitAdminAutoEcolesTable extends Migration
     {
         Schema::create('produit_admin_auto_ecoles', function (Blueprint $table) {
             $table->id();
-            $table->string('titre');
-            $table->string('nomCategorie');
-            $table->string('prix');
-            $table->string('marque');
-            $table->string('modele');
-            $table->string('carburant');
-            $table->string('kilometrage');
-            $table->string('prixPromotion');
-            $table->string('description');
-            $table->string('image');
+            $table->string('titre')->nullable();
+            $table->string('nomCategorie')->nullable();
+            $table->string('prix')->nullable();
+            $table->string('marque')->nullable();
+            $table->string('modele')->nullable();
+            $table->string('carburant')->nullable();
+            $table->string('kilometrage')->nullable();
+            $table->string('prixPromotion')->nullable();
+            $table->string('description')->nullable();
+            $table->string('image')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
@@ -40,3 +40,4 @@ class CreateProduitAdminAutoEcolesTable extends Migration
         Schema::dropIfExists('produit_admin_auto_ecoles');
     }
 }
+

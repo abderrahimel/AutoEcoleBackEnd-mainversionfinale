@@ -33,6 +33,7 @@ use App\Http\Controllers\Depense_localController;
 use App\Http\Controllers\Depense_vehiculeController;
 use App\Http\Controllers\AutoEcoleController; 
 use App\Http\Controllers\ProduitAdminController; 
+use App\Http\Controllers\BlogController; 
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -350,3 +351,10 @@ Route::get('/auto-ecole/{auto_id}/logo-auto-ecole', [AuthController::class,'getL
 Route::get('/get-produit-admin', [ProduitAdminController::class,'getAllProduitAdmin']);
 Route::put('/auto-ecole/produit-admin/{id}', [ProduitAdminController::class,'updateProduitAdmin']); 
 Route::post('/new-produit', [ProduitAdminController::class,'newProduit']);
+
+// route blog
+Route::get('/get-blog', [BlogController::class,'getBlog']);
+Route::get('/get-blogId/{id}', [BlogController::class,'getBlogById']);
+Route::put('/blog-admin/{id}', [BlogController::class,'updateBlogAdmin']);
+Route::post('/new-blog', [BlogController::class,'newBlog']);
+Route::delete('/delete-blog/{id}', [BlogController::class, 'deletBlog']);

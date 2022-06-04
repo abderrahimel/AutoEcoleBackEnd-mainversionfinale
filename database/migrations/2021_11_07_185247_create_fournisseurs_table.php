@@ -26,6 +26,7 @@ class CreateFournisseursTable extends Migration
             $table->string('email');
             $table->text('adresse')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

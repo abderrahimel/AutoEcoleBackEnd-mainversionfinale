@@ -35,6 +35,7 @@ class CreateDossiersTable extends Migration
             $table->float('prix_examen');
             $table->float('avance');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

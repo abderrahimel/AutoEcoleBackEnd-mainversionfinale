@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class CourTheorique extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $fillable = [
         'auto_ecole_id',
@@ -31,4 +32,9 @@ class CourTheorique extends Model
     {
         return $this->belongsTo(MoniteurTheorique::class);
     }
+    public function presence_theorique()
+    {
+        return $this->hasMany(cour_theorique_presence::class);
+    }
+   
 }

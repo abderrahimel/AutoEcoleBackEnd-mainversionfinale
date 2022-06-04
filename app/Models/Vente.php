@@ -4,19 +4,21 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Vente extends Model
 {
-    use HasFactory;
-
+    use HasFactory, SoftDeletes;
+    
     protected $fillable = [
         'auto_ecole_id',
         'candidat_id',
-        'date_vente',
-        'produit',
-        'prix',
+        'produit_id',
+        'prixUnitaire',
+        'prixTotale',
+        'quantiteDisponible',
         'quantite',
-        'description'
+        'date'
     ];
 
     public function autoEcole()

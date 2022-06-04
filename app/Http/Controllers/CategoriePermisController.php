@@ -18,7 +18,7 @@ class CategoriePermisController extends Controller
         return response()->json($categories,200);
     }
 
-    public function getCategoriePermiseById($id)
+    public function getCategoriePermisById($id)
     {
         $categories = CategoriePermis::find($id);
         if(is_null($categories)){

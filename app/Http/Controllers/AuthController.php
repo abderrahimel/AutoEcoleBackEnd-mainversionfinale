@@ -1,4 +1,4 @@
-<?php
+<?php 
 
 namespace App\Http\Controllers;
 
@@ -104,9 +104,54 @@ class AuthController extends Controller
         return response()->json(['message' => 'user added', 'user' => $request->all()], 200);
     }
 
+    public function setlogo($id, Request $request)
+    {      
+            $autoEcole = ModelsAutoEcole::find($id);
+            if (is_null($autoEcole)) {
+                return response()->json(['message'=>"Auto Ecole n'est pas trouvée"],404);
+            }
+            if($request->logo != ''){
+                $name_image = time().'.' . explode('/', explode(':', substr($request->logo, 0, strpos($request->logo, ';')))[1])[1];
+                \Image::make($request->logo)->save(public_path('images/').$name_image);
+            }
+            $autoEcole->image = $name_image;
+            $autoEcole->save();
+            return response()->json($autoEcole, 200);
+
+    }
+     public function  setpass($id, Request $request)
+     {
+           $user = User::find($id);
+           if (is_null($user)) {
+            return response()->json(['message'=>"User n'est pas trouvée"],404);
+            }
+        $user->password = Hash::make($request->password);
+        $user->save();
+        return response()->json($user, 200);
+     }
+     public function  setemail($id, Request $request)
+     {  
+        $user = User::find($id);
+        if (is_null($user)) {
+         return response()->json(['message'=>"User n'est pas trouvée"],404);
+        }
+        $user->login = strstr($request->email,'@',true);
+        $user->email = $request->email;
+        $user->save();
+        return response()->json($user, 200);
+     }
+     public function getLogo($auto_id)
+     {
+        $autoEcole = ModelsAutoEcole::find($auto_id);
+        if (is_null($autoEcole)) {
+            return response()->json(['message'=>"Auto Ecole n'est pas trouvée"],404);
+        }
+        $nameLogo =  "images/" . $autoEcole->image;
+        return response()->json($nameLogo, 200);
+     }
     public function login(Request $request)
     {
-        if (! $token = Auth::attempt($request->only('email', 'password'))) {
+        if(!$token = Auth::attempt($request->only('email', 'password'))) {
             return response([
                 'error' => 'This information does not match our records.'
             ], Response::HTTP_UNAUTHORIZED);

@@ -7,6 +7,7 @@ use App\Models\AutoEcole;
 use App\Models\Employe;
 use App\Models\MoniteurPratique;
 use App\Models\MoniteurTheorique;
+use Illuminate\Support\Facades\DB;
 
 class EmployeController extends Controller
 {
@@ -23,25 +24,11 @@ class EmployeController extends Controller
 
     public function getEmployeById($id)
     {
-        $employe = Employe::find($id);
-        if(is_null($employe)){
-            return response()->json(['message'=> "Employé n'est pas trouvée"],404);
-        }
+        $employe = Employe::findOrFail($id);
         return response()->json($employe,200);
     }
-
-    public function getEmployeByRole($role,$ecole_id)
-    {
-        $employe = $this->getEmploye($ecole_id)->original;
-        $employe = $employe::where('role',$role);
-        if(is_null($employe)){
-            return response()->json(['message'=> "Employé n'est pas trouvée"],404);
-        }
-        return response()->json($employe,200);
-    }
-   
-
-    public function addEmploye($ecole_id,Request $request)
+    
+    public function  addEmploye($ecole_id,Request $request)
     {
         $ecole=AutoEcole::find($ecole_id);
         // $employe = new Employe($request->all()); 
@@ -50,7 +37,6 @@ class EmployeController extends Controller
         'nom'=> $request->nom,
         'prenom'=>$request->prenom,
         'cin'=>$request->cin,
-        'role'=>$request->role,
         'type'=>$request->type,
         'date_naissance'=>$request->date_naissance,
         'lieu_naissance'=>$request->lieu_naissance,
@@ -63,8 +49,8 @@ class EmployeController extends Controller
         'observations'=>$request->observations,
         ]);
         $employe->save();
-        $ecole ->employes()->save($employe);
-        if($request->role=="moniteur pratique"){
+       
+        if($request->type=="Moniteur Pratique"){
             $moniteurp = MoniteurPratique::create([
                 "auto_ecole_id"=>$ecole->id,
                 "employe_id"=>$employe->id
@@ -72,7 +58,7 @@ class EmployeController extends Controller
             $moniteurp->save();
             $employe->MoniteurPratique;
         }
-        if($request->role=="moniteur théorique"){
+        if($request->role=="Moniteur Théorique"){
             $moniteurt = MoniteurTheorique::create([
                 "auto_ecole_id"=>$ecole->id,
                 "employe_id"=>$employe->id
@@ -80,7 +66,7 @@ class EmployeController extends Controller
             $moniteurt->save();
             $employe->MoniteurTheorique;
         }
-        return response()->json($employe,201);
+        return response()->json($employe,200);
     }
 
 
@@ -93,38 +79,7 @@ class EmployeController extends Controller
         $employe->nom = $request -> nom;
         $employe->prenom = $request -> prenom;
         $employe->CIN = $request -> CIN;
-        if($request->role != $employe->role){
-            if ($request->role=="moniteur pratique") {
-                $moniteurp = MoniteurPratique::create(["auto_ecole_id"=>$employe->auto_ecole_id,"employe_id"=>$employe->id]);
-                $employe->MoniteurPratique;
-                if($employe->role=="moniteur théorique"){
-                    $ex_moniteur=MoniteurTheorique::where('employe_id',$employe->id)->delete();
-                }
-            }
-            
-            if ($request->role=="moniteur théorique") {
-                $moniteurt = MoniteurTheorique::create(["auto_ecole_id"=>$employe->auto_ecole_id,"employe_id"=>$employe->id]);
-                $employe->MoniteurTheorique;
-                if($employe->role=="moniteur pratique"){
-                    $ex_moniteur=MoniteurPratique::where('employe_id',$employe->id)->delete();     
-                }
-            }
-
-            if($request->role !="moniteur théorique" && $request->role !="moniteur pratique"){
-                if($employe->role=="moniteur théorique"){
-                    $ex_moniteur=MoniteurTheorique::where('employe_id',$employe->id)->delete();
-                } 
-                if($employe->role=="moniteur pratique"){
-                    $ex_moniteur=MoniteurPratique::where('employe_id',$employe->id)->delete();     
-                    
-                }
-                dd("hoo");
-            }
-            
-            
-            $employe->role = $request -> role;
-            
-        }
+        
         $employe->date_naissance = $request -> date_naissance;
         $employe->lieu_naissance = $request -> lieu_naissance;
         $employe->email = $request -> email;
@@ -144,14 +99,14 @@ class EmployeController extends Controller
         if (is_null($employe)) {
             return response()->json(['message'=>"Véhicule n'est pas trouvée"],404);
         }
-        if($employe->role == "moniteur théorique"){
+        if($employe->type == "moniteur théorique"){
             $moniteur = MoniteurTheorique::where('employe_id',$id)->delete();
         }
-        if($employe->role == "moniteur pratique"){
+        if($employe->type == "moniteur pratique"){
             $moniteur = MoniteurPratique::where('employe_id',$id)->delete();
         }
         $employe->delete();
         
-        return response()->json(null,204);
+        return response()->json(['message'=>"employee deleted"],200);
     }
 }

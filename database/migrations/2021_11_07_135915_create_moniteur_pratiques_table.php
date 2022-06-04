@@ -22,6 +22,7 @@ class CreateMoniteurPratiquesTable extends Migration
                   ->onUpdate('cascade')
                   ->onDelete('cascade');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

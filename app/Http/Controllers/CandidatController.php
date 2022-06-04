@@ -14,15 +14,28 @@ class CandidatController extends Controller
 {
     public function getCandidat($ecole_id)
     {
-        $ecole=AutoEcole::find($ecole_id);
-        if ($ecole == "null") {
-            return response()->json(['message'=>"Auto Ecole n'est pas trouvée"],404);
-        }
-        $candidats = $ecole->candidats;
-        $candidat = DB::table('candidats')->where('deleted_at','=',NULL);
+        $ecole = AutoEcole::findOrFail($ecole_id);
+       
+        $candidats = Candidat::where('auto_ecole_id', $ecole_id)->get();
         return response()->json($candidats,200);
         
     }
+
+    public function getlistCandidat($list_candidat)
+    {   
+        $var = array_map('intval', explode(",",$list_candidat));
+        $candidats = '';
+        foreach($var as $val){
+                $candidat = Candidat::where('id',$val)->first();
+                if($candidat != null){
+                        $candidats=implode(',',[implode(' ',[$candidat->nom_fr, $candidat->prenom_fr]),$candidats]);
+                }
+        }
+        
+        return response()->json($candidats,200);
+        
+    }
+
     public function historiquecandidat($ecole_id)
     {
         $ecole=AutoEcole::find($ecole_id);
@@ -48,10 +61,7 @@ class CandidatController extends Controller
     }
     public function getCandidatById($id)
     {
-        $candidat= Candidat::find($id);
-        if(is_null($candidat)){
-            return response()->json(['message'=> "Candidat n'est pas trouvé"],404);
-        }
+        $candidat= Candidat::findOrFail($id);
         $candidat-> moniteurPratique; 
         $candidat-> moniteurTheorique;
         return response()->json($candidat,200);
@@ -61,6 +71,7 @@ class CandidatController extends Controller
     public function addCandidat($ecole_id,Request $request)
     {
         $ecole=AutoEcole::find($ecole_id);
+        $name_image = '';
         if($request->image != ''){
             $name_image = time().'.' . explode('/', explode(':', substr($request->image, 0, strpos($request->image, ';')))[1])[1];
             \Image::make($request->image)->save(public_path('candidat_img/').$name_image);
@@ -71,7 +82,6 @@ class CandidatController extends Controller
         $moniteurt =MoniteurTheorique::find($idt);
         $moniteurp =MoniteurPratique::find($idp);
         $vehicule =Vehicule::find($idv);
-        // $ecole -> candidats()->save($candidat);
  
         $candidat = new Candidat(
             [
@@ -90,7 +100,7 @@ class CandidatController extends Controller
                 'adresse_ar' =>$request->adresse_ar,
                 'telephone' =>$request->telephone,
                 'email' =>$request->email,
-                'type_formation' =>'',
+                'type_formation' => $request->type_formation,
                 'profession' =>$request->profession,
                 'langue' =>$request->langue,
                 'image' => $name_image,
@@ -98,12 +108,12 @@ class CandidatController extends Controller
                 'categorie_demandee' =>$request->categorie_demandee,
                 'nbr_heure_pratique' =>$request->nbr_heur_pratique,
                 'nbr_heure_theorique' =>$request->nbr_heur_theorique,
-                'possede_permis' =>$request->permis,
-                'date_obtention' =>null,
-                'lieu_obtention_fr' =>null,
-                'lieu_obtention_ar' =>null,
+                'possede_permis' =>$request->possede_permis,
+                'date_obtention' =>$request->date_obtention,
+                'lieu_obtention_fr' =>$request->lieu_obtention_fr,
+                'lieu_obtention_ar' =>$request->lieu_obtention_ar,
                 'montant' =>$request->montant,
-                'pcn' =>null,
+                'pcn' =>$request->pcn,
                 'categorie' =>$request->categorie_demandee,
                 'observations' =>$request->observations,
                 'moniteur_theorique_id' =>  $idt, 
@@ -129,37 +139,53 @@ class CandidatController extends Controller
     {
         $candidat=Candidat::find($id);
         if (is_null($candidat)) {
-            return response()->json(['message'=>"Employé n'est pas trouvée"],404);
+            return response()->json(['message'=>"Candidat n'est pas trouvée"],404);
         }
-        $candidat->nom = $request -> nom;
-        $candidat->prenom = $request -> prenom;
-        $candidat->type = $request -> type;
-        $candidat->CIN = $request -> CIN;
-        $candidat->date_naissance = $request -> date_naissance;
-        $candidat->lieu_naissance = $request -> lieu_naissance;
-        $candidat->email = $request -> email;
-        $candidat->nationalite = $request -> nationalite;
-        $candidat->telephone = $request -> telephone;
-        $candidat->email = $request -> email;
-        $candidat->date_insc = $request -> date_insc;
-        $candidat->permis = $request -> permis;
-        $candidat->connaissance = $request -> connaissance;
-        $candidat->adresse = $request -> adresse;
-        $candidat->num_dossier = $request -> num_dossier;
-        $candidat->langue = $request -> langue;
-        $candidat->moniteur_theorique_id = $request -> moniteur_theorique_id;
-        $candidat->moniteur_pratique_id = $request -> moniteur_pratique_id; 
-        $candidat->vehicule_id = $request -> vehicule_id;
-        $candidat->nbr_theo = $request -> nbr_theo;
-        $candidat->nbr_pra = $request -> nbr_pra;
-        $candidat->frais_insc = $request -> frais_insc;
-        $candidat->frais_heure = $request -> frais_heure;
-        $candidat->date_dossier = $request -> date_dossier;
-        $candidat->frais_examen = $request -> frais_examen;
-        $candidat->avance = $request -> avance;
+        $idt = (int) $request->moniteur_theorique_id;
+        $idp = (int) $request->moniteur_pratique_id;
+        $idv = (int) $request->vehicule_id;
+        $name_image = '';
+        if($request->image != ''){
+            $name_image = time().'.' . explode('/', explode(':', substr($request->image, 0, strpos($request->image, ';')))[1])[1];
+            \Image::make($request->image)->save(public_path('candidat_img/').$name_image);
+        }
+        $candidat->cin = $request->cin;
+        $candidat->date_inscription = $request->date_inscription;
+        $candidat->numero_contrat = $request->numero_contrat;
+        $candidat->ref_web = $request->ref_web;
+        $candidat->nom_fr = $request->nom_fr;
+        $candidat->prenom_fr = $request->prenom_fr;
+        $candidat->nom_ar = $request->nom_ar;
+        $candidat->prenom_ar = $request->prenom_ar;
+        $candidat->date_naissance = $request->date_naissance;
+        $candidat->lieu_naissance  = $request->lieu_naissance;
+        $candidat->adresse_fr = $request->adresse_fr;
+        $candidat->adresse_ar = $request->adresse_ar;
+        $candidat->telephone = $request->telephone;
+        $candidat->email  = $request->email;
+        $candidat->type_formation  = '';
+        $candidat->profession  =$request->profession;
+        $candidat->langue  = $request->langue;
+        $candidat->image  = $name_image;
+        $candidat->date_fin_contrat  = $request->date_fin_contrat;
+        $candidat->categorie_demandee  = $request->categorie_demandee;
+        $candidat->nbr_heure_pratique  = $request->nbr_heur_pratique;
+        $candidat->nbr_heure_theorique = $request->nbr_heur_theorique;
+        $candidat->possede_permis = $request->possede_permis;
+        $candidat->date_obtention = $request->date_obtention;
+        $candidat->lieu_obtention_fr = $request->lieu_obtention_fr;
+        $candidat->lieu_obtention_ar = $request->lieu_obtention_ar;
+        $candidat->montant = $request->montant;
+        $candidat->pcn = $request->pcn;
+        $candidat->categorie = $request->categorie_demandee;
+        $candidat->observations = $request->observations;
+        $candidat->moniteur_theorique_id =  $idt; 
+        $candidat->moniteur_pratique_id =  $idp; 
+        $candidat->vehicule_id =  $idv;
+        //
         $candidat->save();
-        $candidat-> moniteurPratique; 
-        $candidat-> moniteurTheorique; 
+        $candidat->moniteurPratique; 
+        $candidat->moniteurTheorique; 
         return response($candidat,200);
     }
 
@@ -175,7 +201,7 @@ class CandidatController extends Controller
     
     public function desactiverCandidat($id)
     {   
-        var_dump("desqctiver");
+       
         $candidat = Candidat::findOrFail($id);
         $candidat->actif = 0;
         $candidat->save();

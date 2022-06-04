@@ -28,6 +28,7 @@ class CreateDepencesTable extends Migration
             $table->double('montant');
             $table->text('remarques');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

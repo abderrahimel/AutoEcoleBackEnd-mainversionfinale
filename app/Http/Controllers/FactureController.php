@@ -10,11 +10,11 @@ class FactureController extends Controller
 {
     public function getFacture($ecole_id)
     {
-        $ecole=AutoEcole::find($ecole_id);
+        $ecole = AutoEcole::find($ecole_id);
         if (is_null($ecole_id)) {
             return response()->json(['message'=>"Facture n'est pas trouvée"],404);
         }
-        $factures = $ecole-> factures;
+        $factures = Facture::where('auto_ecole_id', $ecole_id)->get();
         return response()->json($factures,200);
         
     }
@@ -30,23 +30,20 @@ class FactureController extends Controller
 
     public function addFacture($ecole_id,Request $request)
     {
-        $ecole=AutoEcole::find($ecole_id);
-        $ecole=AutoEcole::find($ecole_id);
+        $ecole = AutoEcole::find($ecole_id);
         if(is_null($ecole)){
             return response()->json(['message'=> "Ecole n'est pas trouvé"],404);
         }
         $facture = Facture::create([
                     'auto_ecole_id'=>$ecole_id,
-                    'montant'=>$request->montant,
                     'date'=>$request->date,
                     'candidat_id'=>$request->candidat_id,
-                    'societe'=>$request->societe,
+                    'tva'=>$request->tva,
+                    'montant_ttc'=>$request->montant_ttc,
+                    'montant_ht'=>$request->montant_ht,
                     'remarque'=>$request->remarque
         ]);
-
-        $ecole -> factures()->save($facture);
-        $facture = Facture::find($facture->id);
-        $facture -> candidat;
+        $facture->save();
         return response($facture,201);
     }
 
@@ -57,14 +54,14 @@ class FactureController extends Controller
             return response()->json(['message'=>"facture n'est pas trouvée"],404);
         }
         $facture->auto_ecole_id = $facture->auto_ecole_id;
-        $facture->candidat_id= $request -> candidat_id;
-        $facture->montant = $request -> montant;
-        $facture->date = $request -> date;
-        $facture->societe = $request -> societe;
-        $facture->remarques = $request -> remarques;
+        $facture->candidat_id= $request->candidat_id;
+        $facture->date = $request->date;
+        $facture->tva = $request->tva;
+        $facture->montant_ttc = $request->montant_ttc;
+        $facture->montant_ht = $request->montant_ht;
+        $facture->remarque = $request-> remarque;
         $facture->save();
-        $facture->candidat;
-        return response($facture,200);
+        return response()->json($facture,200);
     }
 
 
@@ -72,9 +69,9 @@ class FactureController extends Controller
     {
         $facture = Facture::find($id);
         if (is_null($facture)) {
-            return response()->json(['message'=>"Catégorie n'est pas trouvée"],404);
+            return response()->json(['message'=>"Facture n'est pas trouvée"],404);
         }
         $facture->delete();
-        return response()->json(null,204);
+        return response()->json(['message'=>'facture deleted'],204);
     }
 }

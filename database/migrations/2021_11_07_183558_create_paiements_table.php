@@ -25,6 +25,7 @@ class CreatePaiementsTable extends Migration
             $table->date('date');
             $table->text('reamarques');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

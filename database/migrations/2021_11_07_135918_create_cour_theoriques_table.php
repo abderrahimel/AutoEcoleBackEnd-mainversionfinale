@@ -28,6 +28,7 @@ class CreateCourTheoriquesTable extends Migration
             $table->string('type');
             $table->text('candidat');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

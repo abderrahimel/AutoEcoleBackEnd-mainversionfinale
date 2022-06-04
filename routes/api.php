@@ -26,7 +26,13 @@ use App\Http\Controllers\ProduitController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CourController;
 use App\Http\Controllers\DevisController;
+use App\Http\Controllers\PaimentCandidatController;
+use App\Http\Controllers\PresenceController;
 use App\Http\Controllers\NoteController;
+use App\Http\Controllers\Depense_localController;
+use App\Http\Controllers\Depense_vehiculeController;
+use App\Http\Controllers\AutoEcoleController; 
+use App\Http\Controllers\ProduitAdminController; 
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -78,10 +84,17 @@ Route::delete('/delete-user/{id}', [UserController::class,'deleteUser']);
 
 //Auto Ecole routes
 Route::get('/all-auto-ecole/{user_id}', [AutoEcole::class,'getAutoEcole']);
-Route::get('/auto-ecole/{id}', [AutoEcole::class,'getAutoEcoleById']);
+Route::get('/all-auto-ecole-admin', [AutoEcoleController::class,'getAutoEcoles']);
+Route::get('/auto-ecole/{id}', [AutoEcoleController::class,'getAutoEcoleById']);
+Route::get('/archive-auto-ecole', [AutoEcole::class,'getArchiveAutoEcole']);
+Route::post('/recuperer-auto-ecole/{id}', [AutoEcole::class,'recupererAutoEcole']);
 Route::post('/add-auto-ecole/{user_id}', [AutoEcole::class,'addAutoEcole']);
 Route::put('/update-auto-ecole/{id}', [AutoEcole::class,'updateAutoEcole']);
 Route::delete('/delete-auto-ecole/{id}', [AutoEcole::class,'deleteAutoEcole']);
+// approver auto ecole
+Route::put('/approver-auto-ecole/{id}', [AutoEcole::class,'approverAutoEcole']); 
+// Desapprover  auto ecole
+Route::put('/desapprover-auto-ecole/{id}', [AutoEcole::class,'desapproverAutoEcole']);
 
 // this.api +'/auto-ecole/'+ecole_id+'/vehicule'
 //Vehicule routes http://127.0.0.1:8000/auto-ecole/1/vehicule
@@ -107,9 +120,10 @@ Route::delete('/delete-employe/{id}', [EmployeController::class,'deleteEmploye']
 // Route::put('/update-moniteur-pratique/{id}', [MoniteurPratiqueController::class,'updateMoniteurp']);
 // Route::delete('/delete-moniteur-pratique/{id}', [MoniteurPratiqueController::class,'deleteMoniteurp']);
 
-
+// /auto-ecole/listCandidat/'+list_candidat
 //Candidat routes http://127.0.0.1:8000/api/auto-ecole/'+id_auto_ecole+'/candidat
 Route::get('/auto-ecole/{ecole_id}/candidat', [CandidatController::class,'getCandidat']);
+Route::get('/auto-ecole/listCandidat/{list_candidat}', [CandidatController::class,'getlistCandidat']);
 Route::get('/auto-ecole/{ecole_id}/historiquecandidat', [CandidatController::class,'historiquecandidat']);
 Route::get('/auto-ecole/{ecole_id}/archivecandidat', [CandidatController::class,'getarchivecandidat']);
 Route::get('/candidat/{id}', [CandidatController::class,'getCandidatById']);
@@ -135,9 +149,21 @@ Route::post('/add-depence/{ecole_id}', [DepenceController::class,'addDepence']);
 Route::put('/update-depence/{id}', [DepenceController::class,'updateDepence']);
 Route::delete('/delete-depence/{id}', [DepenceController::class,'deleteDepence']);
 
+// depense local 
+Route::get('/auto-ecole/{ecole_id}/depence-local', [Depense_localController::class,'getDepencelocal']);
+Route::get('/depence-local/{id}', [Depense_localController::class,'getDepencelocalById']);
+Route::post('/add-depence-local/{ecole_id}', [Depense_localController::class,'addDepencelocal']);
+Route::put('/update-depence-local/{id}', [Depense_localController::class,'updateDepencelocal']);
+Route::delete('/delete-depence-local/{id}', [Depense_localController::class,'deleteDepencelocal']);
+// depense vehicule
 
-//Facture
-Route::get('/auto-ecole/{ecole_id}/facture', [FactureController::class,'getFacture']);
+Route::get('/auto-ecole/{ecole_id}/depence-vehicule', [Depense_vehiculeController::class,'getDepencevehicule']);
+Route::get('/depence-vehicule/{id}', [Depense_vehiculeController::class,'getDepencevehiculeById']);
+Route::post('/add-depence-vehicule/{ecole_id}', [Depense_vehiculeController::class,'addDepencevehicule']);
+Route::put('/update-depence-vehicule/{id}', [Depense_vehiculeController::class,'updateDepencevehicule']);
+Route::delete('/delete-depence-vehicule/{id}', [Depense_vehiculeController::class,'deleteDepencevehicule']);
+//Facture 
+Route::get('/auto-ecole/{ecole_id}/get-factures', [FactureController::class,'getFacture']);
 Route::get('/facture/{id}', [FactureController::class,'getFactureById']);
 Route::post('/add-facture/{ecole_id}', [FactureController::class,'addFacture']);
 Route::put('/update-facture/{id}', [FactureController::class,'updateFacture']);
@@ -148,7 +174,7 @@ Route::post('/add-devis/{ecole_id}', [DevisController::class,'addDevis']);
 
 // /add-notes/
 Route::post('/add-notes/{ecole_id}', [NoteController::class,'addNote']);
-
+// 
 //Recette
 Route::get('/auto-ecole/{ecole_id}/recette', [RecetteController::class,'getFacture']);
 Route::get('/recette/{id}', [RecetteController::class,'getFactureById']);
@@ -180,6 +206,12 @@ Route::post('/add-paiement/{ecole_id}', [PaiementController::class,'addPaiement'
 Route::put('/update-paiement/{id}', [PaiementController::class,'updatePaiement']);
 Route::delete('/delete-paiement/{id}', [PaiementController::class,'deletePaiement']);
 
+// paiment candidat '/api/auto-ecole/'+auto_ecole_id +'/add-paiementCandidat/' + id_candidat
+Route::post('/auto-ecole/{ecole_id}/add-paiementCandidat/{id_candidat}', [PaimentCandidatController::class,'addPaiementCandidat']);
+Route::get('/auto-ecole/{ecole_id}/get-paiementCandidat/{id_candidat}', [PaimentCandidatController::class,'getPaiementCandidat']);
+Route::get('/paiementCandidat/{id}', [PaimentCandidatController::class,'getPaiementCandidatById']);
+Route::put('/update-paiment-candidat/{id}', [PaimentCandidatController::class,'updatePaiementCandidat']);
+Route::delete('/delete-paiment-candidat/{id}', [PaimentCandidatController::class,'deletePaiementCandidat']);
 
 //Categorie permis routes
 Route::get('/auto-ecole/{ecole_id}/categorie-permis', [CategoriePermisController::class,'getCategoriePermis']);
@@ -234,6 +266,7 @@ Route::delete('/delete-rapport/{id}', [RapportController::class,'deleteRapport']
 Route::get('/auto-ecole/{ecole_id}/examen', [ExamenController::class,'getExamen']);
 Route::get('/examen/{id}', [ExamenController::class,'getExamenById']);
 Route::post('/add-examen/{ecole_id}', [ExamenController::class,'addExamen']);
+Route::post('/add-note-candidat/{id}', [ExamenController::class, 'addNoteCandidat']); 
 Route::put('/update-examen/{id}', [ExamenController::class,'updateExamen']);
 Route::delete('/delete-examen/{id}', [ExamenController::class,'deleteExamen']);
 
@@ -252,11 +285,11 @@ Route::put('/update-moniteur-pratique/{id}', [MoniteurController::class,'updateM
 Route::delete('/delete-moniteur-pratique/{id}', [MoniteurController::class,'deleteMoniteurp']);
 
 
-//Rroduits routes
+//Produits routes
 Route::get('/auto-ecole/{ecole_id}/produit', [ProduitController::class,'getProduit']);
 Route::get('/produit/{id}', [ProduitController::class,'getProduitById']);
 Route::post('/add-produit/{ecole_id}', [ProduitController::class,'addProduit']);
-Route::put('/update-produit/{id}', [ProduitController::class,'updateProduit']);
+Route::put('{id}', [ProduitController::class,'updateProduit']);
 Route::delete('/delete-produit/{id}', [ProduitController::class,'deleteProduit']);
 
 
@@ -264,15 +297,56 @@ Route::delete('/delete-produit/{id}', [ProduitController::class,'deleteProduit']
 Route::get('/auto-ecole/{ecole_id}/cour-theorique', [CourController::class,'getcourT']);
 Route::get('/cour-theorique/{id}', [CourController::class,'getcourTById']);
 Route::post('/add-cour-theorique/{ecole_id}', [CourController::class,'addcourT']);
-Route::put('/update-cour-theorique/{id}', [CourController::class,'updatecourT']);
+Route::put('/auto-ecole/{auto_id}/update-cour-theorique/{id}', [CourController::class,'updatecourT']);
 Route::delete('/delete-cour-theorique/{id}', [CourController::class,'deletecourT']);
 
+// 
 Route::get('/auto-ecole/{ecole_id}/cour-pratique', [CourController::class,'getcourP']);
 Route::get('/cour-pratique/{id}', [CourController::class,'getcourPById']);
 Route::post('/add-cour-pratique/{ecole_id}', [CourController::class,'addcourP']);
-Route::put('/update-cour-pratique/{id}', [CourController::class,'updatecourP']);
+Route::put('/auto-ecole/{auto_id}/update-cour-pratique/{id}', [CourController::class,'updatecourP']);
 Route::delete('/delete-cour-pratique/{id}', [CourController::class,'deletecourP']);
 
 
+// presence route cour pratique
+Route::get('/auto-ecole/{ecole_id}/presence-cour-pratique', [PresenceController::class,'getPresencecourP']);
+Route::get('/presence-cour-pratique/{id}', [PresenceController::class,'getPresencecourPById']);
+Route::get('/auto-ecole/{auto_id}/get-presence-cour-pratiqueByCour/{id}', [PresenceController::class,'getPresencecourPByIdCour']);
+Route::post('/add-cour-presence-pratique/{id}', [PresenceController::class,'addPresencecourP']);
+Route::put('/update-cour-presence-pratique/{id}', [PresenceController::class,'updateCourPresenceP']);
+Route::get('/auto-ecole/{auto_id}/get-presence-cour-pratique', [PresenceController::class,'getPresencecourP']);
+Route::delete('/delete-presence-cour-pratique/{id}', [PresenceController::class,'deletePresencecourPById']);
+// add-cour-presence-
+// presence route cour theorique
+
+Route::get('/get-presence-cour-theorique/{id}', [PresenceController::class,'getPresencecourTById']);
+Route::get('/auto-ecole/{auto_id}/get-presence-cour-theoriqueByCour/{id}', [PresenceController::class,'getPresencecourTByIdCour']);
+Route::post('/add-presence-cour-theorique/{id}', [PresenceController::class,'addPresencecourT']);//
+Route::put('/auto-ecole/{auto_id}/update-presence-cour-theorique/{id}', [CourController::class,'updatecourT']);
+Route::delete('/delete-presence-cour-theorique/{id}', [PresenceController::class,'deletePresencecourTById']);
+
+Route::put('/update-presence-cour-theorique/{id}', [PresenceController::class,'updateCourPresenceT']);
+
+// 
+// note route
+Route::get('/auto-ecole/{auto_id}/get-notes', [NoteController::class,'getNotes']);
+Route::delete('/delete-note-categorie/{id}', [NoteController::class, 'deleteExamen']);
+Route::get('/get-note-categorie/{id}', [NoteController::class,'getNoteById']);
+Route::put('/update-note/{id}', [NoteController::class,'updateNote']);
 
 
+// email verification
+Route::post('email/verification-notification', [VerifieEmailController::class, 'sendVerificationEmail'])->middleware('auth:sanctum');
+Route::post('verify-email/{id}/{hash}', [VerifieEmailController::class, 'verify'])->middleware('auth:sanctum');
+
+//  set logo
+// /api/auto-ecole/{id}/set-auto-ecol
+Route::put('/auto-ecole/{id}/set-auto-ecole-logo', [AuthController::class,'setlogo']);
+Route::put('/auto-ecole/{id}/set-user-pass', [AuthController::class,'setpass']);
+Route::put('/auto-ecole/{id_user}/set-user-email', [AuthController::class,'setemail']);
+
+Route::get('/auto-ecole/{auto_id}/logo-auto-ecole', [AuthController::class,'getLogo']);
+// '/api'
+Route::get('/get-produit-admin', [ProduitAdminController::class,'getAllProduitAdmin']);
+Route::put('/auto-ecole/produit-admin/{id}', [ProduitAdminController::class,'updateProduitAdmin']); 
+Route::post('/new-produit', [ProduitAdminController::class,'newProduit']);

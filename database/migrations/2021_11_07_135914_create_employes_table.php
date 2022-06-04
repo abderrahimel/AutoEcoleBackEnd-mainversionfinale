@@ -22,7 +22,6 @@ class CreateEmployesTable extends Migration
             $table->string('nom');
             $table->string('prenom');
             $table->string('cin');
-            $table->string('role');
             $table->date('date_naissance');
             $table->text('lieu_naissance');
             $table->string('email');
@@ -34,6 +33,7 @@ class CreateEmployesTable extends Migration
             $table->text('conduire');
             $table->text('observations');
             $table->timestamps();
+            $table->softDeletes();
         });
 
             

@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class AutoEcole extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $fillable = [
         'user_id',
@@ -60,7 +61,10 @@ class AutoEcole extends Model
     {
         return $this->hasMany(Employe::class);
     }
-    
+    public function paimentCandidat()
+    {
+        return $this->hasMany(PaimentCandidat::class);
+    }
     public function notes()
     {
         return $this->hasMany(Note::class);
@@ -84,7 +88,14 @@ class AutoEcole extends Model
     {
         return $this->hasMany(CourTheorique::class);
     }
-
+    public function presence_theorique()
+    {
+        return $this->hasMany(cour_theorique_presence::class);
+    }
+    public function presence_pratique()
+    {
+        return $this->hasMany(cour_pratique_presence::class);
+    }
     public function courPratiques()
     {
         return $this->hasMany(CourPratique::class);

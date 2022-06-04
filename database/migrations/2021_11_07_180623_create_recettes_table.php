@@ -23,6 +23,7 @@ class CreateRecettesTable extends Migration
             $table->date('date');
             $table->text('remarques');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

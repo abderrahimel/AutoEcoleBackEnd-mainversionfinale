@@ -78,7 +78,6 @@ class MoniteurController extends Controller
             'nom'=>$request->nom,
             'prenom'=>$request->prenom,
             'cin'=>$request->cin,
-            'role'=>$request->role,
             'type'=>$request->type_moniteur,
             'date_naissance'=>$request->date_naissance,
             'lieu_naissance'=>$request->lieu_naissance,
@@ -98,7 +97,7 @@ class MoniteurController extends Controller
         $moniteurt->save();
         $ecole->moniteurTheoriques()->save($moniteurt);
         $moniteurt->employe;
-        return response($moniteur,201);
+        return response($moniteurt,201);
     }
 
     public function addMoniteurp($ecole_id,Request $request)
@@ -112,7 +111,6 @@ class MoniteurController extends Controller
             'nom'=>$request->nom,
             'prenom'=>$request->prenom,
             'cin'=>$request->cin,
-            'role'=>$request->role,
             'type'=>$request->type_moniteur,
             'date_naissance'=>$request->date_naissance,
             'lieu_naissance'=>$request->lieu_naissance,

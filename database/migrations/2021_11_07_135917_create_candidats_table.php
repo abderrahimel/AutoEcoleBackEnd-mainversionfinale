@@ -48,6 +48,7 @@ class CreateCandidatsTable extends Migration
                   $table->string('categorie')->nullable();
                   $table->longText('observations')->nullable();
                   $table->integer('actif')->default(1);
+                  $table->string('type_formation');
             $table->foreignId('moniteur_theorique_id')->constrained()
                   ->onUpdate('cascade')
                   ->onDelete('cascade');
@@ -59,6 +60,7 @@ class CreateCandidatsTable extends Migration
                   ->onDelete('cascade');
                   
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

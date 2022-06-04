@@ -18,15 +18,17 @@ class CreateFacturesTable extends Migration
             $table->foreignId('auto_ecole_id')->constrained()
                   ->onUpdate('cascade')
                   ->onDelete('cascade');
-            $table->double('montant');
-            $table->date('date');
-            $table->foreignId('candidat_id')->nullable()
+            $table->string('date');
+            $table->string('tva');
+            $table->string('montant_ttc');
+            $table->string('montant_ht');
+            $table->foreignId('candidat_id')
                   ->constrained()
                   ->onUpdate('cascade')
                   ->onDelete('cascade');
-            $table->string('societe')->nullable();
             $table->text('remarque');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

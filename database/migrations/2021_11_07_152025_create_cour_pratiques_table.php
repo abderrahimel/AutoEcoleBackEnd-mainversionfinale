@@ -21,16 +21,17 @@ class CreateCourPratiquesTable extends Migration
             $table->foreignId('moniteur_pratique_id')->constrained()
                   ->onUpdate('cascade')
                   ->onDelete('cascade');
-            $table->date('date');
-            $table->date('date_debut');
-            $table->date('date_fin');
+            $table->string('date');
+            $table->string('date_debut');
+            $table->string('date_fin');
             $table->string('permis');
-            $table->text('type');
+            $table->string('type');
             $table->text('candidat');
             $table->foreignId('vehicule_id')->constrained()
                   ->onUpdate('cascade')
                   ->onDelete('cascade');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

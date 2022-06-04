@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Employe;
-use App\Models\AutoEcole;
+use App\Models\AutoEcole; Produit_admin_auto_ecole
 use App\Models\Rapport;
 
 class RapportController extends Controller

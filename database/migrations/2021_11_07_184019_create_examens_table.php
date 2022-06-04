@@ -21,12 +21,20 @@ class CreateExamensTable extends Migration
             $table->foreignId('candidat_id')->constrained()
                   ->onUpdate('cascade')
                   ->onDelete('cascade');
-            $table->foreignId('categorie_permis_id')->constrained()
-                  ->onUpdate('cascade')
-                  ->onDelete('cascade');
+            $table->string('categorie');
             $table->date('date_examen');
             $table->date('date_depot');
+            $table->string('etat_1')->default('en_attente');
+            $table->string('date_etat1')->nullable();
+            $table->string('etat_2')->default('en_attente');
+            $table->string('date_etat2')->nullable();
+            $table->string('note1')->default(-1);
+            $table->string('date_note1')->nullable();
+            $table->string('note2')->default(-1);
+            $table->string('date_note2')->nullable();
+            $table->boolean('resultat')->default(0);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

@@ -11,14 +11,25 @@ class AutoEcole extends Controller
 {
     public function getAutoEcole($user_id)
     {
-        $ecole = DB::table('auto_ecoles')->where('user_id', $user_id)->get();
-        // $user= User::find($user_id);
-        // $ecole=$user->autoEcoles;
+        $ecole = ModelsAutoEcole::all();
         return response()->json($ecole,200);
         
     }
+    public function getArchiveAutoEcole(){
 
-
+       $ecoles =  DB::table('auto_ecoles')->whereNotNull('deleted_at')->get();
+        if(is_null($ecoles)){
+            return response()->json(['message'=> "Auto Ecole n'est pas trouvée"],404);
+        }
+        return response()->json($ecoles,200);
+    }
+    public function recupererAutoEcole($id)
+    {  
+        $ecole = ModelsAutoEcole::onlyTrashed()->findOrFail($id);
+        $ecole->restore();
+        $ecole->save();
+        return response()->json($ecole,200);
+    }
     public function getAutoEcoleById($id)
     {
         $ecole = ModelsAutoEcole::find($id);
@@ -27,7 +38,26 @@ class AutoEcole extends Controller
         }
         return response()->json($ecole,200);
     }
-
+    public function approverAutoEcole($id)
+    {   
+        $ecole = ModelsAutoEcole::find($id);
+        if(is_null($ecole)){
+            return response()->json(['message'=> "Auto Ecole n'est pas trouvée"],404);
+        }
+        $ecole->etat = 'approuve';
+        $ecole->save();
+        return response()->json($ecole,200);
+    }
+    public function desapproverAutoEcole($id)
+    {
+        $ecole = ModelsAutoEcole::find($id);
+        if(is_null($ecole)){
+            return response()->json(['message'=> "Auto Ecole n'est pas trouvée"],404);
+        }
+        $ecole->etat = 'en_attente';
+        $ecole->save();
+        return response()->json($ecole,200);
+    }
     public function addAutoEcole(Request $request,$user_id)
     {
         $user= User::find($user_id);
@@ -131,7 +161,7 @@ class AutoEcole extends Controller
             return response()->json(['message'=>"Auto Ecole n'est pas trouvée"],404);
         }
         $ecole->delete();
-        return response()->json(null,204);
+        return response()->json(['message'=>'auto ecole deleted'],204);
     }
 
 }

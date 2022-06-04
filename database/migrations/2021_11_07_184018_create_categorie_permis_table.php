@@ -21,6 +21,7 @@ class CreateCategoriePermisTable extends Migration
             $table->string('categorie');
             $table->text('description')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

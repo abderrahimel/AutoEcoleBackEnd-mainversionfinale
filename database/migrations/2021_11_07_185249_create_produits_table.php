@@ -18,12 +18,14 @@ class CreateProduitsTable extends Migration
             $table->foreignId('auto_ecole_id')->constrained()
                   ->onUpdate('cascade')
                   ->onDelete('cascade');
-            $table->string('nom');
-            $table->date('date');
-            $table->double('prix');
-            $table->integer('quantite');
+            $table->string('fournisseur');
+            $table->string('telephone');
+            $table->string('libelle');
+            $table->string('prix');
+            $table->string('quantite');
             $table->text('description');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

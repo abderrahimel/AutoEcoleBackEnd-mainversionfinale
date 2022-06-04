@@ -14,7 +14,7 @@ class CategorieDepenceController extends Controller
         if (is_null($ecole_id)) {
             return response()->json(['message'=>"Catégorie n'est pas trouvée"],404);
         }
-        $categories = $ecole-> CategorieDepence;
+        $categories = $ecole->CategorieDepence;
         return response()->json($categories,200);
         
     }
@@ -32,20 +32,18 @@ class CategorieDepenceController extends Controller
 
     public function addCategorieDepence($ecole_id,Request $request)
     {
-        $ecole=AutoEcole::find($ecole_id);
+        $ecole = AutoEcole::find($ecole_id);
         if(is_null($ecole)){
             return response()->json(['message'=> "Ecole n'est pas trouvé"],404);
         }
-        $categorie = addCategorieDepence::create([
+        $categorie = CategorieDepence::create([
             'auto_ecole_id'=>$ecole_id,
-            'categorie'=>$request->categorie
+            'categorie'=>$request->categorie,
+            'type'=>$request->type
         ]);
         $categorie->save();
-        $ecole->CategorieDepence()->save($categorie);
-        $categorie = CategorieDepence::find($categorie->id);
         return response($categorie,201);
     }
-
 
     public function updateCategorieDepence($id,Request $request)
     {

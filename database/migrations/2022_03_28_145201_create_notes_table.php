@@ -16,13 +16,14 @@ class CreateNotesTable extends Migration
        
         Schema::create('notes', function (Blueprint $table) {
             $table->id();
-            $table->string('Categorie')->nullable();
+            $table->string('categorie')->nullable();
             $table->string('moyen')->nullable();
             $table->string('note_generale')->nullable();
             $table->foreignId('auto_ecole_id')->constrained()
             ->onUpdate('cascade')
             ->onDelete('cascade');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

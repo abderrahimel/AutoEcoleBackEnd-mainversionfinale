@@ -12,11 +12,11 @@ class DepenceController extends Controller
 {
     public function getDepence($ecole_id)
     {
-        $ecole=AutoEcole::find($ecole_id);
+        $ecole = AutoEcole::find($ecole_id);
         if (is_null($ecole_id)) {
             return response()->json(['message'=>"Auto Ecole n'est pas trouvée"],404);
         }
-        $depences = $ecole->depences;
+        $depences = Depence::where('auto_ecole_id', $ecole_id)->get();
         return response()->json($depences,200);
         
     }
@@ -28,7 +28,6 @@ class DepenceController extends Controller
             return response()->json(['message'=> "Dépense n'est pas trouvée"],404);
         }
         $depence->categorie = CategorieDepence::find($depence->categorie_depence_id);
-        $depence->employe;
         return response()->json($depence,200);
     }
 
@@ -38,38 +37,33 @@ class DepenceController extends Controller
         if(is_null($ecole)){
             return response()->json(['message'=> "Ecole n'est pas trouvé"],404);
         }
+        // var_dump($request->all());
+
         $depence = Depence::create([
             'auto_ecole_id'=>$ecole_id,
-            'categorie_depence_id'=>$request->categorie_depence_id,
-            'employe_id'=>$request->employe_id,
+            'categorie_depence_id'=>$request->id_categorie,
+            'employe_id'=>$request->id_employe,
             'date'=>$request->date,
             'montant'=>$request->montant,
             'remarques'=>$request->remarque
         ]);
-        $ecole -> depences()->save($depence);
-        $categorie = CategorieDepence::find($depence->categorie_depence_id);
-        $depence->employe;
-        $categorie -> depences()->save($depence);
-        $depence->categorie = $categorie;
+        $depence->save();
         return response($depence,201);
     }
 
 
     public function updateDepence($id,Request $request)
     {
-        $depence=Depence::find($id);
+        $depence = Depence::find($id);
         if (is_null($depence)) {
             return response()->json(['message'=>"Depence n'est pas trouvée"],404);
         }
-        $depence->categorie_depence_id = $request -> categorie_depence_id;
-        $depence->employe_id = $request -> employe_id;
-        $depence->date = $request -> date;
-        $depence->montant = $request -> montant;
-        $depence->remarques = $request -> remarques;
+        $depence->categorie_depence_id = $request->id_categorie;
+        $depence->employe_id = $request->id_employe;
+        $depence->date = $request-> date;
+        $depence->montant = $request->montant;
+        $depence->remarques = $request ->remarque;
         $depence->save();
-        $depence->categorie = CategorieDepence::find($depence->categorie_depence_id);
-        $depence->employe;
-        $depence->categorie;
         return response($depence,200);
     }
 
@@ -80,7 +74,7 @@ class DepenceController extends Controller
             return response()->json(['message'=>"Catégorie n'est pas trouvée"],404);
         }
         $categorie->delete();
-        return response()->json(null,204);
+        return response()->json(['message'=>"Depense deleted ..."],200);
     }
 
 }

@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
-
+use App\Models\AutoEcole;
 class UserController extends Controller
 {
     public function getUser()
@@ -25,7 +25,7 @@ class UserController extends Controller
         if(is_null($user)){
             return response()->json(['message'=> "User n'est pas trouvée"],404);
         }
-        $user->autoEcoles;
+       
         return response()->json($user,200);
     }
 
@@ -59,13 +59,15 @@ class UserController extends Controller
     }
 
 
-    public function deleteUser(Request $request,$id)
+    public function deleteUser($id)
     {
         $user = User::find($id);
+        $autoEcole = AutoEcole::where('user_id', $id);
         if (is_null($user)) {
             return response()->json(['message'=>"User n'est pas trouvée"],404);
         }
         $user->delete();
-        return response()->json(null,204);
+        $autoEcole->delete();
+        return response()->json(['message'=>'user deleted from db '],204);
     }
 }

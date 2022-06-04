@@ -19,7 +19,9 @@ class CreateCategorieDepencesTable extends Migration
                   ->onUpdate('cascade')
                   ->onDelete('cascade');
             $table->string('categorie');
+            $table->string('type');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

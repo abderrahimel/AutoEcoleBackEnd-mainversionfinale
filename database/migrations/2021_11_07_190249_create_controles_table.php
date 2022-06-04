@@ -42,6 +42,7 @@ class CreateControlesTable extends Migration
             $table->text('filter');
             $table->string('type');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

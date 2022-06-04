@@ -6,6 +6,7 @@ use App\Models\Absence;
 use App\Models\AutoEcole;
 use App\Models\Employe;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class AbsenceController extends Controller
 {
@@ -16,7 +17,8 @@ class AbsenceController extends Controller
             return response()->json(['message'=>"Auto Ecole n'est pas trouvée"],404);
         }
         $absence = $ecole->absences;
-        return response()->json($absence,200);
+        $absences = DB::table('absences')->where('auto_ecole_id', $ecole_id)->get();
+        return response()->json($absences,200);
     }
 
     public function getAbsenceByemploye($employe_id)
@@ -35,26 +37,26 @@ class AbsenceController extends Controller
         if(is_null($absence)){
             return response()->json(['message'=> "absence n'est pas trouvée"],404);
         }
+        
+
         return response()->json($absence,200);
     }
 
     public function addAbsence($ecole_id,Request $request)
-    {
+    {   
         $ecole=AutoEcole::find($ecole_id);
         if(is_null($ecole)){
             return response()->json(['message'=> "Ecole n'est pas trouvé"],404);
         }
         $absence = Absence::create([
             'auto_ecole_id'=>$ecole_id,
-            'employe_id'=>$request->$employe_id,
+            'employe_id'=> $request->employe_id,
             'type_absence'=>$request->type_absence,
             'date_debut'=>$request->date_debut,
             'date_fin'=>$request->date_fin,
             'remarque'=>$request->remarque,
         ]);
-        $absence->save();
-        $ecole -> absences()->save($absence);
-    
+        $ecole->absences()->save($absence);
         $absence->employe;
         return response($absence,201);
     }
@@ -90,6 +92,6 @@ class AbsenceController extends Controller
             return response()->json(['message'=>"absence n'est pas trouvée"],404);
         }
         $absence->delete();
-        return response()->json(null,204);
+        return response()->json(['message'=>"deleted absence:", "id"=> $id],200);
     }
 }

@@ -24,6 +24,7 @@ class CreateSalairesTable extends Migration
             $table->date('date');
             $table->double('montant');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

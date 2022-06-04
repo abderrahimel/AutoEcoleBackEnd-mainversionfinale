@@ -10,7 +10,7 @@ class ProduitController extends Controller
 {
     public function getProduit($ecole_id)
     {
-        $ecole=AutoEcole::find($ecole_id);
+        $ecole = AutoEcole::find($ecole_id);
         if (is_null($ecole_id)) {
             return response()->json(['message'=>"Auto Ecole n'est pas trouvée"],404);
         }
@@ -33,27 +33,34 @@ class ProduitController extends Controller
 
     public function addProduit($ecole_id,Request $request)
     {
-        $ecole=AutoEcole::find($ecole_id);
-        $produit = new Produit($request->all()); 
-        $ecole -> produits()->save($produit);
-        $produit->ventes;
+        $ecole = AutoEcole::find($ecole_id);
+        $produit = Produit::create([
+            'auto_ecole_id'=>$ecole_id,
+            'fournisseur'=>$request->fournisseur,
+            'telephone'=>$request->telephone,
+            'libelle'=>$request->libelle,
+            'prix'=>$request->prix,
+            'quantite'=>$request->quantite,
+            'description'=>$request->description,
+        ]);
+        $produit->save();
         return response($produit,201);
     }
 
     public function updateProduit($id,Request $request)
     {
-        $produit=Produit::find($id);
+        $produit = Produit::find($id);
         if (is_null($produit)) {
             return response()->json(['message'=>"Produit n'est pas trouvée"],404);
         }
-        $produit->nom = $request -> nom;
-        $produit->date = $request -> date;
-        $produit->prix = $request -> prix;
-        $produit->quantite = $request -> quantite;
-        $produit->description = $request -> description;
+        $produit->fournisseur = $request->fournisseur;
+        $produit->telephone = $request->telephone;
+        $produit->libelle = $request->libelle;
+        $produit->prix = $request->prix;
+        $produit->quantite = $request->quantite;
+        $produit->description = $request->description;
         $produit->save();
-        $produit->ventes;
-        return response($produit,200);
+        return response()->json($produit,200);
     }
 
     public function deleteProduit($id)
@@ -63,7 +70,7 @@ class ProduitController extends Controller
             return response()->json(['message'=>"Produit n'est pas trouvée"],404);
         }
         $produit->delete();
-        return response()->json(null,204);
+        return response()->json(['message'=>'deleted this produit from database'],200);
     }
 
 }

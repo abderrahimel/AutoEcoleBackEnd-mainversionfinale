@@ -5,6 +5,8 @@ use App\Models\AutoEcole;
 use App\Models\CourPratique;
 use App\Models\CourTheorique;
 use App\Models\MoniteurTheorique;
+use App\Models\cour_theorique_presence;
+use App\Models\cour_pratique_presence;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -14,8 +16,6 @@ class CourController extends Controller
     {  
         $ecole=AutoEcole::find($ecole_id);
         $cour = $ecole->courTheriques;
-        
-        // $cour->moniteurTherique;
         return response()->json($cour,200);
         
     }
@@ -27,12 +27,13 @@ class CourController extends Controller
             return response()->json(['message'=>"Auto Ecole n'est pas trouvée"],404);
         }
         $cour = $ecole->courPratiques;
-        $cour ->moniteurPratique;
-        $cour ->vehicule;
+     
+        // $cour->moniteurPratique;
+        // $cour->vehicule;
         return response()->json($cour,200);
         
     }
-
+    
     public function getcourTById($id)
     {
         $cour = CourTheorique::find($id);
@@ -66,6 +67,7 @@ class CourController extends Controller
                 $items[] = $val;
             }
         }
+      
         $cour = CourTheorique::create([
             'auto_ecole_id'=>$ecole_id,
             'date'=>$request->date,
@@ -77,7 +79,18 @@ class CourController extends Controller
             'moniteur_theorique_id'=>$request->moniteur_theorique_id
         ]);
         $cour->save();
-        $ecole ->courTheriques()->save($cour);
+        $courPresence = cour_theorique_presence::create([
+            'auto_ecole_id'=>$ecole_id,
+            'moniteur_theorique_id'=>$request->moniteur_theorique_id,
+            'cour_theorique_id'=>$cour->id,
+            'date'=>$request->date,
+            'heure_debut'=>$request->date_debut,
+            'heure_fin'=>$request->date_fin,
+            'categorie'=>$request->permis,
+            'candidat'=>$items,
+            'presence'=>$request->presence,
+        ]);
+        $courPresence->save();
         $cour ->moniteurTherique;
         return response($cour,201);
     }
@@ -85,47 +98,101 @@ class CourController extends Controller
     public function addcourP($ecole_id,Request $request)
     {   
         $ecole=AutoEcole::find($ecole_id);
-        $cour = new CourPratique($request->all()); 
+        $array = array_map('intval', explode(',', $request->candidat));
+        
+        foreach( $array as $val){
+            if($val != null){
+                $items[] = $val;
+            }
+        }
+
+         $cour = CourPratique::create([
+            'auto_ecole_id'=>$ecole_id,
+            'moniteur_pratique_id'=>$request->moniteur_pratique_id,
+            'date'=>$request->date,
+            'type'=>$request->type,
+            'date_debut'=>$request->date_debut,
+            'date_fin'=>$request->date_fin,
+            'permis'=>$request->permis,
+            'candidat'=>$items,
+            'vehicule_id'=>$request->vehicule_id
+         ]);
         $ecole -> courPratiques()->save($cour);
+        $courPresence = cour_pratique_presence::create([
+            'auto_ecole_id'=>$ecole_id,
+            'moniteur_pratique_id'=>$request->moniteur_pratique_id,
+            'cour_pratique_id'=>$cour->id,
+            'date'=>$request->date,
+            'heure_debut'=>$request->date_debut,
+            'heure_fin'=>$request->date_fin,
+            'categorie'=>$request->permis,
+            'candidat'=>$items,
+            'presence'=>$request->presence,
+        ]);
+        $courPresence->save();
         $cour ->moniteurPratique;
         $cour ->vehicule;
         return response($cour,201);
     }
 
-    public function updatecourT($id,Request $request)
-    {
-        $cour=CourTheorique::find($id);
+    public function updatecourT($auto_id, $id,Request $request)
+    {   
+        $cour = CourTheorique::find($id);
         if (is_null($cour)) {
             return response()->json(['message'=>"Cour n'est pas trouvée"],404);
         }
-        $cour->moniteur_theorique_id = $request -> moniteur_theorique_id;
-        $cour->jour = $request -> jour;
-        $cour->date_debut = $request -> date_debut;
-        $cour->date_fin = $request -> date_fin;
-        $cour->nombre_place = $request -> nombre_place;
-        $cour->description = $request -> description;
+        $array = array_map('intval', explode(',', $request->candidat));
+        
+        foreach( $array as $val){
+            if($val != null){
+                $items[] = $val;
+            }
+        }
+        $cour->moniteur_theorique_id = $request->moniteur_theorique_id;
+        $cour->date = $request->date;
+        $cour->type = $request->type;
+        $cour->date_debut = $request->date_debut;
+        $cour->date_fin = $request->date_fin;
+        $cour->permis = $request->permis;
+        $cour->candidat = $items;
         $cour->save();
+        $presenceCourT = cour_theorique_presence::where('auto_ecole_id',$auto_id)->where('cour_theorique_id',$cour->id)->first();
+        $presenceCourT->presence = $request->presence;
+        $presenceCourT->candidat = $items;
+        $presenceCourT->save();
         $cour ->moniteurTherique;
-        return response($cour,200);
+        return response($presenceCourT,200);
     }
 
-    public function updatecourP($id,Request $request)
+    public function updatecourP($auto_id, $id,Request $request)
     {
-        $cour=CourTheorique::find($id);
+        $cour=CourPratique::find($id);
         if (is_null($cour)) {
             return response()->json(['message'=>"Cour n'est pas trouvée"],404);
         }
-        $cour->moniteur_theorique_id = $request -> moniteur_theorique_id;
-        $cour->jour = $request -> jour;
-        $cour->date_debut = $request -> date_debut;
-        $cour->date_fin = $request -> date_fin;
-        $cour->nombre_place = $request -> nombre_place;
-        $cour->description = $request -> description;
-        $cour->vehicule_id = $request -> vehicule_id;
+        $array = array_map('intval', explode(',', $request->candidat));
+        
+        foreach( $array as $val){
+            if($val != null){
+                $items[] = $val;
+            }
+        }
+        $cour->moniteur_pratique_id = $request->moniteur_pratique_id;
+        $cour->date = $request->date;
+        $cour->type = $request->type;
+        $cour->date_debut = $request->date_debut;
+        $cour->date_fin = $request->date_fin;
+        $cour->permis = $request->permis;
+        $cour->candidat = $items;
+        $cour->vehicule_id = $request->vehicule_id;
         $cour->save();
+        $presenceCourP = cour_pratique_presence::where('auto_ecole_id',$auto_id)->where('cour_pratique_id',$id)->first();
+        $presenceCourP->presence = $request->presence;
+        $presenceCourP->candidat = $items;
+        $presenceCourP->save();
         $cour ->moniteurPratique;
         $cour ->vehicule;
-        return response($cour,200);
+        return response()->json($cour,200);
     }
 
     public function deletecourT($id)
@@ -135,7 +202,7 @@ class CourController extends Controller
             return response()->json(['message'=>"Cour n'est pas trouvée"],404);
         }
         $cour->delete();
-        return response()->json(null,204);
+        return response()->json(['message'=>"Cour theorique deleted"],200);
     }
 
     public function deletecourP($id)
@@ -145,7 +212,7 @@ class CourController extends Controller
             return response()->json(['message'=>"Cour n'est pas trouvée"],404);
         }
         $cour->delete();
-        return response()->json(null,204);
+        return response()->json(['message'=>"Cour pratique deleted"],200);
     }
 
 

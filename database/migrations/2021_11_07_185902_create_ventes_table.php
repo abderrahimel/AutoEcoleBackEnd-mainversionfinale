@@ -14,21 +14,23 @@ class CreateVentesTable extends Migration
     public function up()
     {
         Schema::create('ventes', function (Blueprint $table) {
-            $table->id();
+            $table->id(); 
             $table->foreignId('auto_ecole_id')->constrained()
-                  ->onUpdate('cascade')
+                  ->onUpdate('cascade') 
                   ->onDelete('cascade');
-            $table->foreignId('candidat_id')->constrained()
+            $table->foreignId('candidat_id')->constrained()  
                   ->onUpdate('cascade')
-                  ->onDelete('cascade');
-            $table->date('date_vente');
+                  ->onDelete('cascade'); 
             $table->foreignId('produit_id')->constrained()
                   ->onUpdate('cascade')
                   ->onDelete('cascade');
-            $table->double('prix');
-            $table->integer('quantite');
-            $table->text('description');
+            $table->string('prixUnitaire');
+            $table->string('prixTotale');
+            $table->string('quantiteDisponible');
+            $table->string('quantite');
+            $table->string('date');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

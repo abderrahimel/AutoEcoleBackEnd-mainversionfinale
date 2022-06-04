@@ -28,6 +28,7 @@ class CreateRapportsTable extends Migration
             $table->double('km_retour')->nullable();
             $table->text('description');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

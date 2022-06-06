@@ -349,9 +349,11 @@ Route::put('/auto-ecole/{id_user}/set-user-email', [AuthController::class,'setem
 Route::get('/auto-ecole/{auto_id}/logo-auto-ecole', [AuthController::class,'getLogo']);
 // '/api'
 Route::get('/get-produit-admin', [ProduitAdminController::class,'getAllProduitAdmin']);
+Route::get('/get-produit-by-id/{id}', [ProduitAdminController::class,'getProduitAdminById']);//
 Route::put('/auto-ecole/produit-admin/{id}', [ProduitAdminController::class,'updateProduitAdmin']); 
 Route::post('/new-produit', [ProduitAdminController::class,'newProduit']);
-
+Route::delete('/delete-produit-admin/{id}', [ProduitAdminController::class, 'deleteProduit']);
+// 
 // route blog
 Route::get('/get-blog', [BlogController::class,'getBlog']);
 Route::get('/get-blogId/{id}', [BlogController::class,'getBlogById']);

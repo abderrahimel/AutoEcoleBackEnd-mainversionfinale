@@ -9,6 +9,14 @@ class ProduitAdminController extends Controller
 {   public function getProduitAdminById($id)
     {
         $produit = Produit_admin_auto_ecole::find($id);
+        //
+        $img = $produit->image;
+        $path = 'produitsAdmin/' . $img;
+        $type = pathinfo($path, PATHINFO_EXTENSION);
+        $data = file_get_contents($path);
+        $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
+        $produit->image = $base64;  
+        //
         if (is_null($produit)) {
             return response()->json(['message'=>"produit Admin n'est pas trouvée"],404);
         }
@@ -17,6 +25,16 @@ class ProduitAdminController extends Controller
     public function getAllProduitAdmin()
     {
         $produits = Produit_admin_auto_ecole::all();
+        //
+        foreach($produits as $key => $produit) {
+            $img = $produit->image;
+            $path = 'produitsAdmin/' . $img;
+            $type = pathinfo($path, PATHINFO_EXTENSION);
+            $data = file_get_contents($path);
+            $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
+            $produit->image = $base64;            
+        }
+        //
         return response()->json($produits, 200);
     }
     
@@ -64,6 +82,16 @@ class ProduitAdminController extends Controller
         ]);
         $produit->save();
         return response()->json($produit, 200);
+    }
+    public function deleteProduit($id)
+    {
+        $produitAdmin = Produit_admin_auto_ecole::find($id);
+        if(is_null($produitAdmin)){
+            return response()->json(['message'=>'produit admin does not exist'], 404);
+        }
+        $produitAdmin->delete();
+        return  response()->json(['message'=>'produit admin deleted from db'], 200);
+
     }
 }
 

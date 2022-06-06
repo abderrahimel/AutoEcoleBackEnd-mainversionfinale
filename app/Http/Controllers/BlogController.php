@@ -9,14 +9,32 @@ class BlogController extends Controller
 {   
     public function getBlog(){
         $blogs = Blog::all();
+       foreach($blogs as $key => $blog) {
+            $img = $blog->image;
+            $path = 'blog/' . $img;
+            $type = pathinfo($path, PATHINFO_EXTENSION);
+            $data = file_get_contents($path);
+            $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
+            $blog->image = $base64;            
+        }
+
          return response()->json($blogs, 200);
     }
 
     public function getBlogById($id){
         $blog = Blog::find($id);
+        // here we convert the image to base 64 
+        $img = $blog->image;
+        $path = 'blog/' . $img;
+        $type = pathinfo($path, PATHINFO_EXTENSION);
+        $data = file_get_contents($path);
+        $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
+        $blog->image = $base64;  
+        //
         if(is_null($blog)){
             return response()->json(['message'=>'blog dos not exist'], 404);
         }
+        
         return response()->json($blog, 200);
     }
         

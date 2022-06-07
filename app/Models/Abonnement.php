@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Abonnement extends Model
 {
@@ -12,13 +13,13 @@ class Abonnement extends Model
         'auto_ecole_id',
         'prix',
         'date_fin',
-        'date_debut'
+        'date_debut' 
     ];
 
     public function autoEcole()
     {
         return $this->belongsTo(AutoEcole::class);
     }
-    
+
 }
     

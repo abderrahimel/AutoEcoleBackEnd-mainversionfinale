@@ -34,6 +34,7 @@ use App\Http\Controllers\Depense_vehiculeController;
 use App\Http\Controllers\AutoEcoleController; 
 use App\Http\Controllers\ProduitAdminController; 
 use App\Http\Controllers\BlogController; 
+use App\Http\Controllers\AbonnementController; 
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -355,8 +356,18 @@ Route::post('/new-produit', [ProduitAdminController::class,'newProduit']);
 Route::delete('/delete-produit-admin/{id}', [ProduitAdminController::class, 'deleteProduit']);
 // 
 // route blog
-Route::get('/get-blog', [BlogController::class,'getBlog']);
+Route::get('/get-blogs', [BlogController::class,'getBlog']);
 Route::get('/get-blogId/{id}', [BlogController::class,'getBlogById']);
-Route::put('/blog-admin/{id}', [BlogController::class,'updateBlogAdmin']);
+Route::put('/update-blog-admin/{id}', [BlogController::class,'updateBlogAdmin']);
 Route::post('/new-blog', [BlogController::class,'newBlog']);
 Route::delete('/delete-blog/{id}', [BlogController::class, 'deletBlog']);
+
+// route abonnement
+Route::get('/get-abonnement-auto-ecoles', [AbonnementController::class,'getAbonnements']);
+Route::get('/get-abonnement/{id}', [AbonnementController::class,'getAbonnementById']);
+
+Route::get('/get-abonnement-auto-ecole/{auto_id}', [AbonnementController::class,'getAbonnementAutoEcoles']);
+Route::put('/update-abonnement-auto-ecole/{auto_id}', [AbonnementController::class,'updateAbonnementAutoEcole']);
+Route::post('/auto-ecole/{auto_id}/abonnement', [AbonnementController::class,'newAbonnement']);
+Route::delete('/delete-Abonnement/{id}', [AbonnementController::class, 'deletAbonnement']);
+

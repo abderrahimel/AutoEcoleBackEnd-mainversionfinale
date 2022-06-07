@@ -40,7 +40,12 @@ class AutoEcole extends Model
         'tel_responsable',
         'adresse_responsable',
         'contrat'
-    ]; 
+    ];
+
+    public function abonnement()
+    {
+        return $this->hasOne(Abonnement::class);
+    }
 
     public function user()
     {

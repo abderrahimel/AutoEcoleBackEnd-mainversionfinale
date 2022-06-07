@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use App\Models\Abonnement;
 use App\Models\AutoEcole as ModelsAutoEcole;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Cookie;
@@ -99,7 +100,11 @@ class AuthController extends Controller
             'adresse_responsable' => $request->adresse_responsable,
         ]);
         $ecole->save();
-        $user-> autoEcoles()->save($ecole);
+        // creat abonnement
+        $abonnement = Abonnement::create([
+            'auto_ecole_id'=>$ecole->id,
+         ]);
+         $abonnement->save();
           
         return response()->json(['message' => 'user added', 'user' => $request->all()], 200);
     }

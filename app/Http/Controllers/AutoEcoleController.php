@@ -10,7 +10,7 @@ class AutoEcoleController extends Controller
 {
     public function getAutoEcoles()
     {
-        $ecole = AutoEcole::where('deleted_at', '=', null)->get();
+        $ecole = AutoEcole::all();
         return response()->json($ecole,200);
         
     }

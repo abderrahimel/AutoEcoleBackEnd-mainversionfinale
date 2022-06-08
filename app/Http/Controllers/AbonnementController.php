@@ -21,14 +21,14 @@ class AbonnementController extends Controller
         return response()->json($abonnement, 200);
     }
 
-   public function getAbonnementAutoEcoles($auto_id)
+   public function getAbonnementAutoEcoles($id)
    {
-    $auto_ecole = AutoEcole::find($auto_id); 
-    if(is_null($auto_ecole)){
-        return response()->json(['message'=>'Abonnement does not exist'], 404);
-    }
-     $abonnement = Abonnement::where('auto_ecole_id', $auto_id)->get();
-     return response()->json($abonnement, 200);
+        $abonnement = Abonnement::find($id); 
+        if(is_null($abonnement)){
+            return response()->json(['message'=>'Abonnement does not exist'], 404);
+        }
+        
+        return response()->json($abonnement, 200);
    }
 
     public function newAbonnement($auto_id, request $request){
@@ -47,18 +47,19 @@ class AbonnementController extends Controller
          return response()->json($abonnement, 200);
     }
 
-    public function updateAbonnementAutoEcole(request $request, $auto_id){
-        $abonn = Abonnement::where('auto_ecole_id', $auto_id);
-        // $abonnement = Abonnement::find($abonn->id);
-        // if(is_null($abonnement)){
-        //     return reponse()->json(['message'=>'abonnement does not exist in db'], 404);
-        // }
-        // $abonnement->prix = $request->prix;
-        // $abonnement->date_fin = $request->date_fin;
-        // $abonnement->date_debut = $request->date_debut; 
-        // $abonnement->save();
-         response()->json($abonn, 200);        
+    public function updateAbonnementAutoEcole($id, request $request){
+         
+        $abonnement = Abonnement::find($id);
+        if(is_null($abonnement)){
+            return reponse()->json(['message'=>'abonnement does not exist in db'], 404);
+        }
+        $abonnement->prix = $request->prix;
+        $abonnement->date_fin = $request->date_fin;
+        $abonnement->date_debut = $request->date_debut; 
+        $abonnement->save();
+          return response()->json($abonnement, 200);        
     }
+    
     public function deletAbonnement($id)
     {
         $abonnement = Abonnement::find($id);

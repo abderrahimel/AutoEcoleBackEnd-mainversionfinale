@@ -10,8 +10,11 @@ class AutoEcoleController extends Controller
 {
     public function getAutoEcoles()
     {
-        $ecole = AutoEcole::all();
-        return response()->json($ecole,200);
+        $ecoles = AutoEcole::all();
+        foreach($ecoles as $key => $ecole) {
+            $ecole->abonnement;
+        }
+        return response()->json($ecoles,200);
         
     }
    public function  getAutoEcoleById($id)

@@ -94,7 +94,7 @@ Route::post('/add-auto-ecole/{user_id}', [AutoEcole::class,'addAutoEcole']);
 Route::put('/update-auto-ecole/{id}', [AutoEcole::class,'updateAutoEcole']);
 Route::delete('/delete-auto-ecole/{id}', [AutoEcole::class,'deleteAutoEcole']);
 // approver auto ecole
-Route::put('/approver-auto-ecole/{id}', [AutoEcole::class,'approverAutoEcole']); 
+Route::put('/approver-auto-ecole/{id}', [AutoEcole::class,'approverAutoEcole']);
 // Desapprover  auto ecole
 Route::put('/desapprover-auto-ecole/{id}', [AutoEcole::class,'desapproverAutoEcole']);
 
@@ -366,8 +366,8 @@ Route::delete('/delete-blog/{id}', [BlogController::class, 'deletBlog']);
 Route::get('/get-abonnement-auto-ecoles', [AbonnementController::class,'getAbonnements']);
 Route::get('/get-abonnement/{id}', [AbonnementController::class,'getAbonnementById']);
 
-Route::get('/get-abonnement-auto-ecole/{auto_id}', [AbonnementController::class,'getAbonnementAutoEcoles']);
-Route::put('/update-abonnement-auto-ecole/{auto_id}', [AbonnementController::class,'updateAbonnementAutoEcole']);
+Route::get('/get-abonnement-auto-ecole/{id}', [AbonnementController::class,'getAbonnementAutoEcoles']);
+Route::put('/update-abonnement-auto-ecole/{id}', [AbonnementController::class,'updateAbonnementAutoEcole']);
 Route::post('/auto-ecole/{auto_id}/abonnement', [AbonnementController::class,'newAbonnement']);
 Route::delete('/delete-Abonnement/{id}', [AbonnementController::class, 'deletAbonnement']);
 

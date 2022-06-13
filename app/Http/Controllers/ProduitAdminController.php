@@ -6,7 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\Produit_admin_auto_ecole; 
 
 class ProduitAdminController extends Controller
-{   public function getProduitAdminById($id)
+{   
+    public function getProduitAdminById($id)
     {
         $produit = Produit_admin_auto_ecole::find($id);
         //

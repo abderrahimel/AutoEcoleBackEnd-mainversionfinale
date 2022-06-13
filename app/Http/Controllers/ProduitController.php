@@ -44,7 +44,7 @@ class ProduitController extends Controller
             'description'=>$request->description,
         ]);
         $produit->save();
-        return response($produit,201);
+        return response()->json($produit,201);
     }
 
     public function updateProduit($id,Request $request)

@@ -130,9 +130,9 @@ class AuthController extends Controller
            if (is_null($user)) {
             return response()->json(['message'=>"User n'est pas trouvée"],404);
             }
-        $user->password = Hash::make($request->password);
-        $user->save();
-        return response()->json($user, 200);
+            $user->password = Hash::make($request->password);
+            $user->save();
+            return response()->json($user, 200);
      }
      public function  setemail($id, Request $request)
      {  

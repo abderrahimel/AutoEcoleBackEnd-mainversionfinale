@@ -8,17 +8,36 @@ use App\Models\cour_pratique_presence;
 use App\Models\cour_theorique_presence;
 use App\Models\CourTheorique;
 use App\Models\CourPratique;
+use App\Models\MoniteurTheorique;
+use App\Models\MoniteurPratique;
+use App\Models\Employe;
+use App\Models\Candidat;
 
 class PresenceController extends Controller
 {
-    public function getPresencecourP($auto_id){
-        $ecole = AutoEcole::find($auto_id);
+    // public function getPresencecourP($auto_id){
+    //     $ecole = AutoEcole::find($auto_id);
+    //     if (is_null($ecole)) {
+    //         return response()->json(['message'=>"auto ecole n'est pas trouvée"],404);
+    //     }
+    //     $presences = cour_pratique_presence::where('auto_ecole_id',$auto_id)->get();
+    //     return response()->json($presences,200);
+    // }
+    public function getPresencecourP($ecole_id){
+        $ecole = AutoEcole::find($ecole_id);
         if (is_null($ecole)) {
             return response()->json(['message'=>"auto ecole n'est pas trouvée"],404);
         }
-        $presences = cour_pratique_presence::where('auto_ecole_id',$auto_id)->get();
+        $presences = cour_pratique_presence::where('auto_ecole_id', $ecole_id)->get();
+        //
+        foreach($presences as $key => $presence) {
+            $moniteur = MoniteurPratique::find($presence->moniteur_pratique_id);
+            $employe = Employe::find($moniteur->employe_id);
+            $presence->moniteur = $employe->nom . " " . $employe->prenom;
+        }
         return response()->json($presences,200);
     }
+
     public function getPresencecourPById($id){
         $presence = cour_pratique_presence::find($id);
         if (is_null($presence)) {
@@ -59,6 +78,7 @@ class PresenceController extends Controller
         $cour_theorique_presence->save();
         return response()->json($cour_theorique_presence,200);
     }
+
     public function updateCourPresenceP($id,Request $request){
         $cour_pratique_presence = cour_pratique_presence::find($id);
         if (is_null($cour_pratique_presence)) {
@@ -69,14 +89,22 @@ class PresenceController extends Controller
         $cour_pratique_presence->save();
         return response()->json($cour_pratique_presence,200);
     }
+
     public function getPresencecourT($ecole_id){
         $ecole = AutoEcole::find($ecole_id);
         if (is_null($ecole)) {
             return response()->json(['message'=>"auto ecole n'est pas trouvée"],404);
         }
         $presences = cour_theorique_presence::where('auto_ecole_id', $ecole_id)->get();
+        //
+        foreach($presences as $key => $presence) {
+            $moniteur = MoniteurTheorique::find($presence->moniteur_theorique_id);
+            $employe = Employe::find($moniteur->employe_id);
+            $presence->moniteur = $employe->nom . " " . $employe->prenom;
+        }
         return response()->json($presences,200);
     }
+
     public function deletePresencecourTById($id){
         $presence = cour_theorique_presence::find($id);
        if (is_null($presence)) {
@@ -85,6 +113,7 @@ class PresenceController extends Controller
         $presence->delete();
         return response()->json(['message'=>"presence Cour theorique deleted"],200);
     }
+
     public function deletePresencecourPById($id){
         $presence = cour_pratique_presence::find($id);
         if (is_null($presence)) {
@@ -92,7 +121,8 @@ class PresenceController extends Controller
         }
         $presence->delete();
         return response()->json(['message'=>"presence Cour pratique deleted"],200);
-}
+     }
+
     public function addPresencecourP($id, Request $request){
         $courP = CourPratique::find($id);
         if (is_null($courP)) {
@@ -113,6 +143,7 @@ class PresenceController extends Controller
         $courP->candidat = $request->candidat;
         $courP->save();
     }
+
     public function addPresencecourT($id, Request $request){
         $courT = CourTheorique::find($id);
         if (is_null($courT)) {

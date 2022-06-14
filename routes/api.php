@@ -320,7 +320,7 @@ Route::get('/auto-ecole/{auto_id}/get-presence-cour-pratique', [PresenceControll
 Route::delete('/delete-presence-cour-pratique/{id}', [PresenceController::class,'deletePresencecourPById']);
 // add-cour-presence-
 // presence route cour theorique
-
+Route::get('/auto-ecole/{auto_id}/presence-cour-theorique', [PresenceController::class,'getPresencecourT']);
 Route::get('/get-presence-cour-theorique/{id}', [PresenceController::class,'getPresencecourTById']);
 Route::get('/auto-ecole/{auto_id}/get-presence-cour-theoriqueByCour/{id}', [PresenceController::class,'getPresencecourTByIdCour']);
 Route::post('/add-presence-cour-theorique/{id}', [PresenceController::class,'addPresencecourT']);//

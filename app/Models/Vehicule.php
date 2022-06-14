@@ -17,14 +17,20 @@ class Vehicule extends Model
         'marque',
         'fourniseur',
         'modele',
+        'categorie',
         'date_visite',
+        'date_prochain_visite',
         'date_vidange',
+        'date_prochain_vidange',
+        'date_assurance',
+        'date_expiration_assurance',
         'carte_grise',
         'vignette',
         'assurance',
         'visite',     
     ];
 
+ 
     public function autoEcole()
     {
         return $this->belongsTo(AutoEcole::class);

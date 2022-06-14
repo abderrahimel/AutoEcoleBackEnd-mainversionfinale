@@ -13,6 +13,7 @@ class CreateVehiculesTable extends Migration
      */
     public function up()
     {
+        
         Schema::create('vehicules', function (Blueprint $table) {
             $table->id();
             $table->foreignId('auto_ecole_id')->constrained()
@@ -23,9 +24,14 @@ class CreateVehiculesTable extends Migration
             $table->string('type');
             $table->string('marque');
             $table->string('modele');
+            $table->string('categorie');
             $table->string('date_visite');
+            $table->string('date_prochain_visite');
             $table->string('fourniseur');
             $table->string('date_vidange');
+            $table->string('date_prochain_vidange');
+            $table->string('date_assurance');
+            $table->string('date_expiration_assurance');
             $table->text('carte_grise');
             $table->text('vignette');
             $table->text('assurance');

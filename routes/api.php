@@ -88,6 +88,7 @@ Route::delete('/delete-user/{id}', [UserController::class,'deleteUser']);
 Route::get('/all-auto-ecole/{user_id}', [AutoEcole::class,'getAutoEcole']);
 Route::get('/all-auto-ecole-admin', [AutoEcoleController::class,'getAutoEcoles']);
 Route::get('/auto-ecole/{id}', [AutoEcoleController::class,'getAutoEcoleById']);
+Route::get('/auto-ecole-user/{id}', [AutoEcoleController::class,'getAutoEcoleByIdUser']);
 Route::get('/archive-auto-ecole', [AutoEcole::class,'getArchiveAutoEcole']);
 Route::post('/recuperer-auto-ecole/{id}', [AutoEcole::class,'recupererAutoEcole']);
 Route::post('/add-auto-ecole/{user_id}', [AutoEcole::class,'addAutoEcole']);
@@ -98,8 +99,6 @@ Route::put('/approver-auto-ecole/{id}', [AutoEcole::class,'approverAutoEcole']);
 // Desapprover  auto ecole
 Route::put('/desapprover-auto-ecole/{id}', [AutoEcole::class,'desapproverAutoEcole']);
 
-// this.api +'/auto-ecole/'+ecole_id+'/vehicule'
-//Vehicule routes http://127.0.0.1:8000/auto-ecole/1/vehicule
 Route::get('/auto-ecole/{ecole_id}/vehicule', [VehiculeController::class,'getVehicule']);
 Route::get('/vehicule/{id}', [VehiculeController::class,'getVehiculeById']);
 Route::post('/add-vehicule/{ecole_id}', [VehiculeController::class,'addVehicule']);

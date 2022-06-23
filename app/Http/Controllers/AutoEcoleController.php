@@ -17,6 +17,25 @@ class AutoEcoleController extends Controller
         return response()->json($ecoles,200);
         
     }
+
+    public function getAutoEcoleByIdUser($id)
+    {
+        $user = User::find($id);
+        if(is_null($user)){
+            return response()->json(['message'=>'user does not exist'], 404);
+        }
+        $autoEcole = $user->autoEcoles;
+        foreach($autoEcole as $key => $ecole) {
+            $img = $ecole->image;
+            $path = 'images/' . $img;
+            $type = pathinfo($path, PATHINFO_EXTENSION);
+            $data = file_get_contents($path);
+            $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
+            $ecole->image = $base64;    
+        }
+        return response()->json($autoEcole, 200);
+    }
+
    public function  getAutoEcoleById($id)
    {
        $autoEcole = DB::table('auto_ecoles')->where('id', '=', $id)->get();

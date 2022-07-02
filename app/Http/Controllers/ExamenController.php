@@ -20,6 +20,7 @@ class ExamenController extends Controller
         $examens = $ecole->examens;
         foreach ($examens as $examen) {
             $examen->candidat;
+            $examen->candidat->moniteurPratique->employe;
             $examen->permis;
         }
         return response()->json($examens,200);

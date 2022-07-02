@@ -40,4 +40,6 @@ class Examen extends Model
     {
         return $this->belongsTo(CategoriePermis::class);
     }
+
+  
 }

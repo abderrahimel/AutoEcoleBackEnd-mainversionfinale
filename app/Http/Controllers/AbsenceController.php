@@ -16,8 +16,12 @@ class AbsenceController extends Controller
         if (is_null($ecole_id)) {
             return response()->json(['message'=>"Auto Ecole n'est pas trouvée"],404);
         }
-        $absence = $ecole->absences;
-        $absences = DB::table('absences')->where('auto_ecole_id', $ecole_id)->get();
+
+        $absences = Absence::where('auto_ecole_id', $ecole_id)->get();
+        foreach ($absences as $absence) {
+            $absence->candidat;
+            $absence->employe;
+        }
         return response()->json($absences,200);
     }
 

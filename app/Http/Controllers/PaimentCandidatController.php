@@ -56,8 +56,17 @@ class PaimentCandidatController extends Controller
         $paimentCandidat->remarque = $request->remarque;
         $paimentCandidat->image =  $name_image;
         $paimentCandidat->save();
-        return response()->json( $paimentCandidat,200);
+        return response()->json($paimentCandidat,200);
    }
+
+   public function getPaiementCandidats($ecole_id){
+         $paiments = PaimentCandidat::where('auto_ecole_id', $ecole_id)->get();
+         if (is_null($paiments)) {
+            return response()->json(['message'=>"paiment candidats n'est pas trouvée"],404);
+        }
+         return response()->json($paiments,200);
+   }
+
     public function getPaiementCandidat($ecole_id, $id_candidat,Request $request){
         $ecole = AutoEcole::find($ecole_id);
         if (is_null($ecole_id)) {
@@ -67,6 +76,7 @@ class PaimentCandidatController extends Controller
         $paiment = PaimentCandidat::where('candidat_id', $id_candidat)->get();
         return response()->json($paiment,200);
     }
+
     public function getPaiementCandidatById($id){
         $paiementCandidat = PaimentCandidat::find($id);
         if (is_null($paiementCandidat)) {

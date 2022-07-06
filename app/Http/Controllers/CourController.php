@@ -7,6 +7,7 @@ use App\Models\CourTheorique;
 use App\Models\MoniteurTheorique;
 use App\Models\cour_theorique_presence;
 use App\Models\cour_pratique_presence;
+use App\Models\Employe;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -15,8 +16,13 @@ class CourController extends Controller
     public function getcourT($ecole_id)
     {  
         $ecole=AutoEcole::find($ecole_id);
-        $cour = $ecole->courTheriques;
-        return response()->json($cour,200);
+        $cours = $ecole->courTheriques;
+        foreach ($cours as $cour) {
+            $id = MoniteurTheorique::find($cour->moniteur_theorique_id)->employe_id;
+            $cour->moniteurth = Employe::find($id);
+        }
+       
+        return response()->json($cours,200);
         
     }
 
@@ -27,9 +33,6 @@ class CourController extends Controller
             return response()->json(['message'=>"Auto Ecole n'est pas trouvée"],404);
         }
         $cour = $ecole->courPratiques;
-     
-        // $cour->moniteurPratique;
-        // $cour->vehicule;
         return response()->json($cour,200);
         
     }
@@ -91,7 +94,7 @@ class CourController extends Controller
             'presence'=>$request->presence,
         ]);
         $courPresence->save();
-        $cour ->moniteurTherique;
+        $cour->moniteurTherique;
         return response($cour,201);
     }
 

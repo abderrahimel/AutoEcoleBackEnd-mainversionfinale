@@ -24,9 +24,12 @@ class Employe extends Model
         'capn',
         'conduire',
         'adresse',
-        'observations',         
+        'observations',
+        'categorie'         
     ];
-
+    protected $casts = [
+        'categorie' => 'array',
+    ];
     public function autoEcole()
     {
         return $this->belongsTo(AutoEcole::class);

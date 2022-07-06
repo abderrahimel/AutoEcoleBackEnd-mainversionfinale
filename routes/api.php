@@ -210,6 +210,7 @@ Route::delete('/delete-paiement/{id}', [PaiementController::class,'deletePaiemen
 // paiment candidat '/api/auto-ecole/'+auto_ecole_id +'/add-paiementCandidat/' + id_candidat
 Route::post('/auto-ecole/{ecole_id}/add-paiementCandidat/{id_candidat}', [PaimentCandidatController::class,'addPaiementCandidat']);
 Route::get('/auto-ecole/{ecole_id}/get-paiementCandidat/{id_candidat}', [PaimentCandidatController::class,'getPaiementCandidat']);
+Route::get('/auto-ecole/{ecole_id}/paiementCandidat', [PaimentCandidatController::class,'getPaiementCandidats']);
 Route::get('/paiementCandidat/{id}', [PaimentCandidatController::class,'getPaiementCandidatById']);
 Route::put('/update-paiment-candidat/{id}', [PaimentCandidatController::class,'updatePaiementCandidat']);
 Route::delete('/delete-paiment-candidat/{id}', [PaimentCandidatController::class,'deletePaiementCandidat']);

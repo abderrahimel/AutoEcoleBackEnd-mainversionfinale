@@ -102,6 +102,17 @@ class PresenceController extends Controller
             $employe = Employe::find($moniteur->employe_id);
             $presence->moniteur = $employe->nom . " " . $employe->prenom;
         }
+        //
+        foreach ($presences as $presence) {
+            $listCandidat = ' ';
+            $candidats = $presence->candidat;
+            foreach($presence->candidat as $id){
+                 $candidat = Candidat::find($id);
+                 $listCandidat = $listCandidat . ' ' . $candidat->nom_fr . ' ' . $candidat->prenom_fr . ',';
+            }
+            $presence['candidats'] = $listCandidat;
+       }
+        //
         return response()->json($presences,200);
     }
 

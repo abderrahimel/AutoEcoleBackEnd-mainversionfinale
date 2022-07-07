@@ -16,7 +16,7 @@ class Candidat extends Model
         'date_inscription',
         'numero_contrat',
         'ref_web',
-        'nom_fr',
+        'nom_fr', 
         'prenom_fr',
         'nom_ar',
         'prenom_ar',

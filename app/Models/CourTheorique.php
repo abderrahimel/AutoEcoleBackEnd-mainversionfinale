@@ -34,7 +34,7 @@ class CourTheorique extends Model
     }
     public function presence_theorique()
     {
-        return $this->hasMany(cour_theorique_presence::class);
+        return $this->hasOne(cour_theorique_presence::class);
     }
    
 }

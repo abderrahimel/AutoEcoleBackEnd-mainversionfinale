@@ -5,9 +5,11 @@ use App\Models\AutoEcole;
 use App\Models\CourPratique;
 use App\Models\CourTheorique;
 use App\Models\MoniteurTheorique;
+use App\Models\MoniteurPratique;
 use App\Models\cour_theorique_presence;
 use App\Models\cour_pratique_presence;
 use App\Models\Employe;
+use App\Models\Candidat;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -21,20 +23,49 @@ class CourController extends Controller
             $id = MoniteurTheorique::find($cour->moniteur_theorique_id)->employe_id;
             $cour->moniteurth = Employe::find($id);
         }
-       
+
+       foreach ($cours as $cour) {
+            $listCandidat = ' ';
+            $candidats = $cour->candidat;
+            foreach($cour->candidat as $id){
+                 $candidat = Candidat::find($id);
+                 $listCandidat = $listCandidat . ' ' . $candidat->nom_fr . ' ' . $candidat->prenom_fr . ',';
+            }
+            $cour['candidats'] = $listCandidat;
+       }
+
         return response()->json($cours,200);
         
     }
 
     public function getcourP($ecole_id)
     {
+        // $ecole=AutoEcole::find($ecole_id);
+        // if (is_null($ecole_id)) {
+        //     return response()->json(['message'=>"Auto Ecole n'est pas trouvée"],404);
+        // }
+        // $cour = $ecole->courPratiques;
+        // return response()->json($cour,200);
+        //
         $ecole=AutoEcole::find($ecole_id);
-        if (is_null($ecole_id)) {
-            return response()->json(['message'=>"Auto Ecole n'est pas trouvée"],404);
+        $cours = $ecole->courPratiques;
+        foreach ($cours as $cour) {
+            $id = MoniteurPratique::find($cour->moniteur_pratique_id)->employe_id;
+            $cour->moniteurp = Employe::find($id);
         }
-        $cour = $ecole->courPratiques;
-        return response()->json($cour,200);
-        
+
+       foreach ($cours as $cour) {
+            $listCandidat = ' ';
+            $candidats = $cour->candidat;
+            foreach($cour->candidat as $id){
+                 $candidat = Candidat::find($id);
+                 $listCandidat = $listCandidat . ' ' . $candidat->nom_fr . ' ' . $candidat->prenom_fr . ',';
+            }
+            $cour['candidats'] = $listCandidat;
+       }
+
+        return response()->json($cours,200);
+        //
     }
     
     public function getcourTById($id)

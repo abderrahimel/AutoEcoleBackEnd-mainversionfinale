@@ -27,4 +27,8 @@ class DepenseVehicule extends Model
     {
         return $this->belongsTo(CategorieDepence::class);
     }
+    
+    public function vehicule(){
+        return $this->belongsTo(Vehicule::class);
+    }
 }

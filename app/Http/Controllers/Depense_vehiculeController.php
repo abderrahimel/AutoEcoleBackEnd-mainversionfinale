@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\DepenseVehicule;
 use App\Models\AutoEcole;
+use App\Models\CategorieDepence;
 class Depense_vehiculeController extends Controller
 {
     public function getDepencevehicule($ecole_id)
@@ -13,9 +14,12 @@ class Depense_vehiculeController extends Controller
         if (is_null($ecole)) {
             return response()->json(['message'=>"Auto Ecole n'est pas trouvée"],404);
         }
-        $depenceslocal = DepenseVehicule::where('auto_ecole_id', $ecole_id)->get();
-        return response()->json($depenceslocal,200);
-        
+        $depenceslocals = DepenseVehicule::where('auto_ecole_id', $ecole_id)->get();
+        foreach ($depenceslocals as $depenceslocal) {
+            $depenceslocal['categorie'] = CategorieDepence::find($depenceslocal->categorie_depence_id);
+            $depenceslocal->vehicule;
+        }
+        return response()->json($depenceslocals,200);
     }
 
     public function getDepencevehiculeById($id)

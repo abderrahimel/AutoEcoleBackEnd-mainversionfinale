@@ -40,14 +40,11 @@ class CourController extends Controller
 
     public function getcourP($ecole_id)
     {
-        // $ecole=AutoEcole::find($ecole_id);
-        // if (is_null($ecole_id)) {
-        //     return response()->json(['message'=>"Auto Ecole n'est pas trouvée"],404);
-        // }
-        // $cour = $ecole->courPratiques;
-        // return response()->json($cour,200);
-        //
         $ecole=AutoEcole::find($ecole_id);
+        if (is_null($ecole_id)) {
+            return response()->json(['message'=>"Auto Ecole n'est pas trouvée"],404);
+        }
+
         $cours = $ecole->courPratiques;
         foreach ($cours as $cour) {
             $id = MoniteurPratique::find($cour->moniteur_pratique_id)->employe_id;
@@ -56,6 +53,7 @@ class CourController extends Controller
 
        foreach ($cours as $cour) {
             $listCandidat = ' ';
+            $cour->vehicule;
             $candidats = $cour->candidat;
             foreach($cour->candidat as $id){
                  $candidat = Candidat::find($id);

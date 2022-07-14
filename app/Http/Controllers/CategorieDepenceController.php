@@ -19,7 +19,6 @@ class CategorieDepenceController extends Controller
         
     }
     
-
     public function getCategorieDepenceById($id)
     {
         $categories = CategorieDepence::find($id);

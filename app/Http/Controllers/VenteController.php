@@ -16,7 +16,10 @@ class VenteController extends Controller
             return response()->json(['message'=>"Auto Ecole n'est pas trouvée"],404);
         }
         $ventes = Vente::where('auto_ecole_id', $ecole_id)->get();
-        
+        foreach ($ventes as $vente) {
+            $vente->candidat;
+            $vente->produit;
+        }
         return response()->json($ventes,200);
         
     }

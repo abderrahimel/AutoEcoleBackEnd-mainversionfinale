@@ -17,6 +17,10 @@ class DepenceController extends Controller
             return response()->json(['message'=>"Auto Ecole n'est pas trouvée"],404);
         }
         $depences = Depence::where('auto_ecole_id', $ecole_id)->get();
+        foreach ($depences as $depence) {
+            $depence['categorie'] = CategorieDepence::find($depence->categorie_depence_id);
+            $depence->employe;
+        }
         return response()->json($depences,200);
         
     }

@@ -16,8 +16,8 @@ class MoniteurController extends Controller
         if (is_null($ecole_id)) {
             return response()->json(['message'=>"Moniteur Pratique n'est pas trouvée"],404);
         }
-        $moniteurs = MoniteurPratique::all()->where('auto_ecole_id',$ecole_id);
-        $moniteurs =$ecole->moniteurPratiques;
+        $moniteurs = MoniteurPratique::where('auto_ecole_id',$ecole_id);
+        // $moniteurs =$ecole->moniteurPratiques;
         foreach ($moniteurs as $moniteur) {
             $moniteur->employe;
         }
@@ -30,7 +30,23 @@ class MoniteurController extends Controller
         return response()->json($moniteurs,200);
         
     }
-
+    // deleteMoniteurt , deleteMoniteurp
+    public function deleteMoniteurt($id){
+              $moniteurT = MoniteurTheorique::find($id);
+              if(is_null($moniteurT)){
+                return response()->json(['message'=> "moniteur theorique n'est pas trouvé"],404);
+            }
+            $moniteurT->delete();
+            return response()->json(['message'=>'moniteur theorique deleted'],200);
+    }
+    public function deleteMoniteurp($id){
+              $moniteurP = MoniteurPratique::find($id);
+              if(is_null($moniteurP)){
+                return response()->json(['message'=> "moniteur pratique n'est pas trouvé"],404);
+            }
+            $moniteurP->delete();
+            return response()->json(['message'=>'moniteur pratique deleted'],200);
+    }
     public function getMoniteurT($ecole_id)
     {
         $ecole=AutoEcole::find($ecole_id);

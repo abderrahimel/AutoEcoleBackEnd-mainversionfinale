@@ -278,7 +278,7 @@ Route::get('/auto-ecole/{ecole_id}/moniteur-theorique', [MoniteurController::cla
 Route::get('/moniteur-theorique/{id}', [MoniteurController::class,'getMoniteurtById']);
 Route::post('/add-moniteur-theorique/{ecole_id}', [MoniteurController::class,'addMoniteurt']);
 Route::put('/update-moniteur-theorique/{id}', [MoniteurController::class,'updateMoniteurt']);
-Route::delete('/delete-moniteur-theorique/{id}', [MoniteurController::class,'deleteMoniteurt']);
+Route::delete('/delete-moniteur-theorique/{id}', [MoniteurController::class,'deleteMoniteurt']); 
 
 Route::get('/auto-ecole/{ecole_id}/moniteur-pratique', [MoniteurController::class,'getMoniteurP']);
 Route::get('/moniteur-pratique/{id}', [MoniteurController::class,'getMoniteurpById']);
@@ -291,7 +291,7 @@ Route::delete('/delete-moniteur-pratique/{id}', [MoniteurController::class,'dele
 Route::get('/auto-ecole/{ecole_id}/produit', [ProduitController::class,'getProduit']);
 Route::get('/produit/{id}', [ProduitController::class,'getProduitById']);
 Route::post('/add-produit/{ecole_id}', [ProduitController::class,'addProduit']);
-Route::put('{id}', [ProduitController::class,'updateProduit']);
+Route::put('/update-produit/{id}', [ProduitController::class,'updateProduit']);
 Route::delete('/delete-produit/{id}', [ProduitController::class,'deleteProduit']);
 
 

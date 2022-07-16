@@ -15,8 +15,10 @@ class FactureController extends Controller
             return response()->json(['message'=>"Facture n'est pas trouvée"],404);
         }
         $factures = Facture::where('auto_ecole_id', $ecole_id)->get();
+        foreach ($factures as $facture) {
+            $facture->candidat;
+        }
         return response()->json($factures,200);
-        
     }
 
     public function getFactureById($id)

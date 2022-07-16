@@ -143,7 +143,7 @@ Route::put('/update-categorie-depence/{id}', [CategorieDepenceController::class,
 Route::delete('/delete-categorie-depence/{id}', [CategorieDepenceController::class,'deleteCategorieDepence']);
 
 
-//Depence routes
+//Depence routes personnel
 Route::get('/auto-ecole/{ecole_id}/depence', [DepenceController::class,'getDepence']);
 Route::get('/depence/{id}', [DepenceController::class,'getDepenceById']);
 Route::post('/add-depence/{ecole_id}', [DepenceController::class,'addDepence']);
@@ -234,6 +234,7 @@ Route::delete('/delete-fournisseur/{id}', [FournisseurController::class,'deleteF
 
 //Ventes routes
 Route::get('/auto-ecole/{ecole_id}/vente', [VenteController::class,'getVente']);
+Route::get('/auto-ecole/{ecole_id}/get-produit-candidats', [VenteController::class,'getProduitCandidats']);
 Route::get('/vente/{id}', [VenteController::class,'getVenteById']);
 Route::post('/add-vente/{ecole_id}', [VenteController::class,'addVente']);
 Route::put('/update-vente/{id}', [VenteController::class,'updateVente']);

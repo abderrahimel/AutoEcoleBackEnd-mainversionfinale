@@ -66,9 +66,9 @@ class Depense_vehiculeController extends Controller
     {
         $depencevehicule = DepenseVehicule::find($id);
         if (is_null($depencevehicule)) {
-            return response()->json(['message'=>"Catégorie n'est pas trouvée"],404);
+            return response()->json(['message'=>"depense vehicule n'est pas trouvée"],404);
         }
         $depencevehicule->delete();
-        return response()->json(['message'=>"Depense deleted ..."],200);
+        return response()->json(['message'=>"Depense vehicule deleted ..."],200);
     }
 }

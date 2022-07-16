@@ -24,7 +24,19 @@ class VenteController extends Controller
         
     }
 
-
+    public function getProduitCandidats($ecole_id)
+    {
+        $ecole=AutoEcole::find($ecole_id);
+        if (is_null($ecole_id)) {
+            return response()->json(['message'=>"Auto Ecole n'est pas trouvée"],404);
+        }
+        $ventes = Vente::where('auto_ecole_id', $ecole_id)->get();
+        foreach ($ventes as $vente) {
+            $vente->candidat;
+            $vente->produit;
+        }
+        return response()->json($ventes,200);
+    }
     public function getVenteById($id)
     {
         $vente = Vente::find($id);

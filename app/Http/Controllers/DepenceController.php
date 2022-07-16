@@ -7,6 +7,7 @@ use App\Models\AutoEcole;
 use App\Models\CategorieDepence;
 use App\Models\Depence;
 use App\Models\Employe;
+use App\Models\Depense_local;
 
 class DepenceController extends Controller
 {
@@ -73,11 +74,11 @@ class DepenceController extends Controller
 
     public function deleteDepence($id)
     {
-        $categorie = Depence::find($id);
-        if (is_null($categorie)) {
-            return response()->json(['message'=>"Catégorie n'est pas trouvée"],404);
+        $depense = Depence::find($id);
+        if (is_null($depense)) {
+            return response()->json(['message'=>"depense personnel n'est pas trouvée"],404);
         }
-        $categorie->delete();
+        $depense->delete();
         return response()->json(['message'=>"Depense deleted ..."],200);
     }
 

@@ -64,6 +64,9 @@ class PaimentCandidatController extends Controller
          if (is_null($paiments)) {
             return response()->json(['message'=>"paiment candidats n'est pas trouvée"],404);
         }
+        foreach($paiments as $paiment){
+            $paiment->candidat;
+          }
          return response()->json($paiments,200);
    }
 

@@ -20,5 +20,4 @@ class PaimentCandidat extends Model
         'numero',
         'remarque',
     ];
-
 }            

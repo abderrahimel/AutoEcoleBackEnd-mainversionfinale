@@ -41,7 +41,7 @@ class CategorieDepenceController extends Controller
             'type'=>$request->type
         ]);
         $categorie->save();
-        return response($categorie,201);
+        return response()->json($categorie,200);
     }
 
     public function updateCategorieDepence($id,Request $request)
@@ -52,7 +52,7 @@ class CategorieDepenceController extends Controller
         }
         $categorie->categorie = $request -> categorie;
         $categorie->save();
-        return response($categorie,200);
+        return response()->json($categorie,200);
     }
 
     public function deleteCategorieDepence  (Request $request,$id)

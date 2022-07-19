@@ -87,4 +87,8 @@ class Candidat extends Model
     {
         return $this->hasOne(Dossier::class);
     }
+    public function paimentCandidat()
+    {
+        return $this->hasMany(PaimentCandidat::class);
+    }
 }

@@ -20,4 +20,8 @@ class PaimentCandidat extends Model
         'numero',
         'remarque',
     ];
-}            
+
+    public function candidat(){
+        return $this->belongsTo(Candidat::class);
+    }
+}        

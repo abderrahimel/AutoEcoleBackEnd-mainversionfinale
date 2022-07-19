@@ -53,12 +53,12 @@ class AbsenceController extends Controller
             return response()->json(['message'=> "Ecole n'est pas trouvé"],404);
         }
         $absence = Absence::create([
-            'auto_ecole_id'=>$ecole_id,
-            'employe_id'=> $request->employe_id,
-            'type_absence'=>$request->type_absence,
-            'date_debut'=>$request->date_debut,
-            'date_fin'=>$request->date_fin,
-            'remarque'=>$request->remarque,
+            'auto_ecole_id' =>$ecole_id,
+            'employe_id'    => $request->employe_id,
+            'type_absence'  =>$request->type_absence,
+            'date_debut'    =>$request->date_debut,
+            'date_fin'      =>$request->date_fin,
+            'remarque'      =>$request->remarque,
         ]);
         $ecole->absences()->save($absence);
         $absence->employe;
@@ -68,25 +68,16 @@ class AbsenceController extends Controller
     public function updateAbsence($id,Request $request)
     {
         $absence= Absence::find($id);
-        if (is_null($absence)) {
-            return response()->json(['message'=>"salaire n'est pas trouvée"],404);
+        if(is_null($absence)){
+            return response()->json(['message'=> "absence n'est pas trouvé"],404);
         }
-        $absence->employe_id = $request -> employe_id;
-        $absence->justfication = $request -> justfication;
-        $absence->date_debut = $request -> date_debut;
-        $absence->date_fin = $request -> date_fin;
-        $absence->remarques = $request -> remarques;
-        if($request->hasFile('image')){
-            $completeFileName = $request->file('image')->getClientOriginalName();
-            $fileNameOnly= pathinfo($completeFileName, PATHINFO_FILENAME);
-            $extension = $request->file('image')->getClientOriginalExtension();
-            $compPic= str_replace(' ','_',$fileNameOnly).'-'.rand().'_'.time().'.'.$extension;
-            $path = $request->file('image')->storeAs('public/absence',$compPic);
-            $absence->image = $compPic;
-            $absence->save();
-        } 
+        $absence->employe_id   = $request->employe_id;
+        $absence->type_absence = $request->type_absence;
+        $absence->date_debut   = $request->date_debut;
+        $absence->date_fin     = $request->date_fin;
+        $absence->remarque     = $request->remarque;
         $absence->save();
-        return response($absence,200);
+        return response($absence,201);
     }
     
     public function deleteAbsence($id)

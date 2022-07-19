@@ -72,23 +72,23 @@ class EmployeController extends Controller
 
     public function updateEmploye($id,Request $request)
     {
-        $employe=Employe::find($id);
+        $employe = Employe::find($id);
         if (is_null($employe)) {
             return response()->json(['message'=>"Employé n'est pas trouvée"],404);
         }
-        $employe->nom = $request -> nom;
-        $employe->prenom = $request -> prenom;
-        $employe->CIN = $request -> CIN;
-        
-        $employe->date_naissance = $request -> date_naissance;
-        $employe->lieu_naissance = $request -> lieu_naissance;
-        $employe->email = $request -> email;
-        $employe->telephone = $request -> telephone;
-        $employe->date_embauche = $request -> date_embauche;
-        $employe->poste = $request -> poste;
-        $employe->CAPN = $request -> CAPN;
-        $employe->adresse = $request -> adresse;
-        $employe->observations = $request -> observations;
+        $employe->nom = $request->nom;
+        $employe->prenom =$request->prenom;
+        $employe->cin    = $request->cin;
+        $employe->type   = $request->type;
+        $employe->date_naissance = $request->date_naissance;
+        $employe->lieu_naissance = $request->lieu_naissance;
+        $employe->email = $request->lieu_naissance;
+        $employe->telephone = $request->telephone;
+        $employe->date_embauche = $request->date_embauche;
+        $employe->capn = $request->capn;
+        $employe->conduire = $request->conduire;
+        $employe->adresse = $request->adresse;
+        $employe->observations = $request->observations;
         $employe->save();
         return response($employe,200);
     }

@@ -16,16 +16,10 @@ class MoniteurController extends Controller
         if (is_null($ecole_id)) {
             return response()->json(['message'=>"Moniteur Pratique n'est pas trouvée"],404);
         }
-        $moniteurs = MoniteurPratique::where('auto_ecole_id',$ecole_id);
-        // $moniteurs =$ecole->moniteurPratiques;
+        $moniteurs = MoniteurPratique::where('auto_ecole_id',$ecole_id)->get();
         foreach ($moniteurs as $moniteur) {
             $moniteur->employe;
         }
-        // $role = "moniteur pratique";
-        // $moniteurP = DB::table('employes')
-        // ->join('moniteur_pratiques', 'moniteur_pratiques.auto_ecole_id', '=', 'employes.auto_ecole_id')
-        // ->select('moniteur_pratiques.id', 'employes.nom', 'employes.prenom')
-        // ->get();
 
         return response()->json($moniteurs,200);
         

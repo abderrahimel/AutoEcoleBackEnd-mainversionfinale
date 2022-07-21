@@ -85,7 +85,7 @@ class CandidatController extends Controller
  
         $candidat = new Candidat(
             [
-                'auto_ecole_id' => $ecole->id ,
+                'auto_ecole_id' => $ecole_id,
                 'cin' =>$request->cin,
                 'date_inscription' =>$request->date_inscription,
                 'numero_contrat' =>$request->numero_contrat,

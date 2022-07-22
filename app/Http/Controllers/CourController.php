@@ -89,11 +89,10 @@ class CourController extends Controller
         
     }
 
-    public function addcourT($ecole_id,Request $request)
+    public function addcourT($ecole_id, Request $request)
     {    
         $ecole=AutoEcole::find($ecole_id);
         $array = array_map('intval', explode(',', $request->candidat));
-        
         foreach( $array as $val){
             if($val != null){
                 $items[] = $val;
@@ -101,14 +100,14 @@ class CourController extends Controller
         }
       
         $cour = CourTheorique::create([
-            'auto_ecole_id'=>$ecole_id,
-            'date'=>$request->date,
-            'date_debut'=>$request->date_debut,
-            'date_fin'=>$request->date_fin,
-            'permis'=>$request->permis,
-            'type'=>$request->type,
-            'candidat'=>$items,
-            'moniteur_theorique_id'=>$request->moniteur_theorique_id
+            'auto_ecole_id' => $ecole_id,
+            'date' => $request->date,
+            'date_debut' => $request->date_debut,
+            'date_fin' => $request->date_fin,
+            'permis' => $request->permis,
+            'type' => $request->type,
+            'candidat' => $items,
+            'moniteur_theorique_id' => $request->moniteur_theorique_id
         ]);
         $cour->save();
         $courPresence = cour_theorique_presence::create([

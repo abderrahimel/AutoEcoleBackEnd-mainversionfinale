@@ -22,6 +22,7 @@ class CreateMoniteurTheoriquesTable extends Migration
             $table->foreignId('employe_id')->constrained()
                   ->onUpdate('cascade')
                   ->onDelete('cascade');
+            $table->text('categorie')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

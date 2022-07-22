@@ -72,6 +72,7 @@ class MoniteurController extends Controller
             return response($employe,200);
         
     }
+
     public function getMoniteurT($ecole_id)
     {
         $ecole=AutoEcole::find($ecole_id);
@@ -81,6 +82,10 @@ class MoniteurController extends Controller
         $moniteurs = MoniteurTheorique::all()->where('auto_ecole_id',$ecole_id);
         foreach ($moniteurs as $moniteur) {
             $moniteur->employe;
+            $categories = $moniteur->employe;
+            // "['A', 'B']"
+            $input = substr("['A', 'B']", 1, -1);
+            $moniteur['categories'] = str_replace("'","", $input);
         }
         
         return response()->json($moniteurs,200);
@@ -109,11 +114,13 @@ class MoniteurController extends Controller
     }
 
     public function addMoniteurt($ecole_id,Request $request)
-    {
+    {   
+        // var_dump($request->all());
         $ecole=AutoEcole::find($ecole_id);
         if(is_null($ecole)){
             return response()->json(['message'=> "ecole n'est pas trouvé"],404);
         }
+       
         $employe = Employe::create([
             'auto_ecole_id'=>$ecole_id,
             'nom'=>$request->nom,
@@ -131,9 +138,17 @@ class MoniteurController extends Controller
             'observations'=>$request->observations
         ]);
         $employe->save();
+        // $array = array_map('intval', explode(',', $request->categorie));
+        // $items[] = '';
+        // foreach( $array as $val){
+        //     if($val != null){
+        //         $items[] = $val;
+        //     }
+        // }
         $moniteurt = MoniteurTheorique::create([
             'employe_id'=>$employe->id,
             'auto_ecole_id'=>$ecole_id,
+            'categorie'=> explode(",", $request->categorie)
         ]);
         $moniteurt->save();
         $ecole->moniteurTheoriques()->save($moniteurt);
@@ -164,9 +179,11 @@ class MoniteurController extends Controller
             'observations'=>$request->observations
         ]);
         $employe->save();
+       
         $moniteurp = MoniteurPratique::create([
             'employe_id'=>$employe->id,
             'auto_ecole_id'=>$ecole_id,
+            'categorie'=> explode(",", $request->categorie)
         ]);
         $moniteurp->save();
         $ecole -> moniteurPratiques()->save($moniteurp);

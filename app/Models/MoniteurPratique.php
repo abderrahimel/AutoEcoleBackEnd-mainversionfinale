@@ -13,8 +13,11 @@ class MoniteurPratique extends Model
     protected $fillable = [
         'employe_id',
         'auto_ecole_id',
+        'categorie'
     ];
-
+    protected $casts = [
+        'categorie' => 'array',
+    ];
     public function autoEcole()
     {
         return $this->belongsTo(AutoEcole::class);

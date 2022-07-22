@@ -27,7 +27,7 @@ class VehiculeController extends Controller
     }
 
     public function addVehicule($ecole_id,Request $request)
-    {   //var_dump($request->all());
+    {  
         $ecole=AutoEcole::find($ecole_id);
         if(is_null($ecole)){
             return response()->json(['message'=> "Ecole n'est pas trouvée"],404);
@@ -57,8 +57,13 @@ class VehiculeController extends Controller
             'type'=>$request->type,
             'marque'=>$request->marque,
             'fourniseur'=>$request->fourniseur,
+            'date_assurance'=>$request->date_assurance,
             'modele'=>$request->modele,
+            'categorie'=>$request->categorie,
+            'date_prochain_vidange'=>$request->date_prochain_vidange,
+            'date_expiration_assurance'=>$request->date_expiration_assurance,
             'date_visite'=>$request->date_visite,
+            'date_prochain_visite'=>$request->date_prochain_visite,
             'date_vidange'=>$request->date_vidange,
             'carte_grise'=>$name_carte_grise,
             'vignette'=>$name_vignette,

@@ -28,7 +28,7 @@ class CandidatController extends Controller
         foreach($var as $val){
                 $candidat = Candidat::where('id',$val)->first();
                 if($candidat != null){
-                        $candidats=implode(',',[implode(' ',[$candidat->nom_fr, $candidat->prenom_fr]),$candidats]);
+                        $candidats = implode(',',[implode(' ',[$candidat->nom_fr, $candidat->prenom_fr]),$candidats]);
                 }
         }
         
@@ -53,8 +53,6 @@ class CandidatController extends Controller
         if ($ecole == "null") {
             return response()->json(['message'=>"Auto Ecole n'est pas trouvée"],404);
         }
-        // $candidats = $ecole->candidats;
-        // $candidats = DB::table('candidats')->where('deleted_at', '!=', NULL);
         $candidats = DB::table('candidats')->whereNotNull('deleted_at')->get();
         return response()->json($candidats,200);
         
@@ -201,7 +199,6 @@ class CandidatController extends Controller
     
     public function desactiverCandidat($id)
     {   
-       
         $candidat = Candidat::findOrFail($id);
         $candidat->actif = 0;
         $candidat->save();

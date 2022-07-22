@@ -32,7 +32,6 @@ class CreateEmployesTable extends Migration
             $table->text('adresse');
             $table->text('conduire');
             $table->text('observations')->nullable();
-            $table->text('categorie')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

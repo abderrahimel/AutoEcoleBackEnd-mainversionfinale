@@ -23,6 +23,35 @@ class VehiculeController extends Controller
         if(is_null($vehicule)){
             return response()->json(['message'=> "Véhicule n'est pas trouvée"],404);
         }
+        // base 64 carte grise
+        $img = $vehicule->carte_grise;
+        $path = 'carte_grise/' . $img;
+        $type = pathinfo($path, PATHINFO_EXTENSION);
+        $data = file_get_contents($path);
+        $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
+        $vehicule->carte_grise = $base64;    
+        // base 64 carte  vignette
+        $img = $vehicule->vignette;
+        $path = 'vignette/' . $img;
+        $type = pathinfo($path, PATHINFO_EXTENSION);
+        $data = file_get_contents($path);
+        $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
+        $vehicule->vignette = $base64;    
+         // base 64 carte assurance
+         $img = $vehicule->assurance;
+         $path = 'assurance/' . $img;
+         $type = pathinfo($path, PATHINFO_EXTENSION);
+         $data = file_get_contents($path);
+         $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
+         $vehicule->assurance = $base64; 
+          // base 64 carte visite
+          $img = $vehicule->visite;
+          $path = 'visite/' . $img;
+          $type = pathinfo($path, PATHINFO_EXTENSION);
+          $data = file_get_contents($path);
+          $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
+          $vehicule->visite = $base64; 
+
         return response()->json($vehicule,200);
     }
 
@@ -84,32 +113,32 @@ class VehiculeController extends Controller
         if($request->carte_grise != ''){
             $name_carte_grise = time().'.' . explode('/', explode(':', substr($request->carte_grise, 0, strpos($request->carte_grise, ';')))[1])[1];
             \Image::make($request->carte_grise)->save(public_path('carte_grise/').$name_carte_grise);
+            $vehicule->carte_grise = $name_carte_grise;
         }
         // 
         if($request->assurance != ''){
             $name_assurance = time().'.' . explode('/', explode(':', substr($request->assurance, 0, strpos($request->assurance, ';')))[1])[1];
             \Image::make($request->assurance)->save(public_path('assurance/').$name_assurance);
+            $vehicule->assurance = $name_assurance;
         }
         // 
         if($request->visite != ''){
             $name_visite = time().'.' . explode('/', explode(':', substr($request->visite, 0, strpos($request->visite, ';')))[1])[1];
             \Image::make($request->visite)->save(public_path('visite/').$name_visite);
+            $vehicule->visite = $name_visite;
         }
         if($request->vignette != ''){
             $name_vignette = time().'.' . explode('/', explode(':', substr($request->vignette, 0, strpos($request->vignette, ';')))[1])[1];
             \Image::make($request->vignette)->save(public_path('vignette/').$name_vignette);
+            $vehicule->vignette = $name_vignette;
         }
-        $request->matricule = $request->matricule;
-        $request->type = $request->type;
-        $request->marque = $request->marque;
-        $request->fourniseur = $request->fourniseur;
-        $request->modele = $request->modele;
-        $request->date_visite = $request->date_visite;
-        $request->date_vidange = $request->date_vidange;
-        $request->carte_grise = $name_carte_grise;
-        $request->vignette = $name_vignette;
-        $request->assurance = $name_assurance;
-        $request->visite = $name_visite;
+        $vehicule->matricule = $request->matricule;
+        $vehicule->type = $request->type;
+        $vehicule->marque = $request->marque;
+        $vehicule->fourniseur = $request->fourniseur;
+        $vehicule->modele = $request->modele;
+        $vehicule->date_visite = $request->date_visite;
+        $vehicule->date_vidange = $request->date_vidange;
         $vehicule->save();
         return response($vehicule,200);
     }

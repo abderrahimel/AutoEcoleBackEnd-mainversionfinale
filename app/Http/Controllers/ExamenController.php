@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\AutoEcole;
 use App\Models\Examen;
+use App\Models\Note;
 use App\Models\Candidat;
 use App\Models\CategoriePermis;
 
@@ -83,8 +84,10 @@ class ExamenController extends Controller
         $examen->permis;
         return response($examen,200);
     }
+
     public function addNoteCandidat($id, Request $request){
         $examen=Examen::find($id);
+        //  var_dump($request->all());
         if (is_null($examen)) {
             return response()->json(['message'=>"examen n'est pas trouvée"],404);
         }
@@ -104,10 +107,18 @@ class ExamenController extends Controller
         $examen->date_etat2 = $request->date_etat2;
         $examen->date_note1 = $request->date_note1;
         $examen->date_note2 = $request->date_note2;
-        $examen->resultat = $request->resultat;
+        $categorieCandidat = $examen->categorie;
+        $note = Note::where('auto_ecole_id', $examen->auto_ecole_id)->where('categorie', $categorieCandidat)->get();
+        $moyen = $request->moyen;
+        if((($examen->note1 >= $moyen ) or ($examen->note2 >= $moyen) ) && ( ($examen->etat_1 == 'valide') or ($examen->etat_2 == 'valide'))){
+            $examen->resultat = 1;
+        }else{
+            $examen->resultat = 0;
+        }
         $examen->save();
         return response($examen,200);
     }
+
     public function deleteExamen($id)
     {
         $examen = Examen::find($id);

@@ -22,6 +22,7 @@ class CreateMoniteurPratiquesTable extends Migration
                   ->onUpdate('cascade')
                   ->onDelete('cascade');
             $table->text('categorie')->nullable();
+            $table->string('namecarteMoniteur')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

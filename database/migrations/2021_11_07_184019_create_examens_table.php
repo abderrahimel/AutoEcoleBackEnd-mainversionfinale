@@ -32,7 +32,7 @@ class CreateExamensTable extends Migration
             $table->string('date_note1')->nullable();
             $table->string('note2')->default(-1);
             $table->string('date_note2')->nullable();
-            $table->boolean('resultat')->default(0);
+            $table->boolean('resultat')->default(-1);
             $table->timestamps();
             $table->softDeletes();
         });

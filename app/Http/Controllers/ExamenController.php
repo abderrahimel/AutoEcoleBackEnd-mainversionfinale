@@ -126,6 +126,6 @@ class ExamenController extends Controller
             return response()->json(['message'=>"Controle n'est pas trouvée"],404);
         }
         $examen->delete();
-        return response()->json(['message'=>"Cours deleted"],200);
+        return response()->json(['message'=>"examen deleted"],200);
     }
 }

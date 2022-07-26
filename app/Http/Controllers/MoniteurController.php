@@ -145,9 +145,14 @@ class MoniteurController extends Controller
         //         $items[] = $val;
         //     }
         // }
+        if($request->carteMoniteur != ''){
+            $namecarteMoniteur = time().'.' . explode('/', explode(':', substr($request->carteMoniteur, 0, strpos($request->carteMoniteur, ';')))[1])[1];
+            \Image::make($request->carteMoniteur)->save(public_path('candidat_img/').$namecarteMoniteur);
+        }
         $moniteurt = MoniteurTheorique::create([
             'employe_id'=>$employe->id,
             'auto_ecole_id'=>$ecole_id,
+            'carteMoniteur'=>$namecarteMoniteur,
             'categorie'=> explode(",", $request->categorie)
         ]);
         $moniteurt->save();
@@ -179,10 +184,14 @@ class MoniteurController extends Controller
             'observations'=>$request->observations
         ]);
         $employe->save();
-       
+        if($request->carteMoniteur != ''){
+            $namecarteMoniteur = time().'.' . explode('/', explode(':', substr($request->carteMoniteur, 0, strpos($request->carteMoniteur, ';')))[1])[1];
+            \Image::make($request->carteMoniteur)->save(public_path('candidat_img/').$namecarteMoniteur);
+        }
         $moniteurp = MoniteurPratique::create([
             'employe_id'=>$employe->id,
             'auto_ecole_id'=>$ecole_id,
+            'carteMoniteur'=>$namecarteMoniteur,
             'categorie'=> explode(",", $request->categorie)
         ]);
         $moniteurp->save();

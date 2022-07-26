@@ -13,7 +13,8 @@ class MoniteurTheorique extends Model
     protected $fillable = [
         'employe_id',
         'auto_ecole_id',
-        'categorie'
+        'categorie',
+        'namecarteMoniteur'
     ];
     protected $casts = [
         'categorie' => 'array',

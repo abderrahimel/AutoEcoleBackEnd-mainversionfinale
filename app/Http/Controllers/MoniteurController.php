@@ -42,19 +42,24 @@ class MoniteurController extends Controller
             return response()->json(['message'=>'moniteur pratique deleted'],200);
     }
 
-    public function updateMoniteur($id, Request $request){
-             if($request->type === 'Moniteur Théorique'){
-                // get id employe from moniteur theorique
-                $moniteur = MoniteurTheorique::find($id);
-             }else{
-                // get id employe from moniteur pratique
-                $moniteur = MoniteurPratique::find($id);
-             }
-            $employe = Employe::find($moniteur->employe_id);
+    public function updateMoniteurT($id, Request $request){
+
+            $moniteurt = MoniteurTheorique::find($id);
+             if(is_null($moniteurt)){
+                return response()->json(['message'=> "moniteur theorique n'est pas trouvé"],404);
+            }
+            $employe = Employe::find($moniteurt->employe_id);
 
             if (is_null($employe)) {
                 return response()->json(['message'=>"Employé n'est pas trouvée"],404);
             }
+            if($request->carteMoniteur != ''){
+                $namecarteMoniteur = time().'.' . explode('/', explode(':', substr($request->carteMoniteur, 0, strpos($request->carteMoniteur, ';')))[1])[1];
+                \Image::make($request->carteMoniteur)->save(public_path('carteMoniteur/').$namecarteMoniteur);
+                $moniteurt->carteMoniteur = $namecarteMoniteur;
+                $moniteurt->save();
+            }
+           
             $employe->nom = $request->nom;
             $employe->prenom =$request->prenom;
             $employe->cin    = $request->cin;
@@ -73,6 +78,40 @@ class MoniteurController extends Controller
         
     }
 
+    public function updateMoniteurp($id, Request $request){
+
+        $moniteurp = MoniteurPratique::find($id);
+         if(is_null($moniteurp)){
+            return response()->json(['message'=> "moniteur pratique n'est pas trouvé"],404);
+        }
+        $employe = Employe::find($moniteurp->employe_id);
+
+        if (is_null($employe)) {
+            return response()->json(['message'=>"Employé n'est pas trouvée"],404);
+        }
+        if($request->carteMoniteur != ''){
+            $namecarteMoniteur = time().'.' . explode('/', explode(':', substr($request->carteMoniteur, 0, strpos($request->carteMoniteur, ';')))[1])[1];
+            \Image::make($request->carteMoniteur)->save(public_path('carteMoniteur/').$namecarteMoniteur);
+            $moniteurp->carteMoniteur = $namecarteMoniteur;
+        }
+        $moniteurp->save();
+        $employe->nom = $request->nom;
+        $employe->prenom =$request->prenom;
+        $employe->cin    = $request->cin;
+        $employe->type   = $request->type;
+        $employe->date_naissance = $request->date_naissance;
+        $employe->lieu_naissance = $request->lieu_naissance;
+        $employe->email = $request->lieu_naissance;
+        $employe->telephone = $request->telephone;
+        $employe->date_embauche = $request->date_embauche;
+        $employe->capn = $request->capn;
+        $employe->conduire = $request->conduire;
+        $employe->adresse = $request->adresse;
+        $employe->observations = $request->observations;
+        $employe->save();
+        return response($employe,200);
+    
+}
     public function getMoniteurT($ecole_id)
     {
         $ecole=AutoEcole::find($ecole_id);
@@ -138,16 +177,10 @@ class MoniteurController extends Controller
             'observations'=>$request->observations
         ]);
         $employe->save();
-        // $array = array_map('intval', explode(',', $request->categorie));
-        // $items[] = '';
-        // foreach( $array as $val){
-        //     if($val != null){
-        //         $items[] = $val;
-        //     }
-        // }
+
         if($request->carteMoniteur != ''){
             $namecarteMoniteur = time().'.' . explode('/', explode(':', substr($request->carteMoniteur, 0, strpos($request->carteMoniteur, ';')))[1])[1];
-            \Image::make($request->carteMoniteur)->save(public_path('candidat_img/').$namecarteMoniteur);
+            \Image::make($request->carteMoniteur)->save(public_path('carteMoniteur/').$namecarteMoniteur);
         }
         $moniteurt = MoniteurTheorique::create([
             'employe_id'=>$employe->id,
@@ -186,7 +219,7 @@ class MoniteurController extends Controller
         $employe->save();
         if($request->carteMoniteur != ''){
             $namecarteMoniteur = time().'.' . explode('/', explode(':', substr($request->carteMoniteur, 0, strpos($request->carteMoniteur, ';')))[1])[1];
-            \Image::make($request->carteMoniteur)->save(public_path('candidat_img/').$namecarteMoniteur);
+            \Image::make($request->carteMoniteur)->save(public_path('carteMoniteur/').$namecarteMoniteur);
         }
         $moniteurp = MoniteurPratique::create([
             'employe_id'=>$employe->id,
@@ -195,7 +228,7 @@ class MoniteurController extends Controller
             'categorie'=> explode(",", $request->categorie)
         ]);
         $moniteurp->save();
-        $ecole -> moniteurPratiques()->save($moniteurp);
+        $ecole->moniteurPratiques()->save($moniteurp);
         $moniteurp->employe;
         return response($moniteurp,201);
     }

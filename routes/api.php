@@ -278,7 +278,7 @@ Route::delete('/delete-examen/{id}', [ExamenController::class,'deleteExamen']);
 Route::get('/auto-ecole/{ecole_id}/moniteur-theorique', [MoniteurController::class,'getMoniteurT']);
 Route::get('/moniteur-theorique/{id}', [MoniteurController::class,'getMoniteurtById']);
 Route::post('/add-moniteur-theorique/{ecole_id}', [MoniteurController::class,'addMoniteurt']);
-Route::put('/update-moniteur/{id}', [MoniteurController::class,'updateMoniteur']);
+Route::put('/update-moniteur-theorique/{id}', [MoniteurController::class,'updateMoniteurT']);
 Route::delete('/delete-moniteur-theorique/{id}', [MoniteurController::class,'deleteMoniteurt']); 
 
 Route::get('/auto-ecole/{ecole_id}/moniteur-pratique', [MoniteurController::class,'getMoniteurP']);

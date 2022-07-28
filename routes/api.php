@@ -35,6 +35,9 @@ use App\Http\Controllers\AutoEcoleController;
 use App\Http\Controllers\ProduitAdminController; 
 use App\Http\Controllers\BlogController; 
 use App\Http\Controllers\AbonnementController; 
+use App\Http\Controllers\MoniteurJobController; 
+use App\Http\Controllers\AutoEcoleVendreController; 
+use App\Http\Controllers\NotesMinisterielleController; 
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -372,3 +375,23 @@ Route::put('/update-abonnement-auto-ecole/{id}', [AbonnementController::class,'u
 Route::post('/auto-ecole/{auto_id}/abonnement', [AbonnementController::class,'newAbonnement']);
 Route::delete('/delete-Abonnement/{id}', [AbonnementController::class, 'deletAbonnement']);
 
+// router for moniteur available for job       
+Route::get('/get-moniteurJob-admin/{id}', [MoniteurJobController::class,'getMoniteurJobById']);
+Route::get('/get-moniteursJob-admin', [MoniteurJobController::class,'getMoniteurJob']);
+Route::put('/update-moniteurJob-admin/{id}', [MoniteurJobController::class,'updateMoniteurJob']);
+Route::post('/add-moniteursJob-admin', [MoniteurJobController::class,'addMoniteurJob']);
+Route::delete('/delete-moniteurJob-admin/{id}', [MoniteurJobController::class, 'deleteMoniteurJob']);
+
+// router for auto ecole a voundre     
+Route::get('/get-autoecole-vendre-admin/{id}', [AutoEcoleVendreController::class,'getAutoecoleVendreById']);
+Route::get('/get-autoecole-vendre-admin', [AutoEcoleVendreController::class,'getAutoecoleVendre']);
+Route::put('/update-autoecole-vendre-admin/{id}', [AutoEcoleVendreController::class,'updateAutoecoleVendre']);
+Route::post('/add-autoecole-vendre-admin', [AutoEcoleVendreController::class,'addAutoecoleVendre']);
+Route::delete('/delete-autoecole-vendre-admin/{id}', [AutoEcoleVendreController::class, 'deleteAutoecoleVendre']);
+
+// router for note Ministerielle     
+Route::get('/get-note-ministerielle/{id}', [NotesMinisterielleController::class,'getNoteMinisterielleById']);
+Route::get('/get-note-ministerielle', [NotesMinisterielleController::class,'getNoteMinisterielle']);
+Route::put('/update-note-ministerielle/{id}', [NotesMinisterielleController::class,'updateNoteMinisterielle']);
+Route::post('/add-note-ministerielle', [NotesMinisterielleController::class,'addNoteMinisterielle']);
+Route::delete('/delete-note-ministerielle/{id}', [NotesMinisterielleController::class, 'deleteNoteMinisterielle']);

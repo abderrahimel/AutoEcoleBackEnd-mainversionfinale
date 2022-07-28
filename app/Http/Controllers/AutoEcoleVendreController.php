@@ -6,16 +6,30 @@ use Illuminate\Http\Request;
 use App\Models\autoEcole_Vendre;
 
 class AutoEcoleVendreController extends Controller
-{
-    public function getAutoEcoleVendres(){
-        $autoEcole_Vendre = autoEcole_Vendre::all();
-        return response()->json($autoEcole_Vendre, 200);
+{     
+    public function getAutoecoleVendre(){
+        $autoEcole_Vendres = autoEcole_Vendre::all();
+        foreach($autoEcole_Vendres as $key => $autoEcole_Vendre) {
+            $img = $autoEcole_Vendre->image;
+            $path = 'autoEcoleVendre/' . $img;
+            $type = pathinfo($path, PATHINFO_EXTENSION);
+            $data = file_get_contents($path);
+            $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
+            $autoEcole_Vendre->image = $base64;    
+        }
+        return response()->json($autoEcole_Vendres, 200);
     }
-    public function getAutoEcoleVendreById($id){
+    public function getAutoecoleVendreById($id){
         $autoEcole_Vendre = autoEcole_Vendre::find($id);
+        $img = $autoEcole_Vendre->image;
+        $path = 'autoEcoleVendre/' . $img;
+        $type = pathinfo($path, PATHINFO_EXTENSION);
+        $data = file_get_contents($path);
+        $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
+        $autoEcole_Vendre->image = $base64;   
         return response()->json($autoEcole_Vendre, 200);
     }
-    public function addAutoEcoleVendre(Request $request){
+    public function addAutoecoleVendre(Request $request){
 
         if($request->image != ''){
             $name_image = time().'.' . explode('/', explode(':', substr($request->image, 0, strpos($request->image, ';')))[1])[1];
@@ -32,14 +46,14 @@ class AutoEcoleVendreController extends Controller
 
         return response()->json($autoEcole_Vendre, 200);
     }
-    public function updateAutoEcoleVendre($id, Request $request){
-
+    public function updateAutoecoleVendre($id, Request $request){
+        $autoEcole_Vendre = autoEcole_Vendre::find($id);
         if($request->image != ''){
             $name_image = time().'.' . explode('/', explode(':', substr($request->image, 0, strpos($request->image, ';')))[1])[1];
             \Image::make($request->image)->save(public_path('autoEcoleVendre/').$name_image);
             $autoEcole_Vendre->image = $name_image;
         }
-        $autoEcole_Vendre = autoEcole_Vendre::find($id);
+        
         $autoEcole_Vendre->titre = $request->titre;
         $autoEcole_Vendre->description = $request->description;
         $autoEcole_Vendre->prix = $request->prix;
@@ -50,7 +64,7 @@ class AutoEcoleVendreController extends Controller
         return response()->json($autoEcole_Vendre, 200);
     }
 
-    public function  deleteAutoEcoleVendre($id){
+    public function  deleteAutoecoleVendre($id){
         $autoEcole_Vendre = autoEcole_Vendre::find($id);
         $autoEcole_Vendre->delete();
         return response()->json(['message'=>'autoEcole Vendre deleted'], 200);

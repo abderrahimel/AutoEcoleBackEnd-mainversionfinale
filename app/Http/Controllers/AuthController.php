@@ -31,7 +31,6 @@ class AuthController extends Controller
     {     
        //var_dump($request->all());
          $data = request()->validate([
-
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required',
          ]);

@@ -8,10 +8,30 @@ use App\Models\AutoEcole;
 class AbonnementController extends Controller
 {
     public function getAbonnements(){
-        $abonnement = Abonnement::all();
-         return response()->json($abonnement, 200);
+        $abonnements = Abonnement::whereNotNull('date_debut')->get();
+        foreach($abonnements as $key => $abonnement) {
+            $abonnement->autoEcole;
+        }
+         return response()->json($abonnements, 200);
     }
- 
+
+    public function getabonnementByIdAUtoEcole($id){
+        $abonnement = Abonnement::where('auto_ecole_id', $id)->get();
+        if(is_null($abonnement)){
+            return response()->json(['message'=>'Abonnement does not exist'], 404);
+        }
+        return response()->json($abonnement, 200);
+    }
+    public function getIdabonnement($auto_id){
+        $abonnement = Abonnement::where('auto_ecole_id', $auto_id)->get(); 
+        if(is_null($abonnement)){
+            return response()->json(['message'=>'Abonnement does not exist'], 404);
+        }
+        
+        return response()->json($abonnement, 200);
+    }
+
+
     public function getAbonnementById($id){
         $abonnement = Abonnement::find($id); 
         if(is_null($abonnement)){
@@ -21,7 +41,7 @@ class AbonnementController extends Controller
         return response()->json($abonnement, 200);
     }
 
-   public function getAbonnementAutoEcoles($id)
+   public function getAbonnementAutoEcolesById($id)
    {
         $abonnement = Abonnement::find($id); 
         if(is_null($abonnement)){

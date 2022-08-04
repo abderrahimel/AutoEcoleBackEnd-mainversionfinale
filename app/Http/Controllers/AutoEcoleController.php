@@ -17,10 +17,15 @@ class AutoEcoleController extends Controller
         return response()->json($ecoles,200);
         
     }
+
     public function getAutoEcolesApprouve(){
-        $autoEcolesApprouve = AutoEcole::where('etat', "approuve")->get();
-        return response()->json($autoEcolesApprouve,200);
+        $autoEcolesApprouves = AutoEcole::where('etat', "approuve")->get();
+        foreach($autoEcolesApprouves as $key => $autoEcolesApprouve) {
+            $autoEcolesApprouve->abonnement;
+        }
+        return response()->json($autoEcolesApprouves,200);
     }
+
     public function getAutoEcoleByIdUser($id)
     {
         $user = User::find($id);
@@ -48,33 +53,33 @@ class AutoEcoleController extends Controller
          }
 
             // logo auto ecole
-            // $img = $autoEcole->image;
-            // $path = 'images/' . $img;
-            // $type = pathinfo($path, PATHINFO_EXTENSION);
-            // $data = file_get_contents($path);
-            // $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
-            // $autoEcole->image = $base64;   
+            $img = $autoEcole->image;
+            $path = 'images/' . $img;
+            $type = pathinfo($path, PATHINFO_EXTENSION);
+            $data = file_get_contents($path);
+            $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
+            $autoEcole->image = $base64;   
             // image rc
-            // $img = $autoEcole->image_rc;
-            // $path = 'image_rc/' . $img;
-            // $type = pathinfo($path, PATHINFO_EXTENSION);
-            // $data = file_get_contents($path);
-            // $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
-            // $autoEcole->image_rc = $base64;  
+            $img = $autoEcole->image_rc;
+            $path = 'image_rc/' . $img;
+            $type = pathinfo($path, PATHINFO_EXTENSION);
+            $data = file_get_contents($path);
+            $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
+            $autoEcole->image_rc = $base64;  
             // //  image_cin
-            // $img = $autoEcole->image_cin;
-            // $path = 'image_cin/' . $img;
-            // $type = pathinfo($path, PATHINFO_EXTENSION);
-            // $data = file_get_contents($path);
-            // $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
-            // $autoEcole->image_cin = $base64;  
+            $img = $autoEcole->image_cin;
+            $path = 'image_cin/' . $img;
+            $type = pathinfo($path, PATHINFO_EXTENSION);
+            $data = file_get_contents($path);
+            $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
+            $autoEcole->image_cin = $base64;  
             // // image_agrement
-            // $img = $autoEcole->image_agrement;
-            // $path = 'image_agrement/' . $img;
-            // $type = pathinfo($path, PATHINFO_EXTENSION);
-            // $data = file_get_contents($path);
-            // $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
-            // $autoEcole->image_agrement = $base64;  
+            $img = $autoEcole->image_agrement;
+            $path = 'image_agrement/' . $img;
+            $type = pathinfo($path, PATHINFO_EXTENSION);
+            $data = file_get_contents($path);
+            $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
+            $autoEcole->image_agrement = $base64;  
        
          return response()->json($autoEcole,200);
    }

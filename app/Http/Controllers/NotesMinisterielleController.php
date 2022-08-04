@@ -9,6 +9,9 @@ class NotesMinisterielleController extends Controller
     public function getNoteMinisterielle(){
 
         $Notes_Ministerielles = Notes_Ministerielles::all();
+        foreach($Notes_Ministerielles as $key => $Notes_Ministerielle) {
+            $Notes_Ministerielle['date'] = explode(" ", $Notes_Ministerielle->created_at)[0];
+        }
         return response()->json($Notes_Ministerielles, 200);
     }
 
@@ -25,7 +28,7 @@ class NotesMinisterielleController extends Controller
             \Image::make($request->fichier)->save(public_path('notes_Ministerielle/').$name_fichier);
         }
         $Notes_Ministerielle = Notes_Ministerielles::create([
-            'messages'=> $request->messages,
+            'category'=> $request->category,
             'titre'=> $request->titre,
             'lien'=> $request->lien,
             'fichier'=> '$name_fichier',
@@ -34,7 +37,7 @@ class NotesMinisterielleController extends Controller
         return response()->json($Notes_Ministerielle, 200);
     }
 
-    public function updateNoteMinisterielle($id){
+    public function updateNoteMinisterielle($id, Request $request){
 
         $Notes_Ministerielle = Notes_Ministerielles::find($id);
 
@@ -43,7 +46,7 @@ class NotesMinisterielleController extends Controller
             \Image::make($request->fichier)->save(public_path('notes_Ministerielle/').$name_fichier);
             $Notes_Ministerielle->fichier = $request->fichier;
         }
-        $Notes_Ministerielle->messages =  $request->messages;
+        $Notes_Ministerielle->category =  $request->category;
         $Notes_Ministerielle->titre = $request->titre;
         $Notes_Ministerielle->fichier = "request->date";
         $Notes_Ministerielle->lien = $request->lien;

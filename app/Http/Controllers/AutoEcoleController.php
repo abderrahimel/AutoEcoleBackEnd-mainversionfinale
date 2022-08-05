@@ -44,6 +44,8 @@ class AutoEcoleController extends Controller
         return response()->json($autoEcole, 200);
     }
 
+
+
    public function  getAutoEcoleById($id)
    {
        $autoEcole = AutoEcole::findOrFail($id);

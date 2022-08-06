@@ -56,7 +56,7 @@ class MoniteurController extends Controller
             if($request->carteMoniteur != ''){
                 $namecarteMoniteur = time().'.' . explode('/', explode(':', substr($request->carteMoniteur, 0, strpos($request->carteMoniteur, ';')))[1])[1];
                 \Image::make($request->carteMoniteur)->save(public_path('carteMoniteur/').$namecarteMoniteur);
-                $moniteurt->carteMoniteur = $namecarteMoniteur;
+                $moniteurt->namecarteMoniteur = $namecarteMoniteur;
                 $moniteurt->save();
             }
            
@@ -92,7 +92,7 @@ class MoniteurController extends Controller
         if($request->carteMoniteur != ''){
             $namecarteMoniteur = time().'.' . explode('/', explode(':', substr($request->carteMoniteur, 0, strpos($request->carteMoniteur, ';')))[1])[1];
             \Image::make($request->carteMoniteur)->save(public_path('carteMoniteur/').$namecarteMoniteur);
-            $moniteurp->carteMoniteur = $namecarteMoniteur;
+            $moniteurp->namecarteMoniteur = $namecarteMoniteur;
         }
         $moniteurp->save();
         $employe->nom = $request->nom;

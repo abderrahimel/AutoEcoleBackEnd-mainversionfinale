@@ -22,6 +22,7 @@ class CourController extends Controller
         foreach ($cours as $cour) {
             $id = MoniteurTheorique::find($cour->moniteur_theorique_id)->employe_id;
             $cour->moniteurth = Employe::find($id);
+            $cour->presence = cour_theorique_presence::find($cour->id);
         }
 
        foreach ($cours as $cour) {

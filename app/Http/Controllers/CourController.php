@@ -29,8 +29,10 @@ class CourController extends Controller
             $listCandidat = ' ';
             $candidats = $cour->candidat;
             foreach($cour->candidat as $id){
-                 $candidat = Candidat::find($id);
-                 $listCandidat = $listCandidat . ' ' . $candidat->nom_fr . ' ' . $candidat->prenom_fr . ',';
+                $candidat = Candidat::find($id);
+                if(!is_null($candidat)){
+                    $listCandidat = $listCandidat . ' ' . $candidat->nom_fr . ' ' . $candidat->prenom_fr . ',';
+                }
             }
             $cour['candidats'] = $listCandidat;
        }
@@ -58,7 +60,10 @@ class CourController extends Controller
             $candidats = $cour->candidat;
             foreach($cour->candidat as $id){
                  $candidat = Candidat::find($id);
-                 $listCandidat = $listCandidat . ' ' . $candidat->nom_fr . ' ' . $candidat->prenom_fr . ',';
+                 if(!is_null($candidat)){
+                    $listCandidat = $listCandidat . ' ' . $candidat->nom_fr . ' ' . $candidat->prenom_fr . ',';
+                 }
+                 
             }
             $cour['candidats'] = $listCandidat;
        }

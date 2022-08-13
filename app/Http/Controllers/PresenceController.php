@@ -12,7 +12,7 @@ use App\Models\MoniteurTheorique;
 use App\Models\MoniteurPratique;
 use App\Models\Employe;
 use App\Models\Candidat;
-
+use Illuminate\Support\Facades\DB;
 class PresenceController extends Controller
 {
     // public function getPresencecourP($auto_id){
@@ -33,6 +33,7 @@ class PresenceController extends Controller
         foreach($presences as $key => $presence) {
             $moniteur = MoniteurPratique::find($presence->moniteur_pratique_id);
             $employe = Employe::find($moniteur->employe_id);
+        
             $presence->moniteur = $employe->nom . " " . $employe->prenom;
         }
         return response()->json($presences,200);
@@ -100,6 +101,7 @@ class PresenceController extends Controller
         foreach($presences as $key => $presence) {
             $moniteur = MoniteurTheorique::find($presence->moniteur_theorique_id);
             $employe = Employe::find($moniteur->employe_id);
+
             $presence->moniteur = $employe->nom . " " . $employe->prenom;
         }
         //
@@ -108,7 +110,9 @@ class PresenceController extends Controller
             $candidats = $presence->candidat;
             foreach($presence->candidat as $id){
                  $candidat = Candidat::find($id);
-                 $listCandidat = $listCandidat . ' ' . $candidat->nom_fr . ' ' . $candidat->prenom_fr . ',';
+                 if(!is_null($candidat)){
+                    $listCandidat = $listCandidat . ' ' . $candidat->nom_fr . ' ' . $candidat->prenom_fr . ',';
+                 }
             }
             $presence['candidats'] = $listCandidat;
        }

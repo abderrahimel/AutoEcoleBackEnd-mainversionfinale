@@ -10,11 +10,11 @@ class UserController extends Controller
 {
     public function getUser()
     {
-        $user = User::all();
-        foreach ($user as $us) {
-            $us->autoEcoles;
+        $users = User::where('type','adminAuto')->get();
+        foreach ($users as $us) {
+            $us['autoecole'] = AutoEcole::where('user_id', $us->id)->get();
         }
-        return response()->json($user,200);
+        return response()->json($users,200);
         
     }
 

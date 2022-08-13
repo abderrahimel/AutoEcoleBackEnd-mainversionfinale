@@ -8,6 +8,8 @@ use App\Models\Examen;
 use App\Models\Note;
 use App\Models\Candidat;
 use App\Models\CategoriePermis;
+use App\Models\MoniteurPratique;
+use App\Models\Employe;
 
 
 class ExamenController extends Controller
@@ -21,7 +23,16 @@ class ExamenController extends Controller
         $examens = $ecole->examens;
         foreach ($examens as $examen) {
             $examen->candidat;
-            $examen->candidat->moniteurPratique->employe;
+            $candidat = Candidat::find($examen->candidat_id);
+            $examen['employe'] = '';
+            if(!is_null($candidat)){
+                $moniteurPratique = MoniteurPratique::find($candidat->moniteur_pratique_id);
+                if(!is_null($moniteurPratique)){
+                  $employe = Employe::find($moniteurPratique->employe_id);
+                  $examen['employe'] = $employe;
+                }
+            }
+            // $examen->candidat->moniteurPratique->employe;
             $examen->permis;
         }
         return response()->json($examens,200);

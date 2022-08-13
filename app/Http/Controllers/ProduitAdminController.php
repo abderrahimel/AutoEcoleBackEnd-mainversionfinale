@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -26,16 +25,17 @@ class ProduitAdminController extends Controller
     public function getAllProduitAdmin()
     {
         $produits = Produit_admin_auto_ecole::all();
-        //
         foreach($produits as $key => $produit) {
-            $img = $produit->image;
-            $path = 'produitsAdmin/' . $img;
-            $type = pathinfo($path, PATHINFO_EXTENSION);
-            $data = file_get_contents($path);
-            $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
-            $produit->image = $base64;            
+            if($produit->image){
+                $img = $produit->image;
+                $path = 'produitsAdmin/' . $img;
+                $type = pathinfo($path, PATHINFO_EXTENSION);
+                $data = file_get_contents($path);
+                $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
+                $produit->image = $base64;      
+            }
         }
-        //
+
         return response()->json($produits, 200);
     }
     
@@ -64,7 +64,8 @@ class ProduitAdminController extends Controller
         return response()->json($produit, 200);
     }
     public function newProduit(Request $request)
-    {  
+    {   
+         $name_image = '';
         if($request->image != ''){
             $name_image = time().'.' . explode('/', explode(':', substr($request->image, 0, strpos($request->image, ';')))[1])[1];
             \Image::make($request->image)->save(public_path('produitsAdmin/').$name_image);

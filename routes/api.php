@@ -38,6 +38,7 @@ use App\Http\Controllers\AbonnementController;
 use App\Http\Controllers\MoniteurJobController; 
 use App\Http\Controllers\AutoEcoleVendreController; 
 use App\Http\Controllers\NotesMinisterielleController; 
+use App\Http\Controllers\SuperAdminController; 
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -355,9 +356,12 @@ Route::get('/auto-ecole/{auto_id}/logo-auto-ecole', [AuthController::class,'getL
 // '/api'
 Route::get('/get-produit-admin', [ProduitAdminController::class,'getAllProduitAdmin']);
 Route::get('/get-produit-by-id/{id}', [ProduitAdminController::class,'getProduitAdminById']);//
+Route::get('/superadmin/data', [SuperAdminController::class,'getdataSuper']);//
+Route::get('/superadmin/auto-ecoles-en-attente', [SuperAdminController::class,'getautoecolesEnattente']);//
 Route::put('/auto-ecole/produit-admin/{id}', [ProduitAdminController::class,'updateProduitAdmin']); 
 Route::post('/new-produit', [ProduitAdminController::class,'newProduit']);
 Route::delete('/delete-produit-admin/{id}', [ProduitAdminController::class, 'deleteProduit']);
+
 // 
 // route blog
 Route::get('/get-blogs', [BlogController::class,'getBlog']);

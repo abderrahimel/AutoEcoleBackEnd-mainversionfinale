@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\DepenseVehicule;
 use App\Models\AutoEcole;
+
 use App\Models\CategorieDepence;
 class Depense_vehiculeController extends Controller
 {
@@ -21,7 +22,7 @@ class Depense_vehiculeController extends Controller
         }
         return response()->json($depenceslocals,200);
     }
-
+   
     public function getDepencevehiculeById($id)
     {
         $depencevehicule = DepenseVehicule::find($id);

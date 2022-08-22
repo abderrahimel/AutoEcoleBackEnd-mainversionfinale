@@ -6,6 +6,7 @@ use App\Models\Vehicule;
 use App\Models\AutoEcole;
 use Illuminate\Http\Request;
 use Intervention\Image\Facades\Image;
+use Illuminate\Support\Carbon;
 
 class VehiculeController extends Controller
 {
@@ -14,8 +15,26 @@ class VehiculeController extends Controller
         $ecole = AutoEcole::findOrFail($ecole_id);
         $vehicules = Vehicule::where('auto_ecole_id', $ecole_id)->get();
         return response()->json($vehicules, 200);
-        
     }
+    // public function getVidanges($ecole_id){
+
+    //     $collection = Vehicule::where('auto_ecole_id', $ecole_id)->get();
+    //     $featured = [];
+    //     $unfeatured = [];
+
+    //     $collection->each(function ($item) use (&$featured, &$unfeatured) {
+    //         // $dateexpiration = Carbon::createFromFormat('Y-m-d', $item->date_expiration_assurance);
+    //         // $currentDate = Carbon::now()->format('y-m-d');
+    //         if ($dateexpiration->eq($currentDate)) {
+    //             $featured[] = $item;
+    //         } else {
+    //             $unfeatured[] = $item;
+    //         }
+    //         });
+           
+       
+    //    return response()->json(['featured'=>$featured, 'unfeatured'=>$unfeatured],200);
+    //  }
 
     public function getVehiculeById($id)
     {

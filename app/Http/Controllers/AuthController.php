@@ -104,7 +104,7 @@ class AuthController extends Controller
             'auto_ecole_id'=>$ecole->id,
          ]);
          $abonnement->save();
-          
+        // user verifie email
         return response()->json(['message' => 'user added', 'user' => $request->all()], 200);
     }
 

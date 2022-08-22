@@ -77,7 +77,9 @@ Route::post('/logout', [AuthController::class,'logout']);
 
 
 
-
+// verifie email
+Route::get('/email/resend', [VerifieEmailController::class, 'resend'])->name('verification.resend');
+Route::get('/email/verify/{id}/{hash}', [VerifieEmailController::class, 'verify'])->name('verification.verify');
 
 //Users routes
 Route::get('/user', [UserController::class,'getUser']);
@@ -105,6 +107,7 @@ Route::put('/desapprover-auto-ecole/{id}', [AutoEcole::class,'desapproverAutoEco
 
 Route::get('/auto-ecole/{ecole_id}/vehicule', [VehiculeController::class,'getVehicule']);
 Route::get('/vehicule/{id}', [VehiculeController::class,'getVehiculeById']);
+Route::get('/auto-ecole/{ecole_id}/vidange', [VehiculeController::class,'getVidanges']);
 Route::post('/add-vehicule/{ecole_id}', [VehiculeController::class,'addVehicule']);
 Route::put('/update-vehicule/{id}', [VehiculeController::class,'updateVehicule']);
 Route::delete('/delete-vehicule/{id}', [VehiculeController::class,'deleteVehicule']);

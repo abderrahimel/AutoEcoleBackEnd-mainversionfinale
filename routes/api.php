@@ -39,6 +39,7 @@ use App\Http\Controllers\MoniteurJobController;
 use App\Http\Controllers\AutoEcoleVendreController; 
 use App\Http\Controllers\NotesMinisterielleController; 
 use App\Http\Controllers\SuperAdminController; 
+use App\Http\Controllers\VerifieEmailController; 
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -78,8 +79,8 @@ Route::post('/logout', [AuthController::class,'logout']);
 
 
 // verifie email
-Route::get('/email/resend', [VerifieEmailController::class, 'resend'])->name('verification.resend');
-Route::get('/email/verify/{id}/{hash}', [VerifieEmailController::class, 'verify'])->name('verification.verify');
+Route::post('email/verification-notification', [VerifieEmailController::class, 'sendVerificationEmail'])->middleware('auth:sanctum');
+Route::get('verify-email/{id}/{hash}', [VerifieEmailController::class, 'verify'])->name('verification.verify')->middleware('auth:sanctum');
 
 //Users routes
 Route::get('/user', [UserController::class,'getUser']);
@@ -274,6 +275,8 @@ Route::delete('/delete-rapport/{id}', [RapportController::class,'deleteRapport']
 
 //Rapports routes
 Route::get('/auto-ecole/{ecole_id}/examen', [ExamenController::class,'getExamen']);
+Route::get('/auto-ecole/{ecole_id}/candidat-reussi', [ExamenController::class,'getCandidatReussi']);
+Route::get('/auto-ecole/{ecole_id}/candidat-Noreussi', [ExamenController::class,'getCandidatNoreussi']);
 Route::get('/examen/{id}', [ExamenController::class,'getExamenById']);
 Route::post('/add-examen/{ecole_id}', [ExamenController::class,'addExamen']);
 Route::post('/add-note-candidat/{id}', [ExamenController::class, 'addNoteCandidat']); 

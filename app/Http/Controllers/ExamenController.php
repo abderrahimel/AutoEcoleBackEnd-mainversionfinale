@@ -20,7 +20,8 @@ class ExamenController extends Controller
         if (is_null($ecole_id)) {
             return response()->json(['message'=>"Auto Ecole n'est pas trouvée"],404);
         }
-        $examens = $ecole->examens;
+        // $examens = $ecole->examens;
+        $examens = Examen::where('resultat','!=', 1)->where('resultat','!=', 0)->get();
         foreach ($examens as $examen) {
             $examen->candidat;
             $candidat = Candidat::find($examen->candidat_id);
@@ -32,13 +33,39 @@ class ExamenController extends Controller
                   $examen['employe'] = $employe;
                 }
             }
-            // $examen->candidat->moniteurPratique->employe;
             $examen->permis;
         }
         return response()->json($examens,200);
         
     } 
+    public function getCandidatReussi($ecole_id){
+        // examen candidat reussi
+        $ecole=AutoEcole::find($ecole_id);
+        if (is_null($ecole_id)) {
+            return response()->json(['message'=>"Auto Ecole n'est pas trouvée"],404);
+        }
+        $examens = Examen::where('resultat', 1)->get();
+        foreach ($examens as $examen) {
+        $candidat = Candidat::find($examen->candidat_id);
+        $examen->candidat;
+        }
+        return response()->json($examens,200);
 
+    }
+    public function getCandidatNoreussi($ecole_id){
+        // examen candidat no reussi
+        $ecole=AutoEcole::find($ecole_id);
+        if (is_null($ecole_id)) {
+            return response()->json(['message'=>"Auto Ecole n'est pas trouvée"],404);
+        }
+        $examens = Examen::where('resultat', 0)->get();
+        foreach ($examens as $examen) {
+        $candidat = Candidat::find($examen->candidat_id);
+        $examen->candidat;
+        }
+        return response()->json($examens,200);
+
+    }
     public function getExamenById($id)
     {
         $examen = Examen::find($id);

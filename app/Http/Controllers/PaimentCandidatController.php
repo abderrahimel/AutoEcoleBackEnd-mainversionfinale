@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\AutoEcole;
 use App\Models\PaimentCandidat;
+use App\Models\Examen;
 use Illuminate\Support\Facades\DB;
 
 class PaimentCandidatController extends Controller
@@ -37,6 +38,10 @@ class PaimentCandidatController extends Controller
         $ecole->paimentCandidat()->save($paimentCandidat);
         return response($paimentCandidat,200);
     }
+    public function getCandidatNoreussi($ecole_id){
+
+    }
+
    public function updatePaiementCandidat($id, Request $request){
           $paimentCandidat = PaimentCandidat::find($id);
           if (is_null($paimentCandidat)) {

@@ -38,9 +38,7 @@ class PaimentCandidatController extends Controller
         $ecole->paimentCandidat()->save($paimentCandidat);
         return response($paimentCandidat,200);
     }
-    public function getCandidatNoreussi($ecole_id){
 
-    }
 
    public function updatePaiementCandidat($id, Request $request){
           $paimentCandidat = PaimentCandidat::find($id);

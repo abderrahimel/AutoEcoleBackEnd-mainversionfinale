@@ -160,6 +160,7 @@ Route::delete('/delete-depence/{id}', [DepenceController::class,'deleteDepence']
 
 // depense local 
 Route::get('/auto-ecole/{ecole_id}/depence-local', [Depense_localController::class,'getDepencelocal']);
+Route::get('/auto-ecole/{ecole_id}/depence-local/month/{id}', [Depense_localController::class,'getDepencelocalbyMonth']);
 Route::get('/depence-local/{id}', [Depense_localController::class,'getDepencelocalById']);
 Route::post('/add-depence-local/{ecole_id}', [Depense_localController::class,'addDepencelocal']);
 Route::put('/update-depence-local/{id}', [Depense_localController::class,'updateDepencelocal']);

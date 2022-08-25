@@ -22,7 +22,13 @@ class Depense_localController extends Controller
         return response()->json($depenceslocals,200);
         
     }
-
+    public function getDepencelocalbyMonth($ecole_id, $id){
+        $ecole=AutoEcole::find($ecole_id);
+        if (is_null($ecole)) {
+            return response()->json(['message'=>"Auto Ecole n'est pas trouvée"],404);
+        }
+        $depenceslocals = Depense_local::where('auto_ecole_id', $ecole_id)->get();
+    }
     public function getDepencelocalById($id)
     {
         $depencelocal = Depense_local::find($id);

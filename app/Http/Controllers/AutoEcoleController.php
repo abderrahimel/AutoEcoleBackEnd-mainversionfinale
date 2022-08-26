@@ -17,7 +17,39 @@ class AutoEcoleController extends Controller
         return response()->json($ecoles,200);
         
     }
+     public function updateAutoEcole($id, Request $request)
+     {
+        $autoEcole = AutoEcole::find($id);
+        if(is_null($autoEcole)){
+            return response()->json(['message'=>'auto ecole does not exist'], 404);
+        }
+        
+        $autoEcole->nom_auto_ecole = $request->nom_auto_ecole;
+        $autoEcole->telephone = $request->telephone;
+        $autoEcole->pays = $request->pays;
+        $autoEcole->ville = $request->ville;
+        $autoEcole->fax = $request->fax;
+        $autoEcole->site_web = $request->site_web;
+        $autoEcole->adresse = $request->adresse;
+        $autoEcole->n_cnss = $request->n_cnss;
+        $autoEcole->ice = $request->ice;
+        $autoEcole->tva = $request->tva;
+         $autoEcole->n_register_de_commerce = $request->n_register_de_commerce;
+        $autoEcole->n_compte_bancaire = $request->n_compte_bancaire;
+         $autoEcole->n_agrement = $request->n_agrement;
+        $autoEcole->n_patente = $request->n_patente;
+        $autoEcole->date_autorisation = $request->date_autorisation;
+        $autoEcole->date_ouverture = $request->date_ouverture;
+        $autoEcole->identification_fiscale = $request->identification_fiscale;
+        $autoEcole->cin_responsable = $request->cin_responsable;
+        $autoEcole->nom_responsable = $request->nom_responsable;
+        $autoEcole->prenom_responsable = $request->prenom_responsable;
+        $autoEcole->tel_responsable = $request->tel_responsable;
+        $autoEcole->adresse_responsable = $request->adresse_responsable;
+        $autoEcole->save();
 
+       return response()->json($autoEcole,200);
+     }
     public function getAutoEcolesApprouve(){
         $autoEcolesApprouves = AutoEcole::where('etat', "approuve")->get();
         foreach($autoEcolesApprouves as $key => $autoEcolesApprouve) {

@@ -94,6 +94,7 @@ Route::get('/all-auto-ecole/{user_id}', [AutoEcole::class,'getAutoEcole']);
 Route::get('/all-auto-ecole-admin', [AutoEcoleController::class,'getAutoEcoles']);
 Route::get('/get-auto-ecoles-approuve', [AutoEcoleController::class,'getAutoEcolesApprouve']);
 Route::get('/auto-ecole/{id}', [AutoEcoleController::class,'getAutoEcoleById']);
+Route::put('/modifier-auto-ecole/{id}', [AutoEcoleController::class,'updateAutoEcole']);
 Route::get('/get-auto-ecole-deleted/{id}', [AutoEcoleController::class,'getAutoEcoleByIdDeleted']); 
 Route::get('/auto-ecole-user/{id}', [AutoEcoleController::class,'getAutoEcoleByIdUser']);
 Route::get('/archive-auto-ecole', [AutoEcole::class,'getArchiveAutoEcole']);

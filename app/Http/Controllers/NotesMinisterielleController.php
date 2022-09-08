@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Notes_Ministerielles;
+use Illuminate\Support\Facades\Storage;
+
 class NotesMinisterielleController extends Controller
 {         
     public function getNoteMinisterielle(){
@@ -12,26 +14,58 @@ class NotesMinisterielleController extends Controller
         foreach($Notes_Ministerielles as $key => $Notes_Ministerielle) {
             $Notes_Ministerielle['date'] = explode(" ", $Notes_Ministerielle->created_at)[0];
         }
+        //
+        foreach($Notes_Ministerielles as $key => $Notes_Ministerielle) {
+            if($Notes_Ministerielle->fichier){
+                // $namepdf = $Notes_Ministerielle->fichier;
+                // $path = 'storage/' . $namepdf;
+                // $type = pathinfo($path, PATHINFO_EXTENSION);
+                // $data = file_get_contents($path);
+                // $base64 = 'data:application/pdf' . ';base64,' . base64_encode($data);
+                // $Notes_Ministerielle->fichier = $base64;  
+                $namepdf = $Notes_Ministerielle->fichier;
+                $Notes_Ministerielle->fichier =  'http://' . request()->getHttpHost() . '/' . 'storage/' .  $namepdf;  
+            }
+        }
+        ///
         return response()->json($Notes_Ministerielles, 200);
     }
 
     public function getNoteMinisterielleById($id){
 
         $Notes_Ministerielle = Notes_Ministerielles::find($id);
+         //
+         $namepdf = $Notes_Ministerielle->fichier;
+         $Notes_Ministerielle->fichier =  'http://' . request()->getHttpHost() . '/' . 'storage/' .  $namepdf;  
         return response()->json($Notes_Ministerielle, 200);
     }
 
     public function addNoteMinisterielle(Request $request){
-           
+        //    var_dump($request->all());
+        // http://localhost:8000/storage/1662456961.pdf
         if($request->fichier != ''){
             $name_fichier = time().'.' . explode('/', explode(':', substr($request->fichier, 0, strpos($request->fichier, ';')))[1])[1];
-            \Image::make($request->fichier)->save(public_path('notes_Ministerielle/').$name_fichier);
+            $pdf_64 = $request->fichier; //your base64 encoded data
+            $replace = substr($pdf_64, 0, strpos($pdf_64, ',')+1); 
+          // find substring fro replace here eg: data:image/png;base64,
+           $pdf = str_replace($replace, '', $pdf_64); 
+           $pdf = str_replace(' ', '+', $pdf); 
+           Storage::disk('public')->put($name_fichier, base64_decode($pdf));
         }
+        if($request->category == 'المذكرات الوزارية'){
+            $category = 1;
+          } elseif ($request->category == 'بلاغ صحفي') {
+            $category = 2;
+          }elseif ($request->category == 'دفتر تحملات المتعلق بفتح واستغلال مؤسسات تعليم السياقة'){
+            $category = 3;
+          }else {
+            $category = 4;
+          }
         $Notes_Ministerielle = Notes_Ministerielles::create([
-            'category'=> $request->category,
+            'category'=> $category,
             'titre'=> $request->titre,
             'lien'=> $request->lien,
-            'fichier'=> '$name_fichier',
+            'fichier'=> $name_fichier,
         ]);
         $Notes_Ministerielle->save();
         return response()->json($Notes_Ministerielle, 200);

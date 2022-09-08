@@ -10,9 +10,8 @@ class Notes_Ministerielles extends Model
 {
     use HasFactory, SoftDeletes;
     protected $fillable = [
-        'messages',
-        'titre',
-        'date',
+        'category',
+        'titre',    
         'lien',
         'fichier',
        

@@ -15,9 +15,8 @@ class CreateNotesMinisteriellesTable extends Migration
     {
         Schema::create('notes__ministerielles', function (Blueprint $table) {
             $table->id();
-            $table->string('messages');
             $table->string('titre');
-            $table->string('date');
+            $table->string('category');
             $table->string('lien');
             $table->text('fichier');
             $table->softDeletes();

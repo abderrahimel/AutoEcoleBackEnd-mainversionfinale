@@ -39,7 +39,9 @@ use App\Http\Controllers\MoniteurJobController;
 use App\Http\Controllers\AutoEcoleVendreController; 
 use App\Http\Controllers\NotesMinisterielleController; 
 use App\Http\Controllers\SuperAdminController; 
-use App\Http\Controllers\VerifieEmailController; 
+use App\Http\Controllers\VerifieEmailController;   
+use App\Http\Controllers\ForgotPasswordController;   
+use App\Http\Controllers\ResetPasswordController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -57,11 +59,29 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request){
 });
 // register route
 Route::post('register', [AuthController::class, 'register']);
-Route::post('login', [AuthController::class, 'login']);
+Route::match(['get', 'post'], '/login', [AuthController::class, 'login'])->name('login');
 // login and logout
 Route::get('/logged', [AuthController::class,'logged']);
 Route::post('/logout', [AuthController::class,'logout']);
-
+Route::post('/resend/email/token', [AuthController::class, 'resendPin'])->name('resendPin');
+Route::middleware('auth:sanctum')->group(function () {
+        Route::post('email/verify',[AuthController::class, 'verifyEmail']);
+        Route::middleware('verify.api')->group(function () {
+          Route::post('/logout', [AuthController::class, 'logout']);
+    });
+});
+Route::post(
+    '/forgot-password', 
+    [ForgotPasswordController::class, 'forgotPassword'] 
+);
+Route::post(
+    '/verify/pin', 
+    [ForgotPasswordController::class, 'verifyPin']
+);
+Route::post(
+    '/reset-password', 
+    [ResetPasswordController::class, 'resetPassword']
+);
 // Route::group(['middleware' => 'api'], function ($router){
 //     Route::post('login', [AuthController::class, 'login']);
 //     Route::post('logout', [AuthController::class, 'logout']);

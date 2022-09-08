@@ -11,8 +11,14 @@ use App\Models\AutoEcole as ModelsAutoEcole;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Cookie;
 use Symfony\Component\HttpFoundation\Response;
-use Validator;
 use Intervention\Image\Facades\Image;
+// import requirement
+use App\Mail\VerifyEmail;
+use Carbon\Carbon;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
@@ -29,7 +35,6 @@ class AuthController extends Controller
 
     public function register(Request $request)
     {     
-       //var_dump($request->all());
          $data = request()->validate([
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required',
@@ -42,21 +47,25 @@ class AuthController extends Controller
              'name' => $request->nom_responsable
         ]);
         //image
+        $name_image = '';
         if($request->image != ''){
             $name_image = time().'.' . explode('/', explode(':', substr($request->image, 0, strpos($request->image, ';')))[1])[1];
             \Image::make($request->image)->save(public_path('images/').$name_image);
         }
         //  image rc 
+        $name_image_rc = '';
          if($request->image_rc != ''){
             $name_image_rc = time().'.' . explode('/', explode(':', substr($request->image_rc, 0, strpos($request->image_rc, ';')))[1])[1];
             \Image::make($request->image_rc)->save(public_path('image_rc/').$name_image_rc);
          }
         //   image agrement
+        $name_image_agrement = '';
          if($request->image_agrement != ''){
             $name_image_agrement = time().'.' . explode('/', explode(':', substr($request->image_agrement, 0, strpos($request->image_agrement, ';')))[1])[1];
             \Image::make($request->image_agrement)->save(public_path('image_agrement/').$name_image_agrement);
          }
         //  image cin
+        $name_image_cin = '';
          if($request->image_cin != ''){
             $name_image_cin = time().'.' . explode('/', explode(':', substr($request->image_cin, 0, strpos($request->image_cin, ';')))[1])[1];
             \Image::make($request->image_cin)->save(public_path('image_cin/').$name_image_cin);
@@ -104,10 +113,107 @@ class AuthController extends Controller
             'auto_ecole_id'=>$ecole->id,
          ]);
          $abonnement->save();
-        // user verifie email
-        return response()->json(['message' => 'user added', 'user' => $request->all()], 200);
+        
+        //  verify email new users
+        if ($user) {
+            $verify2 =  DB::table('password_resets')->where([
+                ['email', $request->all()['email']]
+            ]);
+    
+            if ($verify2->exists()) {
+                $verify2->delete();
+            }
+            // generate code pin
+            $pin = rand(100000, 999999);
+            DB::table('password_resets')
+                ->insert(
+                    [
+                        'email' => $request->all()['email'], 
+                        'token' => $pin
+                    ]
+                );
+        }
+        // send email to new user with the code pin
+        Mail::to($request->email)->send(new VerifyEmail($pin));
+        // generate token
+        $token = $user->createToken('myapptoken')->plainTextToken;
+
+         return new JsonResponse(
+        [
+            'success' => true, 
+            'message' => 'Successful created user. Please check your email for a 6-digit pin to verify your email.', 
+            'token' => $token
+        ], 
+        201
+    );
+    }
+    public function resendPin(Request $request)
+   {
+    $validator = Validator::make($request->all(), [
+        'email' => ['required', 'string', 'email', 'max:255'],
+    ]);
+
+    if ($validator->fails()) {
+        return new JsonResponse(['success' => false, 'message' => $validator->errors()], 422);
     }
 
+    $verify =  DB::table('password_resets')->where([
+        ['email', $request->all()['email']]
+    ]);
+
+    if ($verify->exists()) {
+        $verify->delete();
+    }
+
+    $token = random_int(100000, 999999);
+    $password_reset = DB::table('password_resets')->insert([
+        'email' => $request->all()['email'],
+        'token' =>  $token,
+        'created_at' => Carbon::now()
+    ]);
+
+    if ($password_reset) {
+        Mail::to($request->all()['email'])->send(new VerifyEmail($token));
+
+        return new JsonResponse(
+            [
+                'success' => true, 
+                'message' => "A verification mail has been resent"
+            ], 
+            200
+        );
+    }
+   }
+
+    public function verifyEmail(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'token' => ['required'],
+        ]);
+    
+        if ($validator->fails()) {
+            return redirect()->back()->with(['message' => $validator->errors()]);
+        }
+        $select = DB::table('password_resets')
+            ->where('email', Auth::user()->email)
+            ->where('token', $request->token);
+    
+        if ($select->get()->isEmpty()) {
+            return new JsonResponse(['success' => false, 'message' => "Invalid PIN"], 400);
+        }
+    
+        $select = DB::table('password_resets')
+            ->where('email', Auth::user()->email)
+            ->where('token', $request->token)
+            ->delete();
+    
+        $user = User::find(Auth::user()->id);
+        $user->email_verified_at = date("Y-m-d H:i:s");  // laravel not accept this format Carbon::now()->getTimestamp();
+        $user->save();
+    
+        return new JsonResponse(['success' => true, 'message' => "Email is verified"], 200);
+    }
+    
     public function setlogo($id, Request $request)
     {      
             $autoEcole = ModelsAutoEcole::find($id);
@@ -153,36 +259,66 @@ class AuthController extends Controller
         $nameLogo =  "images/" . $autoEcole->image;
         return response()->json($nameLogo, 200);
      }
-    public function login(Request $request)
-    {
-        if(!$token = Auth::attempt($request->only('email', 'password'))) {
-            return response([
-                'error' => 'This information does not match our records.'
-            ], Response::HTTP_UNAUTHORIZED);
-        }
-        $user = Auth::user();
-        $user = User::where('email', $request['email'])->firstOrFail();
-        // $token = $user->createToken('token')->plainTextToken;
-        return $this->respondWithToken($token);
-    }
+     public function login(Request $request)
+     {
+         $validator = Validator::make($request->all(), [
+             'email' => ['required', 'string', 'email', 'max:255'],
+             'password' => ['required', 'string', 'min:8'],
+         ]);
+     
+         if ($validator->fails()) {
+             return new JsonResponse(
+                 [
+                     'success' => false, 
+                     'message' => $validator->errors()
+                 ], 
+                 422
+             );
+         }
+     
+         $user = User::where('email', $request->all()['email'])->first();
+     
+         // Check Password
+         if (!$user || !Hash::check($request->all()['password'], $user->password)) {
+             return new JsonResponse(
+                 [
+                     'success' => false, 
+                     'message' => 'Invalid Credentials'
+                 ], 
+                 400
+             );
+         }
+     
+         $token = $user->createToken('myapptoken')->plainTextToken;
+         return $this->respondWithToken($token);
+     }
+     
+     public function logout(Request $request)
+     {
+         auth()->user()->tokens()->delete();
+     
+         return new JsonResponse(
+             [
+                 'success' => true, 
+                 'message' =>'Logged Out Successfully'
+             ], 
+             200
+         );
+     
+      }
+     
 
     public function logged()
     {
        return Auth::user();
     }
 
-    public function logout(Request $request)
-    {   $user = User::find($request->id);
-        $user->tokens()->delete();
-        return response()->json([
-            'message' => 'Success'
-        ]);
-    }
+  
 
     protected function respondWithToken($token)
     {
         return response()->json([
-            'access_token' => $token,
+            'token' => $token,
             'token_type' => 'bearer',
             'expires_in' => auth()->factory()->getTTL() * 60
         ]);

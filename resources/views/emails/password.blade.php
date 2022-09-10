@@ -1,9 +1,11 @@
 @component('mail::message')
-# Reset Password
+Message de gestion auto école
+Réinitialisation du mot de passe
+Vous recevez cet email car nous avons reçu une demande de réinitialisation de mot de passe pour votre compte. :
 
-Your six-digit PIN is <h4>{{$pin}}</h4>
-<p>Please do not share your One Time Pin With Anyone. You made a request to reset your password. Please discard if this wasn't you.</p>
+votre six-digit PIN: <h4>{{$pin}}</h4>
 
-Thanks,<br>
+Merci,
+Gestion-Auto-Ecole<br>
 {{ config('app.name') }}
 @endcomponent

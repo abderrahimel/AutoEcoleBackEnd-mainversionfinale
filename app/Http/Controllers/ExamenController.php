@@ -10,21 +10,29 @@ use App\Models\Candidat;
 use App\Models\CategoriePermis;
 use App\Models\MoniteurPratique;
 use App\Models\Employe;
+use Illuminate\Support\Facades\DB;
 
 
 class ExamenController extends Controller
 {
     public function getExamen($ecole_id)
     {
-        $ecole=AutoEcole::find($ecole_id);
-        if (is_null($ecole_id)) {
+        $ecole = AutoEcole::find($ecole_id);
+        if (is_null($ecole)) {
             return response()->json(['message'=>"Auto Ecole n'est pas trouvée"],404);
         }
-        // $examens = $ecole->examens;
+        
         $examens = Examen::where('resultat','!=', 1)->where('resultat','!=', 0)->get();
         foreach ($examens as $examen) {
-            $examen->candidat;
+            // 
             $candidat = Candidat::find($examen->candidat_id);
+            if(!is_null($candidat)){$examen->candidat;}
+            // $examen['candidat'] = Candidat::withTrashed()->find($examen->candidat_id);
+            if(is_null($candidat)){
+                $candidat = Candidat::withTrashed()->find($examen->candidat_id);
+                $candidat->prenom_fr = $candidat->prenom_fr . ' (s)';
+                $examen['candidat']  =  $candidat;
+            }
             $examen['employe'] = '';
             if(!is_null($candidat)){
                 $moniteurPratique = MoniteurPratique::find($candidat->moniteur_pratique_id);
@@ -34,6 +42,7 @@ class ExamenController extends Controller
                 }
             }
             $examen->permis;
+            //
         }
         return response()->json($examens,200);
         

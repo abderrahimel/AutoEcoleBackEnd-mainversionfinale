@@ -7,19 +7,17 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class ResetPassword extends Mailable
+class NotificationResetPassword extends Mailable
 {
     use Queueable, SerializesModels;
-    public $pin;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($pin)
+    public function __construct()
     {
-        $this->pin = $pin;
     }
 
     /**
@@ -29,6 +27,6 @@ class ResetPassword extends Mailable
      */
     public function build()
     {
-        return $this->subject("Réinitialisation du mot de passe")->markdown('emails.password');
+        return $this->markdown('emails.notificationPassword');
     }
 }

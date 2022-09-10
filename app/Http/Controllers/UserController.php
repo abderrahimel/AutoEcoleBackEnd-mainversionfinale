@@ -23,7 +23,7 @@ class UserController extends Controller
     {
         $user = User::find($id);
         if(is_null($user)){
-            return response()->json(['message'=> "User n'est pas trouvée"],404);
+            return response()->json(['message'=> "User n'est pas trouvée"],200);
         }
        
         return response()->json($user,200);

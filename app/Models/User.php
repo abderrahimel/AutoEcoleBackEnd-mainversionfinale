@@ -28,6 +28,12 @@ class User extends Authenticatable implements JWTSubject,MustVerifyEmail
         'email_verified_at',
         'password'
     ];
+     /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
+   
       /**
      * Get the identifier that will be stored in the subject claim of the JWT.
      *
@@ -55,7 +61,7 @@ class User extends Authenticatable implements JWTSubject,MustVerifyEmail
      */
     protected $hidden = [
         'password',
-        /* 'remember_token', */
+        // 'remember_token',
     ];
 
     public function autoEcoles()

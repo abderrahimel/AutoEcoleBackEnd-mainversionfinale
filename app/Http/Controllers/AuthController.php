@@ -261,51 +261,24 @@ class AuthController extends Controller
      }
      public function login(Request $request)
      {
-         $validator = Validator::make($request->all(), [
-             'email' => ['required', 'string', 'email', 'max:255'],
-             'password' => ['required', 'string', 'min:8'],
-         ]);
-     
-         if ($validator->fails()) {
-             return new JsonResponse(
-                 [
-                     'success' => false, 
-                     'message' => $validator->errors()
-                 ], 
-                 422
-             );
+         if (!$token = Auth::attempt($request->only('email', 'password'))) {
+             return response([
+                 'error' => 'This information does not match our records.'
+             ], Response::HTTP_UNAUTHORIZED);
          }
-     
-         $user = User::where('email', $request->all()['email'])->first();
-     
-         // Check Password
-         if (!$user || !Hash::check($request->all()['password'], $user->password)) {
-             return new JsonResponse(
-                 [
-                     'success' => false, 
-                     'message' => 'Invalid Credentials'
-                 ], 
-                 400
-             );
-         }
-     
-         $token = $user->createToken('myapptoken')->plainTextToken;
+         $user = Auth::user();
+         $user = User::where('email', $request['email'])->firstOrFail();
+         // $token = $user->createToken('token')->plainTextToken;
          return $this->respondWithToken($token);
      }
      
      public function logout(Request $request)
-     {
-         auth()->user()->tokens()->delete();
-     
-         return new JsonResponse(
-             [
-                 'success' => true, 
-                 'message' =>'Logged Out Successfully'
-             ], 
-             200
-         );
-     
-      }
+    {   $user= User::find($request->id);
+        $user->tokens()->delete();
+        return response([
+            'message' => 'Success'
+        ]);
+    }
      
 
     public function logged()
@@ -318,7 +291,7 @@ class AuthController extends Controller
     protected function respondWithToken($token)
     {
         return response()->json([
-            'token' => $token,
+            'access_token' => $token,
             'token_type' => 'bearer',
             'expires_in' => auth()->factory()->getTTL() * 60
         ]);

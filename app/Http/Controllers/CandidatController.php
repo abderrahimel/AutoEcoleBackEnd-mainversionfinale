@@ -14,9 +14,14 @@ class CandidatController extends Controller
 {
     public function getCandidat($ecole_id)
     {
-        $ecole = AutoEcole::findOrFail($ecole_id);
-       
+        $ecole = AutoEcole::find($ecole_id);
+        if(is_null($ecole)){
+            return response()->json(['message'=>'ecole  doesn\'t exist'],200);
+        }
         $candidats = Candidat::where('auto_ecole_id', $ecole_id)->get();
+        if(is_null($candidats)){
+            return response()->json(['message'=>'candidat  doesn\'t exist'],200);
+        }
         return response()->json($candidats,200);
         
     }
@@ -39,29 +44,39 @@ class CandidatController extends Controller
     public function historiquecandidat($ecole_id)
     {
         $ecole=AutoEcole::find($ecole_id);
-        if ($ecole == "null") {
-            return response()->json(['message'=>"Auto Ecole n'est pas trouvée"],404);
+        if(is_null($ecole)){
+            return response()->json(['message'=>'ecole  doesn\'t exist'],200);
         }
         $candidats = $ecole->candidats;
-        $candidat = DB::table('candidats')->where('deleted_at', NULL);
+    
         return response()->json($candidats,200);
         
     }
     public function getarchivecandidat($ecole_id)
     {
         $ecole=AutoEcole::find($ecole_id);
-        if ($ecole == "null") {
-            return response()->json(['message'=>"Auto Ecole n'est pas trouvée"],404);
+        if(is_null($ecole)){
+            return response()->json(['message'=>'ecole  doesn\'t exist'],200);
         }
         $candidats = DB::table('candidats')->whereNotNull('deleted_at')->get();
+        if (is_null($candidats)) {
+            return response()->json(['message'=>"candidats n'est pas trouvée"],200);
+        }
         return response()->json($candidats,200);
         
     }
     public function getCandidatById($id)
     {
-        $candidat= Candidat::findOrFail($id);
-        $candidat-> moniteurPratique; 
-        $candidat-> moniteurTheorique;
+        $candidat= Candidat::find($id);
+        if (is_null($candidat)) {
+            return response()->json(['message'=>"candidats n'est pas trouvée"],200);
+        }
+        if($candidat->moniteurPratique){
+            $candidat->moniteurPratique;
+        }
+        if($candidat->moniteurTheorique){
+            $candidat->moniteurTheorique;
+        }
         return response()->json($candidat,200);
         
     }
@@ -69,6 +84,9 @@ class CandidatController extends Controller
     public function addCandidat($ecole_id,Request $request)
     {
         $ecole=AutoEcole::find($ecole_id);
+        if (is_null($ecole)) {
+            return response()->json(['message'=>"ecole n'est pas trouvée"],200);
+        }
         $name_image = '';
         if($request->image != ''){
             $name_image = time().'.' . explode('/', explode(':', substr($request->image, 0, strpos($request->image, ';')))[1])[1];
@@ -78,9 +96,17 @@ class CandidatController extends Controller
         $idp = (int) $request->moniteur_pratique_id;
         $idv = (int) $request->vehicule_id;
         $moniteurt =MoniteurTheorique::find($idt);
-        $moniteurp =MoniteurPratique::find($idp);
+        if (is_null($moniteurt)) {
+            return response()->json(['message'=>"moniteur theorique n'est pas trouvée"],200);
+        }
+        $moniteurp = MoniteurPratique::find($idp);
+        if (is_null($moniteurp)) {
+            return response()->json(['message'=>"moniteur pratique n'est pas trouvée"],200);
+        }
         $vehicule =Vehicule::find($idv);
- 
+        if (is_null($vehicule)) {
+            return response()->json(['message'=>"vehicule n'est pas trouvée"],200);
+        }
         $candidat = new Candidat(
             [
                 'auto_ecole_id' => $ecole_id,
@@ -122,14 +148,11 @@ class CandidatController extends Controller
         $candidat->save();
 
         if($moniteurt != null && $moniteurp != null) {
-            $moniteurt-> candidats()->save($candidat);
-            $moniteurp-> candidats()->save($candidat); 
+            $moniteurt->candidats()->save($candidat);
+            $moniteurp->candidats()->save($candidat); 
         }
         $candidat-> moniteurPratique; 
         $candidat-> moniteurTheorique;
-
-
-        // $vehicule-> candidats()->save($candidat); 
         return response()->json(['message'=>'candidat added to table'],200);
     }
 
@@ -137,7 +160,7 @@ class CandidatController extends Controller
     {
         $candidat=Candidat::find($id);
         if (is_null($candidat)) {
-            return response()->json(['message'=>"Candidat n'est pas trouvée"],404);
+            return response()->json(['message'=>"Candidat n'est pas trouvée"],200);
         }
         $idt = (int) $request->moniteur_theorique_id;
         $idp = (int) $request->moniteur_pratique_id;
@@ -191,7 +214,7 @@ class CandidatController extends Controller
     {
         $candidat = Candidat::find($id);
         if (is_null($candidat)) {
-            return response()->json(['message'=>"Candidat n'est pas trouvée"],404);
+            return response()->json(['message'=>"Candidat n'est pas trouvée"],200);
         }
         $candidat->delete();
         return response()->json(null,204);
@@ -199,14 +222,20 @@ class CandidatController extends Controller
     
     public function desactiverCandidat($id)
     {   
-        $candidat = Candidat::findOrFail($id);
+        $candidat = Candidat::find($id);
+        if (is_null($candidat)) {
+            return response()->json(['message'=>"Candidat n'est pas trouvée"],200);
+        }
         $candidat->actif = 0;
         $candidat->save();
         return response()->json($candidat,200);
     }
     public function activerCandidat($id)
     {   
-        $candidat = Candidat::findOrFail($id);
+        $candidat = Candidat::find($id);
+        if (is_null($candidat)) {
+            return response()->json(['message'=>"Candidat n'est pas trouvée"],200);
+        }
         $candidat->actif = 1;
         $candidat->save();
         return response()->json($candidat,200);
@@ -215,6 +244,9 @@ class CandidatController extends Controller
     public function recupererCandidat($id)
     {   
         $candidat = Candidat::onlyTrashed()->findOrFail($id);
+        if (is_null($candidat)) {
+            return response()->json(['message'=>"Candidat n'est pas trouvée"],200);
+        }
         $candidat->restore();
         $candidat->save();
         return response()->json($candidat,200);

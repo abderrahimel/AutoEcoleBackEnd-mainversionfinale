@@ -72,12 +72,15 @@ class ForgotPasswordController extends Controller
     if ($validator->fails()) {
         return new JsonResponse(['success' => false, 'message' => $validator->errors()], 422);
     }
-
+    $verify = User::where('email', $request->all()['email'])->exists();
+    if(!$verify){
+        return new JsonResponse(['success' => false, 'message' => "This email does not exist"], 400);
+    }
     $check = DB::table('password_resets')->where([
         ['email', $request->all()['email']],
         ['token', $request->all()['token']],
     ]);
-
+    
     if ($check->exists()) {
         $difference = Carbon::now()->diffInSeconds($check->first()->created_at);
         if ($difference > 3600) {
@@ -100,7 +103,7 @@ class ForgotPasswordController extends Controller
         return new JsonResponse(
             [
                 'success' => false, 
-                'message' => "Invalid token"
+                'message' => "Invalid pin"
             ], 
             401
         );

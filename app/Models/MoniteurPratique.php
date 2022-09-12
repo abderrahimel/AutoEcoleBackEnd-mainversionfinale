@@ -1,5 +1,5 @@
 <?php
-
+// App\Models\MoniteurPratique::factory()->count(12)->create();
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -11,9 +11,22 @@ class MoniteurPratique extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'employe_id',
         'auto_ecole_id',
-        'categorie'
+        'nom',
+        'prenom',
+        'cin',
+        'type',
+        'date_naissance',
+        'lieu_naissance',
+        'email',
+        'telephone',
+        'date_embauche',
+        'capn',
+        'conduire',
+        'adresse',
+        'observations',
+        'categorie',
+        'namecarteMoniteur'
     ];
     protected $casts = [
         'categorie' => 'array',
@@ -26,11 +39,6 @@ class MoniteurPratique extends Model
     public function candidats()
     {
         return $this->hasMany(Candidat::class);
-    }
-
-    public function employe()
-    {
-        return $this->belongsTo(Employe::class);
     }
 
     public function courPratique()

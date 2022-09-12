@@ -19,13 +19,23 @@ class CreateMoniteurTheoriquesTable extends Migration
             $table->foreignId('auto_ecole_id')->constrained()
                   ->onUpdate('cascade')
                   ->onDelete('cascade');
-            $table->foreignId('employe_id')->constrained()
-                  ->onUpdate('cascade')
-                  ->onDelete('cascade');
-            $table->text('categorie')->nullable();
-            $table->string('namecarteMoniteur')->nullable();
-            $table->timestamps();
-            $table->softDeletes();
+                  $table->string('nom');
+                  $table->string('prenom');
+                  $table->string('cin');
+                  $table->date('date_naissance');
+                  $table->text('lieu_naissance');
+                  $table->string('email');
+                  $table->string('type');
+                  $table->string('telephone');
+                  $table->date('date_embauche');
+                  $table->string('capn');
+                  $table->text('adresse');
+                  $table->text('conduire');
+                  $table->text('observations')->nullable();
+                  $table->text('categorie')->nullable();
+                  $table->string('namecarteMoniteur')->nullable();
+                  $table->timestamps();
+                  $table->softDeletes();
         });
     }
 

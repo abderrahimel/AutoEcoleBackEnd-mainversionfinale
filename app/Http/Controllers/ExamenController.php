@@ -26,27 +26,57 @@ class ExamenController extends Controller
         foreach ($examens as $examen) {
             // 
             $candidat = Candidat::find($examen->candidat_id);
-            if(!is_null($candidat)){$examen->candidat;}
-            // $examen['candidat'] = Candidat::withTrashed()->find($examen->candidat_id);
-            if(is_null($candidat)){
-                $candidat = Candidat::withTrashed()->find($examen->candidat_id);
-                $candidat->prenom_fr = $candidat->prenom_fr . ' (s)';
-                $examen['candidat']  =  $candidat;
-            }
-            $examen['employe'] = '';
             if(!is_null($candidat)){
+                $examen->candidat;
                 $moniteurPratique = MoniteurPratique::find($candidat->moniteur_pratique_id);
                 if(!is_null($moniteurPratique)){
                   $employe = Employe::find($moniteurPratique->employe_id);
+                  if(is_null($employe)){
+                    $employe = Employe::withTrashed()->find($moniteurPratique->employe_id);
+                  }
                   $examen['employe'] = $employe;
+                }else{
+                    $moniteurPratique = MoniteurPratique::withTrashed()->find($candidat->moniteur_pratique_id);
+                    $employe = Employe::find($moniteurPratique->employe_id);
+                    if(is_null($employe)){
+                      $employe = Employe::withTrashed()->find($moniteurPratique->employe_id);
+                      $employe->prenom = $employe->prenom . ' (s)';
+                    }
+                    $examen['employe'] = $employe;
+                }
+            }else{ // candidat deleted -> moniteur pratique deleted -> employe not deleted
+                $candidat = Candidat::withTrashed()->find($examen->candidat_id);
+                $candidat->prenom_fr = $candidat->prenom_fr . ' (s)';
+                $examen['candidat']  =  $candidat;
+                //
+                $moniteurPratique = MoniteurPratique::find($candidat->moniteur_pratique_id);
+                if(!is_null($moniteurPratique)){ // moniteur pratique exist
+                  $employe = Employe::find($moniteurPratique->employe_id);
+                  if(is_null($employe)){
+                    $employe = Employe::withTrashed()->find($moniteurPratique->employe_id);
+                    $employe->prenom = $employe->prenom . ' (s)';
+                  }
+                  $examen['employe'] = $employe;
+                }else{ // moniteur pratique deleted
+                    $moniteurPratique = MoniteurPratique::withTrashed()->find($candidat->moniteur_pratique_id);
+                    $employe = Employe::find($moniteurPratique->employe_id);
+                    if(is_null($employe)){
+                      $employe = Employe::withTrashed()->find($moniteurPratique->employe_id);
+                      $employe->prenom = $employe->prenom . ' (s)';
+                    }
+                    $examen['employe'] = $employe;
                 }
             }
+            // $examen['candidat'] = Candidat::withTrashed()->find($examen->candidat_id);
+            
+            // $examen['employe'] = '';
+          
             $examen->permis;
-            //
         }
         return response()->json($examens,200);
         
     } 
+    
     public function getCandidatReussi($ecole_id){
         // examen candidat reussi
         $ecole=AutoEcole::find($ecole_id);

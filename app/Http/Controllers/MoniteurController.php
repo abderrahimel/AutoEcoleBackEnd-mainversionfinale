@@ -16,9 +16,13 @@ class MoniteurController extends Controller
         if (is_null($ecole_id)) {
             return response()->json(['message'=>"Moniteur Pratique n'est pas trouvée"],404);
         }
-        $moniteurs = MoniteurPratique::where('auto_ecole_id',$ecole_id)->get();
+        $moniteurs = MoniteurPratique::withTrashed()->where('auto_ecole_id', $ecole_id)->get();
         foreach ($moniteurs as $moniteur) {
-            $moniteur->employe;
+            $moniteur['employe'] = Employe::withTrashed()->find($moniteur->employe_id);
+            $check = Employe::find($moniteur->employe_id);
+            if($check == null){
+                $moniteur['employe']->prenom = $moniteur['employe']->prenom . ' (s)';
+            }
         }
 
         return response()->json($moniteurs,200);
@@ -154,53 +158,17 @@ class MoniteurController extends Controller
 
     public function addMoniteurt($ecole_id,Request $request)
     {   
-        // var_dump($request->all());
+       
         $ecole=AutoEcole::find($ecole_id);
         if(is_null($ecole)){
             return response()->json(['message'=> "ecole n'est pas trouvé"],404);
         }
        
-        $employe = Employe::create([
-            'auto_ecole_id'=>$ecole_id,
-            'nom'=>$request->nom,
-            'prenom'=>$request->prenom,
-            'cin'=>$request->cin,
-            'type'=>$request->type,
-            'date_naissance'=>$request->date_naissance,
-            'lieu_naissance'=>$request->lieu_naissance,
-            'email'=>$request->email,
-            'telephone'=>$request->telephone,
-            'date_embauche'=>$request->date_embauche,
-            'capn'=>$request->capn,
-            'conduire'=>$request->conduire,
-            'adresse'=>$request->adresse,
-            'observations'=>$request->observations
-        ]);
-        $employe->save();
-
         if($request->carteMoniteur != ''){
             $namecarteMoniteur = time().'.' . explode('/', explode(':', substr($request->carteMoniteur, 0, strpos($request->carteMoniteur, ';')))[1])[1];
             \Image::make($request->carteMoniteur)->save(public_path('carteMoniteur/').$namecarteMoniteur);
         }
         $moniteurt = MoniteurTheorique::create([
-            'employe_id'=>$employe->id,
-            'auto_ecole_id'=>$ecole_id,
-            'carteMoniteur'=>$namecarteMoniteur,
-            'categorie'=> explode(",", $request->categorie)
-        ]);
-        $moniteurt->save();
-        $ecole->moniteurTheoriques()->save($moniteurt);
-        $moniteurt->employe;
-        return response($moniteurt,201);
-    }
-
-    public function addMoniteurp($ecole_id,Request $request)
-    {
-        $ecole=AutoEcole::find($ecole_id);
-        if(is_null($ecole)){
-            return response()->json(['message'=> "ecole n'est pas trouvé"],404);
-        }
-        $employe = Employe::create([
             'auto_ecole_id'=>$ecole_id,
             'nom'=>$request->nom,
             'prenom'=>$request->prenom,
@@ -214,23 +182,45 @@ class MoniteurController extends Controller
             'capn'=>$request->capn,
             'conduire'=>$request->conduire,
             'adresse'=>$request->adresse,
-            'observations'=>$request->observations
+            'observations'=>$request->observations,
+            'carteMoniteur'=>$namecarteMoniteur,
+            'categorie'=> explode(",", $request->categorie)
         ]);
-        $employe->save();
+        $moniteurt->save();
+        return response()->json($moniteurt,200);
+    }
+
+    public function addMoniteurp($ecole_id,Request $request)
+    {
+        $ecole = AutoEcole::find($ecole_id);
+        if(is_null($ecole)){
+            return response()->json(['message'=> "ecole n'est pas trouvé"],404);
+        }
+
         if($request->carteMoniteur != ''){
             $namecarteMoniteur = time().'.' . explode('/', explode(':', substr($request->carteMoniteur, 0, strpos($request->carteMoniteur, ';')))[1])[1];
             \Image::make($request->carteMoniteur)->save(public_path('carteMoniteur/').$namecarteMoniteur);
         }
         $moniteurp = MoniteurPratique::create([
-            'employe_id'=>$employe->id,
             'auto_ecole_id'=>$ecole_id,
+            'nom'=>$request->nom,
+            'prenom'=>$request->prenom,
+            'cin'=>$request->cin,
+            'type'=>$request->type,
+            'date_naissance'=>$request->date_naissance,
+            'lieu_naissance'=>$request->lieu_naissance,
+            'email'=>$request->email,
+            'telephone'=>$request->telephone,
+            'date_embauche'=>$request->date_embauche,
+            'capn'=>$request->capn,
+            'conduire'=>$request->conduire,
+            'adresse'=>$request->adresse,
+            'observations'=>$request->observations,
             'carteMoniteur'=>$namecarteMoniteur,
             'categorie'=> explode(",", $request->categorie)
         ]);
         $moniteurp->save();
-        $ecole->moniteurPratiques()->save($moniteurp);
-        $moniteurp->employe;
-        return response($moniteurp,201);
+        return response()->json($moniteurp,200);
     }
 
 }

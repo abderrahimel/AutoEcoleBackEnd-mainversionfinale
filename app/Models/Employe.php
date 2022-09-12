@@ -67,13 +67,5 @@ class Employe extends Model
         return $this->hasMany(Rapport::class);
     }
 
-    public function moniteurPratique()
-    {
-        return $this->hasOne(MoniteurPratique::class);
-    }
 
-    public function moniteurTheorique()
-    {
-        return $this->hasOne(MoniteurTheorique::class);
-    }
 }

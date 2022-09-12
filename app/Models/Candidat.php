@@ -46,6 +46,7 @@ class Candidat extends Model
         'moniteur_theorique_id',
         'moniteur_pratique_id',
         'vehicule_id',
+        
     ];
 
     public function autoEcole()

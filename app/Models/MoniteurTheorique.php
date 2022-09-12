@@ -11,8 +11,20 @@ class MoniteurTheorique extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'employe_id',
         'auto_ecole_id',
+        'nom',
+        'prenom',
+        'cin',
+        'type',
+        'date_naissance',
+        'lieu_naissance',
+        'email',
+        'telephone',
+        'date_embauche',
+        'capn',
+        'conduire',
+        'adresse',
+        'observations',
         'categorie',
         'namecarteMoniteur'
     ];
@@ -29,10 +41,7 @@ class MoniteurTheorique extends Model
         return $this->hasMany(Candidat::class);
     }
 
-    public function employe()
-    {
-        return $this->belongsTo(Employe::class);
-    }
+
 
     public function courTherique()
     {

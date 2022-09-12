@@ -18,10 +18,14 @@ class CandidatController extends Controller
         if(is_null($ecole)){
             return response()->json(['message'=>'ecole  doesn\'t exist'],200);
         }
-        $candidats = Candidat::where('auto_ecole_id', $ecole_id)->get();
-        if(is_null($candidats)){
-            return response()->json(['message'=>'candidat  doesn\'t exist'],200);
-        }
+        
+        $candidats =  Candidat::withTrashed()->where('auto_ecole_id', $ecole_id)->get();
+        foreach($candidats as $candidat){
+            if($candidat->deleted_at != null){
+                    $candidat->prenom_fr = $candidat->prenom_fr . ' (s)';
+                    $candidat->prenom_ar = $candidat->prenom_ar . ' (s)';
+            }
+    }
         return response()->json($candidats,200);
         
     }

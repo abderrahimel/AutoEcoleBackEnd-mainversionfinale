@@ -10,23 +10,26 @@ use Illuminate\Support\Facades\DB;
 
 class MoniteurController extends Controller
 {
-    public function getMoniteurP($ecole_id)
+    public function getMoniteurPtrash($ecole_id)
     {
         $ecole=AutoEcole::find($ecole_id);
         if (is_null($ecole_id)) {
             return response()->json(['message'=>"Moniteur Pratique n'est pas trouvée"],404);
         }
-        $moniteurs = MoniteurPratique::withTrashed()->where('auto_ecole_id', $ecole_id)->get();
-        foreach ($moniteurs as $moniteur) {
-            $moniteur['employe'] = Employe::withTrashed()->find($moniteur->employe_id);
-            $check = Employe::find($moniteur->employe_id);
-            if($check == null){
-                $moniteur['employe']->prenom = $moniteur['employe']->prenom . ' (s)';
-            }
-        }
+        $moniteurs = MoniteurPratique::where('auto_ecole_id', $ecole_id)->get();
+        
 
         return response()->json($moniteurs,200);
         
+    }
+    public function getMoniteurP($ecole_id){
+        $ecole=AutoEcole::find($ecole_id);
+        if (is_null($ecole_id)) {
+            return response()->json(['message'=>"Moniteur Pratique n'est pas trouvée"],404);
+        }
+        $moniteurs = MoniteurPratique::where('auto_ecole_id', $ecole_id)->get();
+
+        return response()->json($moniteurs,200);
     }
     // deleteMoniteurt , deleteMoniteurp
     public function deleteMoniteurt($id){

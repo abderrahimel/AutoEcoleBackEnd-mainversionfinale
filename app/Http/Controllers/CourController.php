@@ -20,9 +20,8 @@ class CourController extends Controller
         $ecole=AutoEcole::find($ecole_id);
         $cours = $ecole->courTheriques;
         foreach ($cours as $cour) {
-            $id = MoniteurTheorique::find($cour->moniteur_theorique_id)->employe_id;
-            $cour->moniteurth = Employe::find($id);
-            $cour->presence = cour_theorique_presence::find($cour->id);
+            $cour->moniteurth =MoniteurTheorique::find($cour->moniteur_theorique_id);
+            $cour->presence = cour_theorique_presence::where('cour_theorique_id', $cour->id)->get();
         }
 
        foreach ($cours as $cour) {
@@ -50,8 +49,8 @@ class CourController extends Controller
 
         $cours = $ecole->courPratiques;
         foreach ($cours as $cour) {
-            $id = MoniteurPratique::find($cour->moniteur_pratique_id)->employe_id;
-            $cour->moniteurp = Employe::find($id);
+            $cour->moniteurp = MoniteurPratique::find($cour->moniteur_pratique_id);
+            $cour->presence = cour_pratique_presence::where('cour_pratique_id', $cour->id)->get();
         }
 
        foreach ($cours as $cour) {

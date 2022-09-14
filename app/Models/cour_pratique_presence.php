@@ -29,6 +29,6 @@ class cour_pratique_presence extends Model
 
     public function courPratique()
     {
-        return $this->belongsTo(CourPratique::class);
+        return $this->hasOne(CourPratique::class);
     }
 }

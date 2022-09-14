@@ -29,7 +29,32 @@ class CandidatController extends Controller
         return response()->json($candidats,200);
         
     }
-
+    public function getCandidatsBasic($ecole_id)
+    {
+        $ecole = AutoEcole::find($ecole_id);
+        if(is_null($ecole)){
+            return response()->json(['message'=>'ecole  doesn\'t exist'],200);
+        }
+        
+        $candidats =  Candidat::where('auto_ecole_id', $ecole_id)->where('type_formation', 'basic')->get();
+       
+        //
+        return response()->json($candidats,200);
+        
+    }
+    public function getCandidatsSupplementaire($ecole_id)
+    {
+        $ecole = AutoEcole::find($ecole_id);
+        if(is_null($ecole)){
+            return response()->json(['message'=>'ecole  doesn\'t exist'],200);
+        }
+        
+        $candidats =  Candidat::where('auto_ecole_id', $ecole_id)->where('type_formation', 'supplementaire')->get();
+       
+        //
+        return response()->json($candidats,200);
+        
+    }
     public function getlistCandidat($list_candidat)
     {   
         $var = array_map('intval', explode(",",$list_candidat));

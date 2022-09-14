@@ -6,35 +6,24 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class CourTheorique extends Model
+class AbsenceTheoriqueMoniteur extends Model
 {
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
         'auto_ecole_id',
         'moniteur_theorique_id',
-        'date',
+        'type_absence',
         'date_debut',
         'date_fin',
-        'permis',
-        'type',
-        'candidat'
+        'remarque',
     ];
-     protected $casts = [
-         'candidat' => 'array'
-     ];
     public function autoEcole()
     {
         return $this->belongsTo(AutoEcole::class);
     }
-
-    public function moniteurTherique()
+    public function moniteur()
     {
         return $this->belongsTo(MoniteurTheorique::class);
     }
-    public function presence_theorique()
-    {
-        return $this->belongsTo(cour_theorique_presence::class);
-    }
-   
 }

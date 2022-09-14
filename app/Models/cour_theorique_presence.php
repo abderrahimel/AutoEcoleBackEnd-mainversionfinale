@@ -27,7 +27,7 @@ class cour_theorique_presence extends Model
    
     public function courTheorique()
     {
-        return $this->belongsTo(CourTheorique::class);
+        return $this->hasOne(CourTheorique::class);
     }
 
 }

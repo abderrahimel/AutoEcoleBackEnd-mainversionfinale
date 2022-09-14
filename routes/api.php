@@ -41,7 +41,9 @@ use App\Http\Controllers\NotesMinisterielleController;
 use App\Http\Controllers\SuperAdminController; 
 use App\Http\Controllers\VerifieEmailController;   
 use App\Http\Controllers\ForgotPasswordController;   
-use App\Http\Controllers\ResetPasswordController;
+use App\Http\Controllers\ResetPasswordController; 
+use App\Http\Controllers\AbsenceTheoriqueMoniteurController; 
+use App\Http\Controllers\AbsencePratiqueMoniteurController; 
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -152,7 +154,9 @@ Route::delete('/delete-employe/{id}', [EmployeController::class,'deleteEmploye']
 
 // /auto-ecole/listCandidat/'+list_candidat
 //Candidat routes http://127.0.0.1:8000/api/auto-ecole/'+id_auto_ecole+'/candidat
-Route::get('/auto-ecole/{ecole_id}/candidat', [CandidatController::class,'getCandidat']);
+Route::get('/auto-ecole/{ecole_id}/candidatTrash', [CandidatController::class,'getCandidat']);
+Route::get('/auto-ecole/{ecole_id}/getCandidatsBasic', [CandidatController::class,'getCandidatsBasic']);
+Route::get('/auto-ecole/{ecole_id}/getCandidatsSupplementaire', [CandidatController::class,'getCandidatsSupplementaire']);
 Route::get('/auto-ecole/listCandidat/{list_candidat}', [CandidatController::class,'getlistCandidat']);
 Route::get('/auto-ecole/{ecole_id}/historiquecandidat', [CandidatController::class,'historiquecandidat']);
 Route::get('/auto-ecole/{ecole_id}/archivecandidat', [CandidatController::class,'getarchivecandidat']);
@@ -229,7 +233,18 @@ Route::get('/absence/{id}', [AbsenceController::class,'getAbsenceById']);
 Route::post('/add-absence/{ecole_id}', [AbsenceController::class,'addAbsence']);
 Route::put('/update-absence/{id}', [AbsenceController::class,'updateAbsence']);
 Route::delete('/delete-absence/{id}', [AbsenceController::class,'deleteAbsence']);
-
+// absence moniteur theorique 
+Route::get('/auto-ecole/{ecole_id}/absence-moniteur-theorique', [AbsenceTheoriqueMoniteurController::class,'getAbsence']);
+Route::get('/absence-moniteur-theorique/{id}', [AbsenceTheoriqueMoniteurController::class,'getAbsenceById']);
+Route::post('/add-absence-moniteur-theorique/{ecole_id}', [AbsenceTheoriqueMoniteurController::class,'addAbsence']);
+Route::put('/update-absence-moniteur-theorique/{id}', [AbsenceTheoriqueMoniteurController::class,'updateAbsence']);
+Route::delete('/delete-absence-moniteur-theorique/{id}', [AbsenceTheoriqueMoniteurController::class,'deleteAbsence']);
+// absence moniteur pratique 
+Route::get('/auto-ecole/{ecole_id}/absence-moniteur-pratique', [AbsencePratiqueMoniteurController::class,'getAbsence']);
+Route::get('/absence-moniteur-pratique/{id}', [AbsencePratiqueMoniteurController::class,'getAbsenceById']);
+Route::post('/add-absence-moniteur-pratique/{ecole_id}', [AbsencePratiqueMoniteurController::class,'addAbsence']);
+Route::put('/update-absence-moniteur-pratique/{id}', [AbsencePratiqueMoniteurController::class,'updateAbsence']);
+Route::delete('/delete-absence-moniteur-pratique/{id}', [AbsencePratiqueMoniteurController::class,'deleteAbsence']);
 //Paiement
 Route::get('/auto-ecole/{ecole_id}/paiement', [PaiementController::class,'getPaiement']);
 Route::get('/paiement/{id}', [PaiementController::class,'getPaiementById']);
@@ -313,6 +328,7 @@ Route::post('/add-moniteur-theorique/{ecole_id}', [MoniteurController::class,'ad
 Route::put('/update-moniteur-theorique/{id}', [MoniteurController::class,'updateMoniteurT']);
 Route::delete('/delete-moniteur-theorique/{id}', [MoniteurController::class,'deleteMoniteurt']); 
 
+Route::get('/auto-ecole/{ecole_id}/moniteur-pratiquetrash', [MoniteurController::class,'getMoniteurPtrash']);
 Route::get('/auto-ecole/{ecole_id}/moniteur-pratique', [MoniteurController::class,'getMoniteurP']);
 Route::get('/moniteur-pratique/{id}', [MoniteurController::class,'getMoniteurpById']);
 Route::post('/add-moniteur-pratique/{ecole_id}', [MoniteurController::class,'addMoniteurp']);

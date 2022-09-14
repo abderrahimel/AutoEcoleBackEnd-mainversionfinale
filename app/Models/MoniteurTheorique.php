@@ -52,4 +52,7 @@ class MoniteurTheorique extends Model
     {
         return $this->hasMany(Dossier::class);
     }
+    public function absence(){
+        return $this->hasMany(AbsenceTheoriqueMoniteur::class);
+    }
 }

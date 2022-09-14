@@ -32,9 +32,7 @@ class PresenceController extends Controller
         //
         foreach($presences as $key => $presence) {
             $moniteur = MoniteurPratique::find($presence->moniteur_pratique_id);
-            $employe = Employe::find($moniteur->employe_id);
-        
-            $presence->moniteur = $employe->nom . " " . $employe->prenom;
+            $presence->moniteur = $moniteur->nom . " " . $moniteur->prenom;
         }
         return response()->json($presences,200);
     }
@@ -80,7 +78,7 @@ class PresenceController extends Controller
         return response()->json($cour_theorique_presence,200);
     }
 
-    public function updateCourPresenceP($id,Request $request){
+    public function updateCourPresenceP($id, Request $request){
         $cour_pratique_presence = cour_pratique_presence::find($id);
         if (is_null($cour_pratique_presence)) {
             return response()->json(['message'=>"presence pratique n'est pas trouvée"],404);
@@ -100,9 +98,8 @@ class PresenceController extends Controller
         //
         foreach($presences as $key => $presence) {
             $moniteur = MoniteurTheorique::find($presence->moniteur_theorique_id);
-            $employe = Employe::find($moniteur->employe_id);
 
-            $presence->moniteur = $employe->nom . " " . $employe->prenom;
+            $presence->moniteur = $moniteur->nom . " " . $moniteur->prenom;
         }
         //
         foreach ($presences as $presence) {

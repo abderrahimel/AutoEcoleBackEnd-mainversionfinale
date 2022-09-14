@@ -19,16 +19,16 @@ class MoniteurPratiqueFactory extends Factory
             'prenom'=>$this->faker->lastName(),
             'cin'=>'df15489',
             'type'=>'Moniteur Pratique',
-            'date_naissance'=>$this->faker->dateTime(),
+            'date_naissance'=>$this->faker->date($format = 'Y-m-d', $max = 'now'),
             'lieu_naissance'=>'meknes',
             'email'=>$this->faker->unique()->safeEmail(),
             'telephone'=>'0612459876',
-            'date_embauche'=>$this->faker->dateTime(),
+            'date_embauche'=>$this->faker->date($format = 'Y-m-d', $max = 'now'),
             'capn'=>'iljsklj',
             'conduire'=>'ghjg',
             'adresse'=>$this->faker->address(),
             'observations'=>'gfhjhjhjhjjgh',
-            'categorie'=>"['B']",
+            'categorie'=>["B"],
             'namecarteMoniteur'=>'carte1'
         ];
     }

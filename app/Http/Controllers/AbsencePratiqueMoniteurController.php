@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\AbsencePratiqueMoniteur;
 use App\Models\AutoEcole;
+use App\Models\MoniteurPratique;
 
 class AbsencePratiqueMoniteurController extends Controller
 {
@@ -16,7 +17,7 @@ class AbsencePratiqueMoniteurController extends Controller
 
         $absences = AbsencePratiqueMoniteur::where('auto_ecole_id', $ecole_id)->get();
         foreach ($absences as $absence) {
-            $absence->moniteur;
+            $absence['moniteur'] = MoniteurPratique::find($absence->moniteur_pratique_id);
         }
         return response()->json($absences,200);
     }
@@ -30,7 +31,7 @@ class AbsencePratiqueMoniteurController extends Controller
             return response()->json(['message'=> "absence n'est pas trouvée"],404);
         }
         
-
+        $absence['moniteur'] = MoniteurPratique::find($absence->moniteur_pratique_id);
         return response()->json($absence,200);
     }
 
@@ -58,13 +59,12 @@ class AbsencePratiqueMoniteurController extends Controller
         if(is_null($absence)){
             return response()->json(['message'=> "absence n'est pas trouvé"],404);
         }
-        $absence->moniteur_pratique_id   = $request->moniteur_pratique_id;
         $absence->type_absence = $request->type_absence;
         $absence->date_debut   = $request->date_debut;
         $absence->date_fin     = $request->date_fin;
         $absence->remarque     = $request->remarque;
         $absence->save();
-        return response($absence,201);
+        return response($absence,200);
     }
     
     public function deleteAbsence($id)

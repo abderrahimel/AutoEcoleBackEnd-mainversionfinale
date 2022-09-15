@@ -44,6 +44,7 @@ use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\ResetPasswordController; 
 use App\Http\Controllers\AbsenceTheoriqueMoniteurController; 
 use App\Http\Controllers\AbsencePratiqueMoniteurController; 
+use App\Http\Controllers\ResetEmailController; 
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -84,6 +85,12 @@ Route::post(
     '/reset-password', 
     [ResetPasswordController::class, 'resetPassword']
 );
+// endpoint for user is logged into their account
+
+Route::put(
+    '/reset-email', 
+    [ResetEmailController::class, 'resetemail']
+);
 // Route::group(['middleware' => 'api'], function ($router){
 //     Route::post('login', [AuthController::class, 'login']);
 //     Route::post('logout', [AuthController::class, 'logout']);
@@ -100,9 +107,8 @@ Route::post(
 
 
 
-// verifie email
-Route::post('email/verification-notification', [VerifieEmailController::class, 'sendVerificationEmail'])->middleware('auth:sanctum');
-Route::get('verify-email/{id}/{hash}', [VerifieEmailController::class, 'verify'])->name('verification.verify')->middleware('auth:sanctum');
+
+
 
 //Users routes
 Route::get('/user', [UserController::class,'getUser']);

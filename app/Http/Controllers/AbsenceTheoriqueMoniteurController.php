@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\AbsenceTheoriqueMoniteur;
 use App\Models\AutoEcole;
-
+use App\Models\MoniteurTheorique;
 class AbsenceTheoriqueMoniteurController extends Controller
 {
     public function getAbsence($ecole_id)
@@ -16,7 +16,7 @@ class AbsenceTheoriqueMoniteurController extends Controller
 
         $absences = AbsenceTheoriqueMoniteur::where('auto_ecole_id', $ecole_id)->get();
         foreach ($absences as $absence) {
-            $absence->moniteur;
+            $absence['moniteur'] = MoniteurTheorique::find($absence->moniteur_theorique_id);
         }
         return response()->json($absences,200);
     }
@@ -49,22 +49,21 @@ class AbsenceTheoriqueMoniteurController extends Controller
             'remarque'      =>$request->remarque,
         ]);
         $absence->save();
-        return response($absence,201);
+        return response()->json($absence,200);
     }
 
     public function updateAbsence($id,Request $request)
-    {
+    {   //dd($request->all());
         $absence= AbsenceTheoriqueMoniteur::find($id);
         if(is_null($absence)){
-            return response()->json(['message'=> "absence n'est pas trouvé"],404);
+            return response()->json(['message'=> "absence moniteur theorique n'est pas trouvé"],404);
         }
-        $absence->moniteur_theorique_id   = $request->moniteur_theorique_id;
         $absence->type_absence = $request->type_absence;
         $absence->date_debut   = $request->date_debut;
         $absence->date_fin     = $request->date_fin;
         $absence->remarque     = $request->remarque;
         $absence->save();
-        return response($absence,201);
+        return response()->json($request->all(),200);
     }
     
     public function deleteAbsence($id)

@@ -45,6 +45,9 @@ use App\Http\Controllers\ResetPasswordController;
 use App\Http\Controllers\AbsenceTheoriqueMoniteurController; 
 use App\Http\Controllers\AbsencePratiqueMoniteurController; 
 use App\Http\Controllers\ResetEmailController; 
+use App\Http\Controllers\SubscriberController;
+use App\Http\Controllers\VerificationController;
+use App\Http\Middleware\VerifyEmail;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -91,20 +94,18 @@ Route::put(
     '/reset-email', 
     [ResetEmailController::class, 'resetemail']
 );
-// Route::group(['middleware' => 'api'], function ($router){
-//     Route::post('login', [AuthController::class, 'login']);
-//     Route::post('logout', [AuthController::class, 'logout']);
-// });
-//Authentication
-// Route::post('/login', [AuthController::class,'login']);
-
-
-// Route::middleware('auth:sanctum')->group(function() {
-//     Route::get('/logged', [AuthController::class,'logged']);
-//     Route::get('/logout', [AuthController::class,'logout']);
-// });
-
-
+//
+Route::middleware('auth:sanctum')->group(function ($route) {
+    $route->post(
+        '/email/verify/{id}/{token}',
+        [App\Http\Controllers\RegisterController::class, 'verifyEmail']
+    );
+    // endpoint for resend email verification don't change the method sendVerificationEmail;
+    // this endpoint need to user to be authenticated as we have middleware auth:sanctum apply on it
+    $route->post('/email/verification-notification', [VerifieEmailController::class, 'sendVerificationEmail'])->name('verification.send');
+});
+// this endpoint not require from user to be authenticated
+Route::get('/email/verify/{id}/{hash}', [VerifieEmailController::class, 'send_email'])->middleware(['signed'])->name('verification.verify');
 
 
 

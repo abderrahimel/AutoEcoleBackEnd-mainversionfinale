@@ -12,13 +12,16 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Cookie;
 use Symfony\Component\HttpFoundation\Response;
 use Intervention\Image\Facades\Image;
-// import requirement
 use App\Mail\VerifyEmail;
-use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Auth\Events\Registered;
+//
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\URL;
 
 class AuthController extends Controller
 {
@@ -35,10 +38,14 @@ class AuthController extends Controller
 
     public function register(Request $request)
     {     
-         $data = request()->validate([
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required',
-         ]);
+        $validator = Validator::make($request->all(), [
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'password' => ['required', 'string', 'min:8'],
+        ]);
+    
+        if ($validator->fails()) {
+            return new JsonResponse(['success' => false, 'message' => $validator->errors()], 422);
+        }
          // create user inside table users
         $user = User::create([
             'login' => strstr($request->email,'@',true),
@@ -134,10 +141,20 @@ class AuthController extends Controller
                 );
         }
         // send email to new user with the code pin
-        Mail::to($request->email)->send(new VerifyEmail($pin));
-        // generate token
+        $url =  URL::temporarySignedRoute(
+            'verification.verify',
+            Carbon::now()->addMinutes(Config::get('auth.verification.expire', 60)),
+            [
+                'id' => $user->id,
+                'hash' => sha1($user->email),
+            ]
+        );
+        Mail::to($request->email)->send(new VerifyEmail($url));
         $token = $user->createToken('myapptoken')->plainTextToken;
-
+       
+        //
+      
+        //
          return new JsonResponse(
         [
             'success' => true, 

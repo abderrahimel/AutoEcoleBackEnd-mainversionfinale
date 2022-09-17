@@ -50,7 +50,7 @@ class AbsencePratiqueMoniteurController extends Controller
             'remarque'      =>$request->remarque,
         ]);
         $absence->save();
-        return response($absence,201);
+        return response(['message'=>'added absence for moniteur pratique', 'data'=>$absence],201);
     }
 
     public function updateAbsence($id,Request $request)
@@ -74,6 +74,6 @@ class AbsencePratiqueMoniteurController extends Controller
             return response()->json(['message'=>"absence n'est pas trouvée"],404);
         }
         $absence->delete();
-        return response()->json(['message'=>"deleted absence:", "id"=> $id],200);
+        return response()->json(['message'=>"deleted absence moniteur pratique:"],200);
     }
 }

@@ -10,15 +10,15 @@ use Illuminate\Queue\SerializesModels;
 class VerifyEmail extends Mailable
 {
     use Queueable, SerializesModels;
-    public $pin;
+    public $url;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($pin)
+    public function __construct($url)
     {
-        $this->pin=$pin;
+        $this->url=$url;
     }
 
     /**

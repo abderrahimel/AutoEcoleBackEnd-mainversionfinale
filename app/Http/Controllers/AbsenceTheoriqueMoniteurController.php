@@ -49,7 +49,7 @@ class AbsenceTheoriqueMoniteurController extends Controller
             'remarque'      =>$request->remarque,
         ]);
         $absence->save();
-        return response()->json($absence,200);
+        return response()->json(['message'=>'added absence for moniteur theorique', 'data'=>$absence],200);
     }
 
     public function updateAbsence($id,Request $request)
@@ -73,6 +73,6 @@ class AbsenceTheoriqueMoniteurController extends Controller
             return response()->json(['message'=>"absence n'est pas trouvée"],404);
         }
         $absence->delete();
-        return response()->json(['message'=>"deleted absence:", "id"=> $id],200);
+        return response()->json(['message'=>"deleted absence moniteur theorique:"],200);
     }
 }

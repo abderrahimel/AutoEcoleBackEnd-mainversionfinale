@@ -31,7 +31,6 @@ class MoniteurController extends Controller
 
         return response()->json($moniteurs,200);
     }
-    // deleteMoniteurt , deleteMoniteurp
     public function deleteMoniteurt($id){
               $moniteurT = MoniteurTheorique::find($id);
               if(is_null($moniteurT)){
@@ -55,11 +54,8 @@ class MoniteurController extends Controller
              if(is_null($moniteurt)){
                 return response()->json(['message'=> "moniteur theorique n'est pas trouvé"],404);
             }
-            $employe = Employe::find($moniteurt->employe_id);
 
-            if (is_null($employe)) {
-                return response()->json(['message'=>"Employé n'est pas trouvée"],404);
-            }
+          
             if($request->carteMoniteur != ''){
                 $namecarteMoniteur = time().'.' . explode('/', explode(':', substr($request->carteMoniteur, 0, strpos($request->carteMoniteur, ';')))[1])[1];
                 \Image::make($request->carteMoniteur)->save(public_path('carteMoniteur/').$namecarteMoniteur);
@@ -67,21 +63,22 @@ class MoniteurController extends Controller
                 $moniteurt->save();
             }
            
-            $employe->nom = $request->nom;
-            $employe->prenom =$request->prenom;
-            $employe->cin    = $request->cin;
-            $employe->type   = $request->type;
-            $employe->date_naissance = $request->date_naissance;
-            $employe->lieu_naissance = $request->lieu_naissance;
-            $employe->email = $request->lieu_naissance;
-            $employe->telephone = $request->telephone;
-            $employe->date_embauche = $request->date_embauche;
-            $employe->capn = $request->capn;
-            $employe->conduire = $request->conduire;
-            $employe->adresse = $request->adresse;
-            $employe->observations = $request->observations;
-            $employe->save();
-            return response($employe,200);
+            $moniteurt->nom = $request->nom;
+            $moniteurt->prenom = $request->prenom;
+            $moniteurt->cin    = $request->cin;
+            $moniteurt->type   = $request->type;
+            $moniteurt->date_naissance = $request->date_naissance;
+            $moniteurt->lieu_naissance = $request->lieu_naissance;
+            $moniteurt->email = $request->email;
+            $moniteurt->telephone = $request->telephone;
+            $moniteurt->date_embauche = $request->date_embauche;
+            $moniteurt->capn = $request->capn;
+            $moniteurt->conduire = $request->conduire;
+            $moniteurt->adresse = $request->adresse;
+            $moniteurt->observations = $request->observations;
+            $moniteurt->categorie =  explode(",", $request->categorie);
+            $moniteurt->save();
+            return response()->json(['message'=>'updated successfully moniteur theorique', 'data'=>$moniteurt],200);
         
     }
 
@@ -91,32 +88,28 @@ class MoniteurController extends Controller
          if(is_null($moniteurp)){
             return response()->json(['message'=> "moniteur pratique n'est pas trouvé"],404);
         }
-        $employe = Employe::find($moniteurp->employe_id);
 
-        if (is_null($employe)) {
-            return response()->json(['message'=>"Employé n'est pas trouvée"],404);
-        }
         if($request->carteMoniteur != ''){
             $namecarteMoniteur = time().'.' . explode('/', explode(':', substr($request->carteMoniteur, 0, strpos($request->carteMoniteur, ';')))[1])[1];
             \Image::make($request->carteMoniteur)->save(public_path('carteMoniteur/').$namecarteMoniteur);
             $moniteurp->namecarteMoniteur = $namecarteMoniteur;
         }
+        $moniteurp->nom = $request->nom;
+        $moniteurp->prenom =$request->prenom;
+        $moniteurp->cin    = $request->cin;
+        $moniteurp->type   = $request->type;
+        $moniteurp->date_naissance = $request->date_naissance;
+        $moniteurp->lieu_naissance = $request->lieu_naissance;
+        $moniteurp->email = $request->email;
+        $moniteurp->telephone = $request->telephone;
+        $moniteurp->date_embauche = $request->date_embauche;
+        $moniteurp->capn = $request->capn;
+        $moniteurp->conduire = $request->conduire;
+        $moniteurp->adresse = $request->adresse;
+        $moniteurp->observations = $request->observations;
+        $moniteurp->categorie =  explode(",", $request->categorie);
         $moniteurp->save();
-        $employe->nom = $request->nom;
-        $employe->prenom =$request->prenom;
-        $employe->cin    = $request->cin;
-        $employe->type   = $request->type;
-        $employe->date_naissance = $request->date_naissance;
-        $employe->lieu_naissance = $request->lieu_naissance;
-        $employe->email = $request->lieu_naissance;
-        $employe->telephone = $request->telephone;
-        $employe->date_embauche = $request->date_embauche;
-        $employe->capn = $request->capn;
-        $employe->conduire = $request->conduire;
-        $employe->adresse = $request->adresse;
-        $employe->observations = $request->observations;
-        $employe->save();
-        return response($employe,200);
+        return response()->json(['message'=>'updated succesfully moniteur pratique', 'data'=>$moniteurp],200);
     
 }
     public function getMoniteurT($ecole_id)
@@ -125,7 +118,7 @@ class MoniteurController extends Controller
         if (is_null($ecole_id)) {
             return response()->json(['message'=>"Moniteur Théorique n'est pas trouvée"],404);
         }
-        $moniteurs = MoniteurTheorique::all()->where('auto_ecole_id',$ecole_id);
+        $moniteurs = MoniteurTheorique::where('auto_ecole_id',$ecole_id)->get();
         foreach ($moniteurs as $moniteur) {
             $moniteur->employe;
             $categories = $moniteur->employe;
@@ -161,7 +154,7 @@ class MoniteurController extends Controller
 
     public function addMoniteurt($ecole_id,Request $request)
     {   
-       
+         
         $ecole=AutoEcole::find($ecole_id);
         if(is_null($ecole)){
             return response()->json(['message'=> "ecole n'est pas trouvé"],404);
@@ -190,7 +183,7 @@ class MoniteurController extends Controller
             'categorie'=> explode(",", $request->categorie)
         ]);
         $moniteurt->save();
-        return response()->json($moniteurt,200);
+        return response()->json(['message'=>'succesfully created new moniteur pratique', 'data'=>$moniteurt],200);
     }
 
     public function addMoniteurp($ecole_id,Request $request)
@@ -223,7 +216,7 @@ class MoniteurController extends Controller
             'categorie'=> explode(",", $request->categorie)
         ]);
         $moniteurp->save();
-        return response()->json($moniteurp,200);
+        return response()->json(['message'=>'succesfully created new moniteur pratique', 'data'=>$moniteurp],200);
     }
 
 }

@@ -22,6 +22,8 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\URL;
+use Tymon\JWTAuth\Facades\JWTAuth;
+use Tymon\JWTAuth\Exceptions\JWTException;
 
 class AuthController extends Controller
 {
@@ -120,27 +122,7 @@ class AuthController extends Controller
             'auto_ecole_id'=>$ecole->id,
          ]);
          $abonnement->save();
-        
-        //  verify email new users
-        if ($user) {
-            $verify2 =  DB::table('password_resets')->where([
-                ['email', $request->all()['email']]
-            ]);
-    
-            if ($verify2->exists()) {
-                $verify2->delete();
-            }
-            // generate code pin
-            $pin = rand(100000, 999999);
-            DB::table('password_resets')
-                ->insert(
-                    [
-                        'email' => $request->all()['email'], 
-                        'token' => $pin
-                    ]
-                );
-        }
-        // send email to new user with the code pin
+        // send email to new user with the url verification
         $url =  URL::temporarySignedRoute(
             'verification.verify',
             Carbon::now()->addMinutes(Config::get('auth.verification.expire', 60)),
@@ -151,14 +133,10 @@ class AuthController extends Controller
         );
         Mail::to($request->email)->send(new VerifyEmail($url));
         $token = $user->createToken('myapptoken')->plainTextToken;
-       
-        //
-      
-        //
          return new JsonResponse(
         [
             'success' => true, 
-            'message' => 'Successful created user. Please check your email for a 6-digit pin to verify your email.', 
+            'message' => 'Successful created user. Please check your email to verify your email.', 
             'token' => $token
         ], 
         201
@@ -278,29 +256,47 @@ class AuthController extends Controller
      }
      public function login(Request $request)
      {
-         if (!$token = Auth::attempt($request->only('email', 'password'))) {
-             return response([
-                 'error' => 'This information does not match our records.'
-             ], Response::HTTP_UNAUTHORIZED);
-         }
-         $user = Auth::user();
-         $user = User::where('email', $request['email'])->firstOrFail();
-         // $token = $user->createToken('token')->plainTextToken;
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email',
+            'password' => 'required|string|min:6',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }
+
+        try {
+            if (! $token = JWTAuth::attempt($validator->validated())) {
+                return $this->sendError([], "invalid login credentials", 400);
+            }
+        } catch (JWTException $e) {
+            return $this->sendError([], $e->getMessage(), 500);
+        }
+        
          return $this->respondWithToken($token);
      }
      
      public function logout(Request $request)
-    {   $user= User::find($request->id);
-        $user->tokens()->delete();
-        return response([
-            'message' => 'Success'
-        ]);
+    {  
+        auth()->logout();
+
+        return response()->json(['message' => 'User successfully logged out.']);
     }
      
 
     public function logged()
     {
-       return Auth::user();
+        try {
+            $user = JWTAuth::parseToken()->authenticate();
+            if (!$user) {
+                return $this->sendError([], "user not found", 403);
+            } 
+        } catch (JWTException $e) {
+            return $this->sendError([], $e->getMessage(), 500);
+        }
+        return response()->json([
+            'user' => $user
+        ]);
     }
 
   

@@ -63,18 +63,24 @@ use App\Http\Middleware\VerifyEmail;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request){
     return $request->user();
 });
-// register route
-Route::post('register', [AuthController::class, 'register']);
-Route::match(['get', 'post'], '/login', [AuthController::class, 'login'])->name('login');
-// login and logout
-Route::get('/logged', [AuthController::class,'logged']);
-Route::post('/logout', [AuthController::class,'logout']);
+Route::group(['middleware' => 'api'], function($router) {
+   // register route
+    Route::post('register', [AuthController::class, 'register']);
+    Route::match(['get', 'post'], '/login', [AuthController::class, 'login'])->name('login');
+});
+// you need to log in to access this route with jwt token
+Route::middleware('jwt.verify')->group(function() {
+    // login and logout 
+    Route::get('/logged', [AuthController::class,'logged']);
+    Route::post('/logout', [AuthController::class,'logout']);
+    Route::get('/auto-ecole/{ecole_id}/vehicule', [VehiculeController::class,'getVehicule']);
+});
+
+
 Route::post('/resend/email/token', [AuthController::class, 'resendPin'])->name('resendPin');
 Route::middleware('auth:sanctum')->group(function () {
         Route::post('email/verify',[AuthController::class, 'verifyEmail']);
-        Route::middleware('verify.api')->group(function () {
-          Route::post('/logout', [AuthController::class, 'logout']);
-    });
+       
 });
 Route::post(
     '/forgot-password', 
@@ -136,7 +142,7 @@ Route::put('/approver-auto-ecole/{id}', [AutoEcole::class,'approverAutoEcole']);
 // Desapprover  auto ecole
 Route::put('/desapprover-auto-ecole/{id}', [AutoEcole::class,'desapproverAutoEcole']);
 
-Route::get('/auto-ecole/{ecole_id}/vehicule', [VehiculeController::class,'getVehicule']);
+
 Route::get('/vehicule/{id}', [VehiculeController::class,'getVehiculeById']);
 Route::get('/auto-ecole/{ecole_id}/vidange', [VehiculeController::class,'getVidanges']);
 Route::post('/add-vehicule/{ecole_id}', [VehiculeController::class,'addVehicule']);

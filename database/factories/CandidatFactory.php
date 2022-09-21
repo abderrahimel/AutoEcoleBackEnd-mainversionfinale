@@ -23,7 +23,7 @@ class CandidatFactory extends Factory
         $b_s[1] = 'supplementaire';
         
         return [
-            'auto_ecole_id'=>2,
+            'auto_ecole_id'=>32,
             'cin'=>'fd12547',
             'date_inscription'=>$this->faker->date($format = 'Y-m-d', $max = 'now'),
             'numero_contrat'=> '364764545',

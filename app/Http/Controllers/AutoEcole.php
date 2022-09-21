@@ -17,9 +17,10 @@ class AutoEcole extends Controller
     }
     public function getArchiveAutoEcole(){
 
-       $ecoles =  DB::table('auto_ecoles')->whereNotNull('deleted_at')->get();
+        $ecoles = ModelsAutoEcole::onlyTrashed()->get();
+       
         if(is_null($ecoles)){
-            return response()->json(['message'=> "Auto Ecole n'est pas trouvée"],404);
+            return response()->json(['message'=> "Auto Ecoles n'est pas trouvée"],404);
         }
         return response()->json($ecoles,200);
     }

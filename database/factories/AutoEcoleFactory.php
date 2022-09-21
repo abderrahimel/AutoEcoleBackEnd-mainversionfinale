@@ -44,7 +44,8 @@ class AutoEcoleFactory extends Factory
             'prenom_responsable'=> $this->faker->lastName ,
             'tel_responsable'=> '0612549832',
             'adresse_responsable'=> $this->faker->address,
-            'contrat'=> null
+            'contrat'=> null,
+            'deleted_at'=> $this->faker->date($format = 'Y-m-d', $max = 'now')
         ];
     }
 }

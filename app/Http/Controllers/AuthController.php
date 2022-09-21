@@ -264,10 +264,10 @@ class AuthController extends Controller
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
         }
-
+         
         try {
             if (! $token = JWTAuth::attempt($validator->validated())) {
-                return $this->sendError([], "invalid login credentials", 400);
+                return response()->json(['message'=>'invalid login credentials'], 422);
             }
         } catch (JWTException $e) {
             return $this->sendError([], $e->getMessage(), 500);

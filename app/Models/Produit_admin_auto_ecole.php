@@ -9,7 +9,6 @@ class Produit_admin_auto_ecole extends Model
 {
     use HasFactory, SoftDeletes;
     protected $fillable = [
-        'nomCategorie',
         'titre',
         'prix',
         'marque',

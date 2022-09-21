@@ -10,11 +10,14 @@ class CategorieDepenceController extends Controller
 {
     public function getCategorieDepence($ecole_id)
     {
-        $ecole=AutoEcole::find($ecole_id);
+        $ecole = AutoEcole::find($ecole_id);
         if (is_null($ecole_id)) {
             return response()->json(['message'=>"Catégorie n'est pas trouvée"],404);
         }
-        $categories = $ecole->CategorieDepence;
+        $categories = CategorieDepence::where('auto_ecole_id', $ecole_id)->get();
+        if (is_null($categories)) {
+            return response()->json(['message'=>"Catégorie Depence n'est pas trouvée"],404);
+        }
         return response()->json($categories,200);
         
     }

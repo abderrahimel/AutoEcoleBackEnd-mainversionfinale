@@ -67,12 +67,13 @@ Route::group(['middleware' => 'api'], function($router) {
    // register route
     Route::post('register', [AuthController::class, 'register']);
     Route::match(['get', 'post'], '/login', [AuthController::class, 'login'])->name('login');
+    Route::post('/logout', [AuthController::class,'logout']);
+
 });
 // you need to log in to access this route with jwt token
 Route::middleware('jwt.verify')->group(function() {
     // login and logout 
     Route::get('/logged', [AuthController::class,'logged']);
-    Route::post('/logout', [AuthController::class,'logout']);
     Route::get('/auto-ecole/{ecole_id}/vehicule', [VehiculeController::class,'getVehicule']);
 });
 

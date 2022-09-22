@@ -20,7 +20,7 @@ class VehiculeFactory extends Factory
             'marque'=>'tesla',
             'fourniseur'=>$this->faker->name(),
             'modele'=>'model 3',
-            'categorie' =>'B',
+            'categorie' =>$this->faker->randomElement(['A', 'B', 'C', 'D', 'E', 'F']),
             'date_visite'=>$this->faker->date($format = 'Y-m-d', $max = 'now'),
             'date_prochain_visite'=>$this->faker->date($format = 'Y-m-d', $max = 'now'),
             'date_vidange'=>$this->faker->date($format = 'Y-m-d', $max = 'now'),

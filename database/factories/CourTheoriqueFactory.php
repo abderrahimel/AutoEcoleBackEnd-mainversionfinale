@@ -3,26 +3,28 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use App\Models\AbsenceTheoriqueMoniteur;
 use App\Models\MoniteurTheorique;
+use App\Models\Vehicule;
 
-class AbsenceTheoriqueMoniteurFactory extends Factory
+class CourTheoriqueFactory extends Factory
 {
     /**
      * Define the model's default state.
      *
      * @return array
      */
-    protected $model = AbsenceTheoriqueMoniteur::class;
     public function definition()
     {
         return [
             'auto_ecole_id'=>32,
-            'moniteur_theorique_id'=>MoniteurTheorique::factory(),
-            'type_absence'=>$this->faker->randomElement(['Congé', 'Maladie', 'Non justifié', 'Préparation papier', 'Problèmes familiaux']),
+            'moniteur_theorique_id'=> MoniteurTheorique::factory(),
+            'date'=>$this->faker->date($format = 'Y-m-d', $max = 'now'),
+            'type'=>'cours',
             'date_debut'=>$this->faker->date($format = 'Y-m-d', $max = 'now'),
             'date_fin'=>$this->faker->date($format = 'Y-m-d', $max = 'now'),
-            'remarque'=>$this->faker->paragraph
+            'permis'=>'non',
+            'candidat'=>$this->faker->name(),
+            'vehicule_id'=> Vehicule::factory(),
         ];
     }
 }

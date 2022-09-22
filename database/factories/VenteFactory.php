@@ -18,11 +18,11 @@ class VenteFactory extends Factory
     public function definition()
     {
         return [
-            'auto_ecole_id'=>2,
+            'auto_ecole_id'=>32,
             'candidat_id'=> Candidat::factory(),
             'produit_id'=>Produit::factory(),
             'prixUnitaire'=>'2500',
-            'prixTotale'=>250000,
+            'prixTotale'=>'250',
             'quantiteDisponible'=>'2547',
             'quantite'=>'50',
             'date'=>$this->faker->date($format = 'Y-m-d', $max = 'now'),

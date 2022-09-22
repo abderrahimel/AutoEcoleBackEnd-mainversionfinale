@@ -74,10 +74,10 @@ Route::group(['middleware' => 'api'], function($router) {
 Route::middleware('jwt.verify')->group(function() {
     // login and logout 
     Route::get('/logged', [AuthController::class,'logged']);
-    Route::get('/auto-ecole/{ecole_id}/vehicule', [VehiculeController::class,'getVehicule']);
+    
 });
 
-
+Route::get('/auto-ecole/{ecole_id}/vehicule', [VehiculeController::class,'getVehicule']);
 Route::post('/resend/email/token', [AuthController::class, 'resendPin'])->name('resendPin');
 Route::middleware('auth:sanctum')->group(function () {
         Route::post('email/verify',[AuthController::class, 'verifyEmail']);

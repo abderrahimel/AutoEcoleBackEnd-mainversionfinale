@@ -15,13 +15,13 @@ class ProduitFactory extends Factory
     public function definition()
     {
         return [
-            'auto_ecole_id'=>2,
+            'auto_ecole_id'=>32,
             'fournisseur'=>$this->faker->name(),
             'telephone'=>'0612459874',
             'libelle'=> 'libelle1	',
             'prix'=>'200',
             'quantite'=>10,
-            'description'=>'lesifjrljefjsfj',
+            'description'=>$this->faker->paragraph
         ];
     }
 }

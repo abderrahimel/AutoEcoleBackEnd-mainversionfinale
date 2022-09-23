@@ -22,9 +22,9 @@ class CourPratiqueFactory extends Factory
             'type'=>'cours',
             'date_debut'=>$this->faker->date($format = 'Y-m-d', $max = 'now'),
             'date_fin'=>$this->faker->date($format = 'Y-m-d', $max = 'now'),
-            'permis'=>'non',
-            'candidat'=>$this->faker->name(),
-            'vehicule_id'=> Vehicule::factory(),
+            'permis'=>$this->faker->randomElement(['A', 'B', 'C', 'D', 'E', 'F']),
+            'candidat'=>[91,90],
+            'vehicule_id'=> Vehicule::factory()
         ];
     }
 }

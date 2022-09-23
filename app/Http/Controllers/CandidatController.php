@@ -76,7 +76,7 @@ class CandidatController extends Controller
         if(is_null($ecole)){
             return response()->json(['message'=>'ecole  doesn\'t exist'],200);
         }
-        $candidats = $ecole->candidats;
+        $candidats = Candidat::where('auto_ecole_id', $ecole_id)->get();
     
         return response()->json($candidats,200);
         

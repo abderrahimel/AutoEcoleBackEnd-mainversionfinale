@@ -22,6 +22,40 @@ class ProduitAdminController extends Controller
         }
         return response()->json($produit, 200);
     }
+
+    public function getboutique()
+    {
+        $produits = Produit_admin_auto_ecole::where('categorie', '!=', 'vehicule occasion')->get();
+        foreach($produits as $key => $produit) {
+            if($produit->image){
+                $img = $produit->image;
+                $path = 'produitsAdmin/' . $img;
+                $type = pathinfo($path, PATHINFO_EXTENSION);
+                $data = file_get_contents($path);
+                $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
+                $produit->image = $base64;      
+            }
+        }
+
+        return response()->json($produits, 200);
+    }
+
+    public function getvehiculeOccassion()
+    {
+        $produits = Produit_admin_auto_ecole::where('categorie', 'vehicule occasion')->get();
+        foreach($produits as $key => $produit) {
+            if($produit->image){
+                $img = $produit->image;
+                $path = 'produitsAdmin/' . $img;
+                $type = pathinfo($path, PATHINFO_EXTENSION);
+                $data = file_get_contents($path);
+                $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
+                $produit->image = $base64;      
+            }
+        }
+
+        return response()->json($produits, 200);
+    }
     public function getAllProduitAdmin()
     {
         $produits = Produit_admin_auto_ecole::all();

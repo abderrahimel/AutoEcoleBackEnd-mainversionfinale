@@ -21,7 +21,7 @@ class CategorieDepenceController extends Controller
         return response()->json($categories,200);
         
     }
-    
+
     public function getCategorieDepenceById($id)
     {
         $categories = CategorieDepence::find($id);

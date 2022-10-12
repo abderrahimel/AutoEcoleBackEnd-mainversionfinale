@@ -38,7 +38,7 @@ class CandidatFactory extends Factory
             'adresse_ar'=>$this->faker->address(),
             'telephone'=>'0612459874',
             'email'=>'email@gmail.com',
-            'type_formation'=> 'basic',
+            'type_formation'=> 'supplementaire',
             'profession'=>'student',
             'langue'=>'Francais',
             'image'=>'43545454543.png',

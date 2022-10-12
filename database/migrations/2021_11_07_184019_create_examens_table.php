@@ -21,6 +21,9 @@ class CreateExamensTable extends Migration
             $table->foreignId('candidat_id')->constrained()
                   ->onUpdate('cascade')
                   ->onDelete('cascade');
+            $table->foreignId('moniteur_pratique_id')->constrained()
+                  ->onUpdate('cascade')
+                  ->onDelete('cascade');
             $table->string('categorie');
             $table->date('date_examen');
             $table->date('date_depot');

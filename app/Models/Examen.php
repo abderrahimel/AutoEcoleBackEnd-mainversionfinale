@@ -12,6 +12,7 @@ class Examen extends Model
     protected $fillable = [
         'auto_ecole_id',
         'candidat_id',
+        'moniteur_pratique_id',
         'categorie',
         'date_examen',
         'date_depot',

@@ -14,11 +14,11 @@ class CategorieDepenceFactory extends Factory
      */
     protected $model = CategorieDepence::class;
     public function definition()
-    { //personnel  vehicule local
-        return [ // personnel   vehicule  local
+    { //personnel  personnel personnel
+        return [ // personnel   personnel  personnel
             'auto_ecole_id'=>32,
-            'categorie'=> 'categorie vehicule '. $this->faker->numberBetween(1,300),
-            'type'=>'vehicule'
+            'categorie'=> 'categorie personnel '. $this->faker->numberBetween(1,300),
+            'type'=>'personnel'
         ];
     }
 }

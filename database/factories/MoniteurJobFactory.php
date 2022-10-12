@@ -14,7 +14,7 @@ class MoniteurJobFactory extends Factory
     public function definition()
     {
         return [
-            'nom'=>$this->faker->name(),
+            'nom'=>$this->faker->name,
             'description'=>$this->faker->paragraph,
             'salaire'=>'5232',
             'date'=> $this->faker->date($format = 'Y-m-d', $max = 'now'),

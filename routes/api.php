@@ -59,7 +59,6 @@ use App\Http\Middleware\VerifyEmail;
 |
 */
 
-
 Route::middleware('auth:sanctum')->get('/user', function (Request $request){
     return $request->user();
 });
@@ -74,14 +73,12 @@ Route::group(['middleware' => 'api'], function($router) {
 Route::middleware('jwt.verify')->group(function() {
     // login and logout 
     Route::get('/logged', [AuthController::class,'logged']);
-    
 });
 
 Route::get('/auto-ecole/{ecole_id}/vehicule', [VehiculeController::class,'getVehicule']);
 Route::post('/resend/email/token', [AuthController::class, 'resendPin'])->name('resendPin');
 Route::middleware('auth:sanctum')->group(function () {
         Route::post('email/verify',[AuthController::class, 'verifyEmail']);
-       
 });
 Route::post(
     '/forgot-password', 
@@ -171,6 +168,7 @@ Route::delete('/delete-employe/{id}', [EmployeController::class,'deleteEmploye']
 Route::get('/auto-ecole/{ecole_id}/candidatTrash', [CandidatController::class,'getCandidat']);
 Route::get('/auto-ecole/{ecole_id}/getCandidatsBasic', [CandidatController::class,'getCandidatsBasic']);
 Route::get('/auto-ecole/{ecole_id}/getCandidatsSupplementaire', [CandidatController::class,'getCandidatsSupplementaire']);
+Route::get('/auto-ecole/{ecole_id}/getCandidats', [CandidatController::class,'getCandidats']);
 Route::get('/auto-ecole/listCandidat/{list_candidat}', [CandidatController::class,'getlistCandidat']);
 Route::get('/auto-ecole/{ecole_id}/historiquecandidat', [CandidatController::class,'historiquecandidat']);
 Route::get('/auto-ecole/{ecole_id}/archivecandidat', [CandidatController::class,'getarchivecandidat']);
@@ -207,6 +205,7 @@ Route::delete('/delete-depence-local/{id}', [Depense_localController::class,'del
 // depense vehicule
 
 Route::get('/auto-ecole/{ecole_id}/depence-vehicule', [Depense_vehiculeController::class,'getDepencevehicule']);
+Route::get('/auto-ecole/{ecole_id}/depence-general', [Depense_vehiculeController::class,'getDepences']);
 Route::get('/depence-vehicule/{id}', [Depense_vehiculeController::class,'getDepencevehiculeById']);
 Route::post('/add-depence-vehicule/{ecole_id}', [Depense_vehiculeController::class,'addDepencevehicule']);
 Route::put('/update-depence-vehicule/{id}', [Depense_vehiculeController::class,'updateDepencevehicule']);
@@ -413,9 +412,11 @@ Route::put('/auto-ecole/{id_user}/set-user-email', [AuthController::class,'setem
 Route::get('/auto-ecole/{auto_id}/logo-auto-ecole', [AuthController::class,'getLogo']);
 // '/api'
 Route::get('/get-produit-admin', [ProduitAdminController::class,'getAllProduitAdmin']);
-Route::get('/get-produit-by-id/{id}', [ProduitAdminController::class,'getProduitAdminById']);//
-Route::get('/superadmin/data', [SuperAdminController::class,'getdataSuper']);//
-Route::get('/superadmin/auto-ecoles-en-attente', [SuperAdminController::class,'getautoecolesEnattente']);//
+Route::get('/get-produit-by-id/{id}', [ProduitAdminController::class,'getProduitAdminById']);
+Route::get('/get-boutique', [ProduitAdminController::class,'getboutique']);
+Route::get('/get-vehicule-occassion', [ProduitAdminController::class,'getboutique']);
+Route::get('/superadmin/data', [SuperAdminController::class,'getdataSuper']);
+Route::get('/superadmin/auto-ecoles-en-attente', [SuperAdminController::class,'getautoecolesEnattente']);
 Route::put('/auto-ecole/produit-admin/{id}', [ProduitAdminController::class,'updateProduitAdmin']); 
 Route::post('/new-produit', [ProduitAdminController::class,'newProduit']);
 Route::delete('/delete-produit-admin/{id}', [ProduitAdminController::class, 'deleteProduit']);

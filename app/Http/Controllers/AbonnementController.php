@@ -8,11 +8,29 @@ use App\Models\AutoEcole;
 class AbonnementController extends Controller
 {
     public function getAbonnements(){
+
         $abonnements = Abonnement::whereNotNull('date_debut')->get();
         foreach($abonnements as $key => $abonnement) {
-            $abonnement->autoEcole;
+             $abonnement->autoEcole;
         }
-         return response()->json($abonnements, 200);
+
+        $items = array();
+        foreach($abonnements as $key =>$abonnement) {
+         $items[] = $abonnement->auto_ecole_id;
+        }
+        
+        $auto_ecoles = array();
+        foreach($items as $key =>$id) {
+            $autoEcole = AutoEcole::find($id);
+            $img = $autoEcole->image;
+            $path = 'images/' . $img;
+            $type = pathinfo($path, PATHINFO_EXTENSION);
+            $data = file_get_contents($path);
+            $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
+            $autoEcole->image = $base64;  
+            $auto_ecoles[] = $autoEcole;
+           }
+         return response()->json($auto_ecoles, 200);
     }
 
     public function getabonnementByIdAUtoEcole($id){

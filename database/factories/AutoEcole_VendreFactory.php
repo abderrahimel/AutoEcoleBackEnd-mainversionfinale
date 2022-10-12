@@ -14,7 +14,7 @@ class AutoEcole_VendreFactory extends Factory
     public function definition()
     {
         return [
-            'titre'=>$this->faker->paragraph,
+            'titre'=>$this->faker->name(),
             'description'=>$this->faker->paragraph,
             'prix'=>'2000',
             'date'=> $this->faker->date($format = 'Y-m-d', $max = 'now'),

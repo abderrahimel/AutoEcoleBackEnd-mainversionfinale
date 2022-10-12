@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 USE App\Models\Candidat;
+USE App\Models\MoniteurPratique;
 
 class ExamenFactory extends Factory
 {
@@ -17,9 +18,11 @@ class ExamenFactory extends Factory
         return [
             'auto_ecole_id'=>32,
             'candidat_id' => Candidat::factory(),
+            'moniteur_pratique_id'=> MoniteurPratique::factory(),
             'categorie'=>$this->faker->randomElement(['A', 'B', 'C', 'D', 'E']),
             'date_examen'=>$this->faker->date($format = 'Y-m-d', $max = 'now'),
-            'date_depot'=>$this->faker->date($format = 'Y-m-d', $max = 'now')
+            'date_depot'=>$this->faker->date($format = 'Y-m-d', $max = 'now'),
+            'resultat'=>'-1'
         ];
     }
 }

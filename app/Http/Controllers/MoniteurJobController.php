@@ -11,23 +11,19 @@ class MoniteurJobController extends Controller
 
         $moniteursJobs = MoniteurJob::all();
         foreach($moniteursJobs as $key => $moniteursJob) {
-            $img = $moniteursJob->image;
-            $path = 'MoniteurJob/' . $img;
-            $type = pathinfo($path, PATHINFO_EXTENSION);
-            $data = file_get_contents($path);
-            $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
-            $moniteursJob->image = $base64;    
+            if($moniteursJob->image){
+                $img = $moniteursJob->image;
+                $moniteursJob->image = 'http://' . request()->getHttpHost() . '/' . 'MoniteurJob/' .  $moniteursJob->image; 
+            }
         }
         return response()->json($moniteursJobs, 200);
     }
     public function getMoniteurJobById($id){ 
         $moniteurJob = MoniteurJob::find($id);
-        $img = $moniteurJob->image;
-        $path = 'MoniteurJob/' . $img;
-        $type = pathinfo($path, PATHINFO_EXTENSION);
-        $data = file_get_contents($path);
-        $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
-        $moniteurJob->image = $base64;    
+        if($moniteursJob->image){
+            $img = $moniteursJob->image;
+            $moniteursJob->image = 'http://' . request()->getHttpHost() . '/' . 'MoniteurJob/' .  $moniteursJob->image; 
+        }
         return response()->json($moniteurJob, 200);
     }
     public function addMoniteurJob( Request $request){ 

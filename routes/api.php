@@ -414,7 +414,7 @@ Route::get('/auto-ecole/{auto_id}/logo-auto-ecole', [AuthController::class,'getL
 Route::get('/get-produit-admin', [ProduitAdminController::class,'getAllProduitAdmin']);
 Route::get('/get-produit-by-id/{id}', [ProduitAdminController::class,'getProduitAdminById']);
 Route::get('/get-boutique', [ProduitAdminController::class,'getboutique']);
-Route::get('/get-vehicule-occassion', [ProduitAdminController::class,'getboutique']);
+Route::get('/get-vehicule-occassion', [ProduitAdminController::class,'getvehiculeOccassion']);
 Route::get('/superadmin/data', [SuperAdminController::class,'getdataSuper']);
 Route::get('/superadmin/auto-ecoles-en-attente', [SuperAdminController::class,'getautoecolesEnattente']);
 Route::put('/auto-ecole/produit-admin/{id}', [ProduitAdminController::class,'updateProduitAdmin']); 

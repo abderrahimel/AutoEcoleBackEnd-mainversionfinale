@@ -22,12 +22,7 @@ class AbonnementController extends Controller
         $auto_ecoles = array();
         foreach($items as $key =>$id) {
             $autoEcole = AutoEcole::find($id);
-            $img = $autoEcole->image;
-            $path = 'images/' . $img;
-            $type = pathinfo($path, PATHINFO_EXTENSION);
-            $data = file_get_contents($path);
-            $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
-            $autoEcole->image = $base64;  
+            $autoEcole->image = 'http://' . request()->getHttpHost() . '/' . 'images/' .  $autoEcole->image; 
             $auto_ecoles[] = $autoEcole;
            }
          return response()->json($auto_ecoles, 200);

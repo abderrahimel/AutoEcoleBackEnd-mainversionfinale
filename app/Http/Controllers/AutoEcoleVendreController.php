@@ -11,25 +11,16 @@ class AutoEcoleVendreController extends Controller
         $autoEcole_Vendres = autoEcole_Vendre::all();
         foreach($autoEcole_Vendres as $key => $autoEcole_Vendre) {
             if($autoEcole_Vendre->image){
-                $img = $autoEcole_Vendre->image;
-                $path = 'autoEcoleVendre/' . $img;
-                $type = pathinfo($path, PATHINFO_EXTENSION);
-                $data = file_get_contents($path);
-                $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
-                $autoEcole_Vendre->image = $base64;  
+                $autoEcole_Vendre->image = 'http://' . request()->getHttpHost() . '/' . 'autoEcoleVendre/' .  $autoEcole_Vendre->image; 
             }
-              
         }
         return response()->json($autoEcole_Vendres, 200);
     }
     public function getAutoecoleVendreById($id){
         $autoEcole_Vendre = autoEcole_Vendre::find($id);
-        $img = $autoEcole_Vendre->image;
-        $path = 'autoEcoleVendre/' . $img;
-        $type = pathinfo($path, PATHINFO_EXTENSION);
-        $data = file_get_contents($path);
-        $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
-        $autoEcole_Vendre->image = $base64;   
+        if($autoEcole_Vendre->image){
+            $autoEcole_Vendre->image = 'http://' . request()->getHttpHost() . '/' . 'autoEcoleVendre/' .  $autoEcole_Vendre->image; 
+        }
         return response()->json($autoEcole_Vendre, 200);
     }
     public function addAutoecoleVendre(Request $request){

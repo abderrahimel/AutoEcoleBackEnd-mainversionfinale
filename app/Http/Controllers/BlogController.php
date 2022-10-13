@@ -11,12 +11,7 @@ class BlogController extends Controller
         $blogs = Blog::all();
        foreach($blogs as $key => $blog) {
         if($blog->image){
-            $img = $blog->image;
-            $path = 'blog/' . $img;
-            $type = pathinfo($path, PATHINFO_EXTENSION);
-            $data = file_get_contents($path);
-            $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
-            $blog->image = $base64; 
+            $blog->image = 'http://' . request()->getHttpHost() . '/' . 'blog/' .  $blog->image; 
         }
         }
 
@@ -27,12 +22,7 @@ class BlogController extends Controller
         $blog = Blog::find($id);
         // here we convert the image to base 64 
         if($blog->image){
-            $img = $blog->image;
-            $path = 'blog/' . $img;
-            $type = pathinfo($path, PATHINFO_EXTENSION);
-            $data = file_get_contents($path);
-            $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
-            $blog->image = $base64;  
+            $blog->image = 'http://' . request()->getHttpHost() . '/' . 'blog/' .  $blog->image;  
         }
         if(is_null($blog)){
             return response()->json(['message'=>'blog dos not exist'], 404);

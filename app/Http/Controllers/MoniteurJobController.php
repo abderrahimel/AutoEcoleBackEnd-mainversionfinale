@@ -20,9 +20,9 @@ class MoniteurJobController extends Controller
     }
     public function getMoniteurJobById($id){ 
         $moniteurJob = MoniteurJob::find($id);
-        if($moniteursJob->image){
-            $img = $moniteursJob->image;
-            $moniteursJob->image = 'http://' . request()->getHttpHost() . '/' . 'MoniteurJob/' .  $moniteursJob->image; 
+        if($moniteurJob->image){
+            $img = $moniteurJob->image;
+            $moniteurJob->image = 'http://' . request()->getHttpHost() . '/' . 'MoniteurJob/' .  $moniteurJob->image; 
         }
         return response()->json($moniteurJob, 200);
     }

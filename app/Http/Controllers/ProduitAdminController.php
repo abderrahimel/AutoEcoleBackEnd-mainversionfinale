@@ -9,14 +9,9 @@ class ProduitAdminController extends Controller
     public function getProduitAdminById($id)
     {
         $produit = Produit_admin_auto_ecole::find($id);
-        //
-        $img = $produit->image;
-        $path = 'produitsAdmin/' . $img;
-        $type = pathinfo($path, PATHINFO_EXTENSION);
-        $data = file_get_contents($path);
-        $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
-        $produit->image = $base64;  
-        //
+        if(!is_null($produit->image)){
+            $produit->image = 'http://' . request()->getHttpHost() . '/' . 'produitsAdmin/' .  $produit->image;     
+        }
         if (is_null($produit)) {
             return response()->json(['message'=>"produit Admin n'est pas trouvée"],404);
         }

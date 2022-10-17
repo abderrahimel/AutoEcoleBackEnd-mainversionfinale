@@ -17,12 +17,6 @@ class NotesMinisterielleController extends Controller
         //
         foreach($Notes_Ministerielles as $key => $Notes_Ministerielle) {
             if($Notes_Ministerielle->fichier){
-                // $namepdf = $Notes_Ministerielle->fichier;
-                // $path = 'storage/' . $namepdf;
-                // $type = pathinfo($path, PATHINFO_EXTENSION);
-                // $data = file_get_contents($path);
-                // $base64 = 'data:application/pdf' . ';base64,' . base64_encode($data);
-                // $Notes_Ministerielle->fichier = $base64;  
                 $namepdf = $Notes_Ministerielle->fichier;
                 $Notes_Ministerielle->fichier =  'http://' . request()->getHttpHost() . '/' . 'storage/' .  $namepdf;  
             }
@@ -34,9 +28,12 @@ class NotesMinisterielleController extends Controller
     public function getNoteMinisterielleById($id){
 
         $Notes_Ministerielle = Notes_Ministerielles::find($id);
-         //
-         $namepdf = $Notes_Ministerielle->fichier;
-         $Notes_Ministerielle->fichier =  'http://' . request()->getHttpHost() . '/' . 'storage/' .  $namepdf;  
+        if(is_null($Notes_Ministerielle)){
+            return response()->json(['note ministerielle not exist'], 200);
+        }
+         if(!is_null($Notes_Ministerielle->fichier)){
+            $Notes_Ministerielle->fichier =  'http://' . request()->getHttpHost() . '/' . 'storage/' .  $Notes_Ministerielle->fichier;  
+         }
         return response()->json($Notes_Ministerielle, 200);
     }
 

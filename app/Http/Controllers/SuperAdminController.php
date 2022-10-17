@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\AutoEcole;
 use Illuminate\Support\Facades\DB;
 
+
 class SuperAdminController extends Controller
 {
    public function getdataSuper()
@@ -21,5 +22,5 @@ class SuperAdminController extends Controller
       return response()->json($autoecoles_en_attente, 200);
 
    }
-   
+  
 }

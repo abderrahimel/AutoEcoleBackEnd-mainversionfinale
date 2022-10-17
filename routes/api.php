@@ -47,6 +47,7 @@ use App\Http\Controllers\AbsencePratiqueMoniteurController;
 use App\Http\Controllers\ResetEmailController; 
 use App\Http\Controllers\SubscriberController;
 use App\Http\Controllers\VerificationController;
+use App\Http\Controllers\ContactController;
 use App\Http\Middleware\VerifyEmail;
 /*
 |--------------------------------------------------------------------------
@@ -121,6 +122,8 @@ Route::get('/user/{id}', [UserController::class,'getUserById']);
 Route::post('/add-user', [UserController::class,'addUser']);
 Route::put('/update-user/{id}', [UserController::class,'updateUser']);
 Route::delete('/delete-user/{id}', [UserController::class,'deleteUser']);
+// super aqdmin routes
+Route::post('/send-email-toSuperAdmin', [ContactController::class,'sendEmailToSuperAdmin']);
 
 //Auto Ecole routes
 Route::get('/all-auto-ecole/{user_id}', [AutoEcole::class,'getAutoEcole']);

@@ -292,14 +292,24 @@ class AuthController extends Controller
                 return $this->sendError([], "user not found", 403);
             } 
         } catch (JWTException $e) {
-            return $this->sendError([], $e->getMessage(), 500);
+            return response()->json($e->getMessage(), 500);        
         }
         return response()->json([
             'user' => $user
         ]);
     }
+    public function currentAutoEcole(){
+        $logged = $this->logged();
+        if($logged->original == 'The token could not be parsed from the request'){
+            return response()->json($logged, 500);   
+        }
+        $id = data_get($logged, 'original.user.id');
+        // $user = $logged->original;
 
-  
+        $autoEcole = ModelsAutoEcole::where('user_id', $id)->get();
+        $idAuto = data_get($autoEcole, 'id');
+        return response()->json($autoEcole[0]['id'], 200);
+    }
 
     protected function respondWithToken($token)
     {

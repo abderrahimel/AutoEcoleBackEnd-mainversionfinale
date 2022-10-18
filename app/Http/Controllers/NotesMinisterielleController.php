@@ -32,6 +32,11 @@ class NotesMinisterielleController extends Controller
             return response()->json(['note ministerielle not exist'], 200);
         }
          if(!is_null($Notes_Ministerielle->fichier)){
+            // $path = 'storage/' . $Notes_Ministerielle->fichier;
+            // $type = pathinfo($path, PATHINFO_EXTENSION);
+            // $data = file_get_contents($path);
+            // $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
+            // $produit->image = $base64; 
             $Notes_Ministerielle->fichier =  'http://' . request()->getHttpHost() . '/' . 'storage/' .  $Notes_Ministerielle->fichier;  
          }
         return response()->json($Notes_Ministerielle, 200);
@@ -49,17 +54,9 @@ class NotesMinisterielleController extends Controller
            $pdf = str_replace(' ', '+', $pdf); 
            Storage::disk('public')->put($name_fichier, base64_decode($pdf));
         }
-        if($request->category == 'المذكرات الوزارية'){
-            $category = 1;
-          } elseif ($request->category == 'بلاغ صحفي') {
-            $category = 2;
-          }elseif ($request->category == 'دفتر تحملات المتعلق بفتح واستغلال مؤسسات تعليم السياقة'){
-            $category = 3;
-          }else {
-            $category = 4;
-          }
+        
         $Notes_Ministerielle = Notes_Ministerielles::create([
-            'category'=> $category,
+            'category'=> $request->category,
             'titre'=> $request->titre,
             'lien'=> $request->lien,
             'fichier'=> $name_fichier,

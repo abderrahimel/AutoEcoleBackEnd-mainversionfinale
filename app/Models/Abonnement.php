@@ -11,6 +11,7 @@ class Abonnement extends Model
     use HasFactory, SoftDeletes;
     protected $fillable = [
         'auto_ecole_id',
+        'user_id',
         'prix',
         'date_fin',
         'date_debut' 

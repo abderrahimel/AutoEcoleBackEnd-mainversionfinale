@@ -15,7 +15,7 @@ class AbonnementFactory extends Factory
     public function definition()
     {
         return [
-            'auto_ecole_id'=> AutoEcole::factory(),
+            'auto_ecole_id'=> 31,
             'prix'=>'10000',
             'date_fin'=>$this->faker->date($format = 'Y-m-d', $max = 'now'),
             'date_debut'=>$this->faker->date($format = 'Y-m-d', $max = 'now'),

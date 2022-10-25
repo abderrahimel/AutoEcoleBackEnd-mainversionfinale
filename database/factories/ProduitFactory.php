@@ -15,7 +15,7 @@ class ProduitFactory extends Factory
     public function definition()
     {
         return [
-            'auto_ecole_id'=>32,
+            'auto_ecole_id'=>31,
             'fournisseur'=>$this->faker->name(),
             'telephone'=>'0612459874',
             'libelle'=> 'libelle1	',

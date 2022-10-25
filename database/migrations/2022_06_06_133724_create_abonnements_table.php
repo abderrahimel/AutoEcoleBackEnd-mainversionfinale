@@ -21,6 +21,9 @@ class CreateAbonnementsTable extends Migration
             $table->foreignId('auto_ecole_id')->constrained()
             ->onUpdate('cascade') 
             ->onDelete('cascade');
+            $table->foreignId('user_id')->constrained()
+                  ->onUpdate('cascade')
+                  ->onDelete('cascade');
             $table->softDeletes();
             $table->timestamps();
         });

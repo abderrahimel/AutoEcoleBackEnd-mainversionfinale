@@ -12,6 +12,7 @@ use App\Models\MoniteurTheorique;
 use App\Models\MoniteurPratique;
 use App\Models\Employe;
 use App\Models\Candidat;
+use App\Models\Vehicule;
 use Illuminate\Support\Facades\DB;
 class PresenceController extends Controller
 {
@@ -24,6 +25,18 @@ class PresenceController extends Controller
     //     return response()->json($presences,200);
     // }
     public function getPresencecourP($ecole_id){
+        // $ecole = AutoEcole::find($ecole_id);
+        // if (is_null($ecole)) {
+        //     return response()->json(['message'=>"auto ecole n'est pas trouvée"],404);
+        // }
+        // $presences = cour_pratique_presence::where('auto_ecole_id', $ecole_id)->get();
+        // //
+        // foreach($presences as $key => $presence) {
+        //     $moniteur = MoniteurPratique::find($presence->moniteur_pratique_id);
+        //     $presence->moniteur = $moniteur->nom . " " . $moniteur->prenom;
+        // }
+        // return response()->json($presences,200);
+        // ****************************************
         $ecole = AutoEcole::find($ecole_id);
         if (is_null($ecole)) {
             return response()->json(['message'=>"auto ecole n'est pas trouvée"],404);
@@ -32,8 +45,25 @@ class PresenceController extends Controller
         //
         foreach($presences as $key => $presence) {
             $moniteur = MoniteurPratique::find($presence->moniteur_pratique_id);
+
             $presence->moniteur = $moniteur->nom . " " . $moniteur->prenom;
+            $coursPratique = CourPratique::find($presence->cour_pratique_id);
+            $vehicule = Vehicule::find($coursPratique->vehicule_id);
+            $presence['matricule'] =  $vehicule->matricule;
         }
+        //
+        foreach ($presences as $presence) {
+            $listCandidat = ' ';
+            $candidats = $presence->candidat;
+            foreach($presence->candidat as $id){
+                 $candidat = Candidat::find($id);
+                 if(!is_null($candidat)){
+                    $listCandidat = $listCandidat . ' ' . $candidat->nom_fr . ' ' . $candidat->prenom_fr . ',';
+                 }
+            }
+            $presence['candidats'] = $listCandidat;
+       }
+        //
         return response()->json($presences,200);
     }
 

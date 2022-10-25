@@ -14,7 +14,7 @@ class MoniteurTheoriqueFactory extends Factory
     public function definition()
     {
         return [
-        'auto_ecole_id'=>32,
+        'auto_ecole_id'=>31,
         'nom'=> $this->faker->name(),
         'prenom'=>$this->faker->lastName(),
         'cin'=>'df15489',

@@ -70,6 +70,7 @@ class Kernel extends HttpKernel
         'role_or_permission' => \Spatie\Permission\Middlewares\RoleOrPermissionMiddleware::class,
         'CORS' => \App\Http\Middleware\CORS::class,
         'verify.api'=> \App\Http\Middleware\VerifyEmail::class,
-        'jwt.verify' => \App\Http\Middleware\JWTMiddleware::class
+        'jwt.verify' => \App\Http\Middleware\JWTMiddleware::class,
+        'abonnement.verify'=> \App\Http\Middleware\AbonnementMiddleware::class
     ];
 }

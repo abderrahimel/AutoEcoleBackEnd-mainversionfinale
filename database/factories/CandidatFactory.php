@@ -23,7 +23,7 @@ class CandidatFactory extends Factory
         $b_s[1] = 'supplementaire';
         
         return [
-            'auto_ecole_id'=>32,
+            'auto_ecole_id'=>31,
             'cin'=>'fd12547',
             'date_inscription'=>$this->faker->date($format = 'Y-m-d', $max = 'now'),
             'numero_contrat'=> '364764545',
@@ -38,7 +38,7 @@ class CandidatFactory extends Factory
             'adresse_ar'=>$this->faker->address(),
             'telephone'=>'0612459874',
             'email'=>'email@gmail.com',
-            'type_formation'=> 'supplementaire',
+            'type_formation'=>$this->faker->randomElement(['supplementaire', 'basic']),
             'profession'=>'student',
             'langue'=>'Francais',
             'image'=>'43545454543.png',
@@ -58,6 +58,7 @@ class CandidatFactory extends Factory
             'moniteur_theorique_id'=> MoniteurTheorique::factory(),
             'moniteur_pratique_id'=> MoniteurPratique::factory(),
             'vehicule_id'=> Vehicule::factory(),
+            'deleted_at'=>$this->faker->date($format = 'Y-m-d', $max = 'now')
         ];
     }
 }

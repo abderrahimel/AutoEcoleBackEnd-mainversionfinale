@@ -17,7 +17,8 @@ class EmployeController extends Controller
         if (is_null($ecole_id)) {
             return response()->json(['message'=>"Auto Ecole n'est pas trouvée"],404);
         }
-        $employes = $ecole->employes;
+        $employes = Employe::where('auto_ecole_id', $ecole_id)->get();
+        
         return response()->json($employes,200);
         
     }

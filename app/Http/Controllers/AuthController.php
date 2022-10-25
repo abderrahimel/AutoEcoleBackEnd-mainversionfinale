@@ -24,7 +24,8 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\URL;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
-
+use DateTime;
+use DateInterval;
 class AuthController extends Controller
 {
     /**
@@ -120,6 +121,7 @@ class AuthController extends Controller
         // creat abonnement
         $abonnement = Abonnement::create([
             'auto_ecole_id'=>$ecole->id,
+            'user_id'=>$user->id,
          ]);
          $abonnement->save();
         // send email to new user with the url verification
@@ -245,6 +247,7 @@ class AuthController extends Controller
         $user->save();
         return response()->json($user, 200);
      }
+
      public function getLogo($auto_id)
      {
         $autoEcole = ModelsAutoEcole::find($auto_id);
@@ -254,6 +257,7 @@ class AuthController extends Controller
         $nameLogo =  "images/" . $autoEcole->image;
         return response()->json($nameLogo, 200);
      }
+
      public function login(Request $request)
      {
         $validator = Validator::make($request->all(), [
@@ -266,16 +270,34 @@ class AuthController extends Controller
         }
          
         try {
-            if (! $token = JWTAuth::attempt($validator->validated())) {
+            if (!$token = JWTAuth::attempt($validator->validated())) {
                 return response()->json(['message'=>'invalid login credentials'], 422);
+            }
+            $user = User::where('email', $request->email)->first();
+            $abonnement = Abonnement::where('user_id', $user['id'])->first();
+            if (!$abonnement->date_fin) {
+                return response()->json(['response'=>false, 'message' => 'you need abonnement'], 500);
+            }
+            $paymentDate       = new DateTime('now');
+           
+            $contractDateEnd   = new DateTime($abonnement->date_fin);
+            $verify = $this->dateIsInBetween($contractDateEnd, $paymentDate);
+            if (!$verify) {
+                return response()->json(['response'=>false, 'message' => 'abonnement expired'], 500);
             }
         } catch (JWTException $e) {
             return $this->sendError([], $e->getMessage(), 500);
         }
         
-         return $this->respondWithToken($token);
+
+         return  $this->respondWithToken($token);
      }
-     
+
+     function dateIsInBetween(\DateTime $to, \DateTime $subject)
+      {
+        return $subject->getTimestamp()  <= $to->getTimestamp()  ? true : false;
+      }
+
      public function logout(Request $request)
     {  
         auth()->logout();
@@ -314,9 +336,9 @@ class AuthController extends Controller
     protected function respondWithToken($token)
     {
         return response()->json([
-            'access_token' => $token,
+            'access_token' => $token, 
             'token_type' => 'bearer',
-            'expires_in' => auth()->factory()->getTTL() * 60
+            'expires_in' => auth()->factory()->getTTL() * 60 * 60 * 24 * 7 , // 1 week
         ]);
     }
     

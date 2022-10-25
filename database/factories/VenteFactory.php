@@ -18,7 +18,7 @@ class VenteFactory extends Factory
     public function definition()
     {
         return [
-            'auto_ecole_id'=>32,
+            'auto_ecole_id'=>31,
             'candidat_id'=> Candidat::factory(),
             'produit_id'=>Produit::factory(),
             'prixUnitaire'=>'2500',

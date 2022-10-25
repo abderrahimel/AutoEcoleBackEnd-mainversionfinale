@@ -16,7 +16,7 @@ class CourTheoriqueFactory extends Factory
     public function definition()
     {
         return [
-            'auto_ecole_id'=>32,
+            'auto_ecole_id'=>31,
             'moniteur_theorique_id'=> MoniteurTheorique::factory(),
             'date'=>$this->faker->date($format = 'Y-m-d', $max = 'now'),
             'type'=>'cours',

@@ -16,7 +16,7 @@ class NoteFactory extends Factory
     {  
 
         return [
-            'auto_ecole_id'=>32,
+            'auto_ecole_id'=>31,
             'categorie'=> $this->faker->randomElement(['A', 'B', 'C']),
             'moyen'=>'20',
             'note_generale'=>'20',

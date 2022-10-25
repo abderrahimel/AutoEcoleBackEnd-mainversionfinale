@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -12,7 +11,8 @@ class UserController extends Controller
     {
         $users = User::where('type','adminAuto')->get();
         foreach ($users as $us) {
-            $us['autoecole'] = AutoEcole::where('user_id', $us->id)->get();
+            $autoEcole = AutoEcole::where('user_id', $us->id)->get();
+            $us['autoecole'] = $autoEcole;
         }
         return response()->json($users,200);
         

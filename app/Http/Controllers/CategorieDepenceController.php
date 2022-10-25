@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -21,7 +20,45 @@ class CategorieDepenceController extends Controller
         return response()->json($categories,200);
         
     }
-
+    public function getCategorieDepenceVehicule($ecole_id)
+    {
+        $ecole = AutoEcole::find($ecole_id);
+        if (is_null($ecole_id)) {
+            return response()->json(['message'=>"auto ecole n'est pas trouvée"],404);
+        }
+        $categories = CategorieDepence::where('auto_ecole_id', $ecole_id)->where('type', 'vehicule')->get();
+        if (is_null($categories)) {
+            return response()->json(['message'=>"Catégorie Depence n'est pas trouvée"],404);
+        }
+        return response()->json($categories,200);
+        
+    }
+    public function getCategorieDepencePersonnel($ecole_id)
+    {
+        $ecole = AutoEcole::find($ecole_id);
+        if (is_null($ecole_id)) {
+            return response()->json(['message'=>"auto ecole n'est pas trouvée"],404);
+        }
+        $categories = CategorieDepence::where('auto_ecole_id', $ecole_id)->where('type', 'personnel')->get();
+        if (is_null($categories)) {
+            return response()->json(['message'=>"Catégorie Depence n'est pas trouvée"],404);
+        }
+        return response()->json($categories,200);
+        
+    }
+    public function getCategorieDepenceLocal($ecole_id)
+    {
+        $ecole = AutoEcole::find($ecole_id);
+        if (is_null($ecole_id)) {
+            return response()->json(['message'=>"auto ecole n'est pas trouvée"],404);
+        }
+        $categories = CategorieDepence::where('auto_ecole_id', $ecole_id)->where('type', 'local')->get();
+        if (is_null($categories)) {
+            return response()->json(['message'=>"Catégorie Depence n'est pas trouvée"],404);
+        }
+        return response()->json($categories,200);
+        
+    }
     public function getCategorieDepenceById($id)
     {
         $categories = CategorieDepence::find($id);

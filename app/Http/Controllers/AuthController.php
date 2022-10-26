@@ -278,10 +278,14 @@ class AuthController extends Controller
             if (!$abonnement->date_fin) {
                 return response()->json(['response'=>false, 'message' => 'you need abonnement'], 500);
             }
-            $paymentDate       = new DateTime('now');
-           
-            $contractDateEnd   = new DateTime($abonnement->date_fin);
-            $verify = $this->dateIsInBetween($contractDateEnd, $paymentDate);
+            $datetoday = new DateTime();
+            $datecontrat    = new DateTime($abonnement->date_fin); // 
+            $datecontrat->modify('+1 day');
+            if ($datetoday <= $datecontrat) {
+                $verify = true;
+            }else{
+                $verify = false;
+            }
             if (!$verify) {
                 return response()->json(['response'=>false, 'message' => 'abonnement expired'], 500);
             }
@@ -290,13 +294,9 @@ class AuthController extends Controller
         }
         
 
-         return  $this->respondWithToken($token);
+         return  $this->respondWithToken($token, $user);
      }
-
-     function dateIsInBetween(\DateTime $to, \DateTime $subject)
-      {
-        return $subject->getTimestamp()  <= $to->getTimestamp()  ? true : false;
-      }
+    
 
      public function logout(Request $request)
     {  
@@ -304,8 +304,36 @@ class AuthController extends Controller
 
         return response()->json(['message' => 'User successfully logged out.']);
     }
-     
-
+     public function role(){
+        try {
+            $user = JWTAuth::parseToken()->authenticate();
+            if (!$user) {
+                return $this->sendError([], "user not found", 403);
+            } 
+        } catch (JWTException $e) {
+            return response()->json($e->getMessage(), 500);        
+        }
+        $isSuperAdmin = false;
+        if($user->type == 'superAdmin'){
+            $isSuperAdmin = true;
+        }
+        return response()->json($isSuperAdmin, 200);
+     }
+    public function roleAdminAutoecole(){
+        try {
+            $user = JWTAuth::parseToken()->authenticate();
+            if (!$user) {
+                return $this->sendError([], "user not found", 403);
+            } 
+        } catch (JWTException $e) {
+            return response()->json($e->getMessage(), 500);        
+        }
+        $isSuperAdmin = false;
+        if($user->type == 'adminAuto'){
+            $isSuperAdmin = true;
+        }
+        return response()->json($isSuperAdmin, 200);
+    }
     public function logged()
     {
         try {
@@ -333,12 +361,13 @@ class AuthController extends Controller
         return response()->json($autoEcole[0]['id'], 200);
     }
 
-    protected function respondWithToken($token)
+    protected function respondWithToken($token, $user)
     {
         return response()->json([
             'access_token' => $token, 
             'token_type' => 'bearer',
             'expires_in' => auth()->factory()->getTTL() * 60 * 60 * 24 * 7 , // 1 week
+             'type'=>$user->type
         ]);
     }
     

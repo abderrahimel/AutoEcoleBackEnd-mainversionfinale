@@ -74,6 +74,8 @@ Route::group(['middleware' => 'api'], function($router) {
 Route::middleware(['jwt.verify' ])->group(function() {
     // login and logout 
     Route::get('/logged', [AuthController::class,'logged']);
+    Route::get('/check-super-admin', [AuthController::class,'role']);
+    Route::get('/check-admin-autoecole', [AuthController::class,'roleAdminAutoecole']);
     //Users routes
     Route::get('/user', [UserController::class,'getUser']);
     Route::get('/user/{id}', [UserController::class,'getUserById']);

@@ -87,15 +87,9 @@ class ExamenController extends Controller
         'categorie'=> $request->categorie,
         'date_examen'=> $request->date_examen,
         'date_depot'=> $request->date_depot,
+        'moniteur_pratique_id'=> $request->moniteur_pratique_id,
         ]);
         $examen->save();
-        $candidat = Candidat::find($request->candidat_id);
-        $candidat->moniteur_pratique_id = $request->moniteur_pratique_id;
-        $candidat->categorie = $request->categorie;
-        $candidat->save();
-        $ecole -> rapports()->save($examen);
-        $examen->candidat;
-        $examen->permis;
         return response($examen,201);
     }
 
@@ -115,8 +109,6 @@ class ExamenController extends Controller
         $candidat->categorie = $request->categorie;
         $candidat->save();
         $examen->save();
-        $examen->candidat;
-        $examen->permis;
         return response($examen,200);
     }
 

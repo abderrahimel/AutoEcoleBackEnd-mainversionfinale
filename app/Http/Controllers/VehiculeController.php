@@ -14,6 +14,20 @@ class VehiculeController extends Controller
     {   
         $ecole = AutoEcole::findOrFail($ecole_id);
         $vehicules = Vehicule::where('auto_ecole_id', $ecole_id)->get();
+        foreach($vehicules as $key => $vehicule) {
+            if($vehicule->carte_grise){
+                $vehicule->carte_grise = 'http://' . request()->getHttpHost() . '/' . 'carte_grise/' .  $vehicule->carte_grise; 
+            }
+            if($vehicule->vignette){
+                $vehicule->vignette = 'http://' . request()->getHttpHost() . '/' . 'vignette/' .  $vehicule->vignette; 
+            }
+            if($vehicule->assurance){
+                $vehicule->assurance = 'http://' . request()->getHttpHost() . '/' . 'assurance/' .  $vehicule->assurance;  
+            }
+            if($vehicule->visite){
+                $vehicule->visite  = 'http://' . request()->getHttpHost() . '/' . 'visite/' .  $vehicule->visite; 
+            }
+            }
         return response()->json($vehicules, 200);
     }
     // public function getVidanges($ecole_id){
@@ -42,34 +56,25 @@ class VehiculeController extends Controller
         if(is_null($vehicule)){
             return response()->json(['message'=> "Véhicule n'est pas trouvée"],404);
         }
-        // base 64 carte grise
-        $img = $vehicule->carte_grise;
-        $path = 'carte_grise/' . $img;
-        $type = pathinfo($path, PATHINFO_EXTENSION);
-        $data = file_get_contents($path);
-        $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
-        $vehicule->carte_grise = $base64;    
-        // base 64 carte  vignette
-        $img = $vehicule->vignette;
-        $path = 'vignette/' . $img;
-        $type = pathinfo($path, PATHINFO_EXTENSION);
-        $data = file_get_contents($path);
-        $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
-        $vehicule->vignette = $base64;    
-         // base 64 carte assurance
-         $img = $vehicule->assurance;
-         $path = 'assurance/' . $img;
-         $type = pathinfo($path, PATHINFO_EXTENSION);
-         $data = file_get_contents($path);
-         $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
-         $vehicule->assurance = $base64; 
+        if($vehicule->carte_grise){
+            $vehicule->carte_grise = 'http://' . request()->getHttpHost() . '/' . 'carte_grise/' .  $vehicule->carte_grise; 
+        }
+        if($vehicule->vignette){
+            $vehicule->vignette = 'http://' . request()->getHttpHost() . '/' . 'vignette/' .  $vehicule->vignette; 
+        }
+        if($vehicule->assurance){
+            $vehicule->assurance = 'http://' . request()->getHttpHost() . '/' . 'assurance/' .  $vehicule->assurance;  
+        }
+        if($vehicule->visite){
+            $vehicule->visite  = 'http://' . request()->getHttpHost() . '/' . 'visite/' .  $vehicule->visite; 
+        }
           // base 64 carte visite
-          $img = $vehicule->visite;
-          $path = 'visite/' . $img;
-          $type = pathinfo($path, PATHINFO_EXTENSION);
-          $data = file_get_contents($path);
-          $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
-          $vehicule->visite = $base64; 
+        //   $img = $vehicule->visite;
+        //   $path = 'visite/' . $img;
+        //   $type = pathinfo($path, PATHINFO_EXTENSION);
+        //   $data = file_get_contents($path);
+        //   $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
+        //   $vehicule->visite = $base64; 
 
         return response()->json($vehicule,200);
     }

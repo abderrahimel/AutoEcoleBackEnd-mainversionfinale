@@ -250,11 +250,14 @@ class AuthController extends Controller
 
      public function getLogo($auto_id)
      {
-        $autoEcole = ModelsAutoEcole::find($auto_id);
-        if (is_null($autoEcole)) {
-            return response()->json(['message'=>"Auto Ecole n'est pas trouvée"],404);
+        $ecole = ModelsAutoEcole::find($auto_id);
+        if(is_null($ecole)){
+            return response()->json(['message'=> "Auto Ecoles n'est pas trouvée"],404);
         }
-        $nameLogo =  "images/" . $autoEcole->image;
+        if($ecole->image){
+            $ecole->image = $ecole->image = 'http://' . request()->getHttpHost() . '/' . 'images/' .  $ecole->image; 
+        }
+        return response()->json($ecole->image,200);
         return response()->json($nameLogo, 200);
      }
 

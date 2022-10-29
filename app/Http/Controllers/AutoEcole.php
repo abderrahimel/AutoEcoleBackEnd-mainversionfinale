@@ -15,6 +15,7 @@ class AutoEcole extends Controller
         return response()->json($ecole,200);
         
     }
+
     public function getArchiveAutoEcole(){
 
         $ecoles = ModelsAutoEcole::onlyTrashed()->get();

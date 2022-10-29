@@ -66,14 +66,9 @@ class AutoEcoleController extends Controller
         }
         $autoEcole = $user->autoEcoles;
         foreach($autoEcole as $key => $ecole) {
-           if($ecole->image){
-                $img = $ecole->image;
-                $path = 'images/' . $img;
-                $type = pathinfo($path, PATHINFO_EXTENSION);
-                $data = file_get_contents($path);
-                $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
-                $ecole->image = $base64;
-           }    
+            if($ecole->image){
+                $ecole->image = $ecole->image = 'http://' . request()->getHttpHost() . '/' . 'images/' .  $ecole->image; 
+            }
         }
         return response()->json($autoEcole, 200);
     }
@@ -85,46 +80,29 @@ class AutoEcoleController extends Controller
        $autoEcole = AutoEcole::findOrFail($id);
 
        if(is_null($autoEcole)){
-        return response()->json(['message'=>'auto ecole does not exist'], 404);
+           return response()->json(['message'=>'auto ecole does not exist'], 404);
          }
-
             // logo auto ecole
             if($autoEcole->image){
-                $img = $autoEcole->image;
-                $path = 'images/' . $img;
-                $type = pathinfo($path, PATHINFO_EXTENSION);
-                $data = file_get_contents($path);
-                $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
-                $autoEcole->image = $base64; 
+                $autoEcole->image = $autoEcole->image = 'http://' . request()->getHttpHost() . '/' . 'images/' .  $autoEcole->image; 
             }
              
             // image rc
             if($autoEcole->image_rc){
-                $img = $autoEcole->image_rc;
-                $path = 'image_rc/' . $img;
-                $type = pathinfo($path, PATHINFO_EXTENSION);
-                $data = file_get_contents($path);
-                $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
-                $autoEcole->image_rc = $base64; 
-            } 
+                $autoEcole->image_rc = $autoEcole->image_rc = 'http://' . request()->getHttpHost() . '/' . 'image_rc/' .  $autoEcole->image_rc; 
+            }
+        
             // //  image_cin
             if($autoEcole->image_cin){
-                $img = $autoEcole->image_cin;
-                $path = 'image_cin/' . $img;
-                $type = pathinfo($path, PATHINFO_EXTENSION);
-                $data = file_get_contents($path);
-                $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
-                $autoEcole->image_cin = $base64;
-            }  
+                $autoEcole->image_cin = $autoEcole->image_cin = 'http://' . request()->getHttpHost() . '/' . 'image_cin/' .  $autoEcole->image_cin; 
+            }
+            
             // // image_agrement
             if($autoEcole->image_agrement){
-                $img = $autoEcole->image_agrement;
-                $path = 'image_agrement/' . $img;
-                $type = pathinfo($path, PATHINFO_EXTENSION);
-                $data = file_get_contents($path);
-                $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
-                $autoEcole->image_agrement = $base64; 
-            } 
+                $autoEcole->image_agrement = $autoEcole->image_agrement = 'http://' . request()->getHttpHost() . '/' . 'image_agrement/' .  $autoEcole->image_agrement; 
+            }
+            
+           
        
          return response()->json($autoEcole,200);
    }

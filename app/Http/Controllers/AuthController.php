@@ -277,6 +277,9 @@ class AuthController extends Controller
                 return response()->json(['message'=>'invalid login credentials'], 422);
             }
             $user = User::where('email', $request->email)->first();
+            if($user->type == 'superAdmin'){
+                return  $this->respondWithToken($token, $user);
+            }
             $abonnement = Abonnement::where('user_id', $user['id'])->first();
             if (!$abonnement->date_fin) {
                 return response()->json(['response'=>false, 'message' => 'you need abonnement'], 500);
@@ -289,6 +292,7 @@ class AuthController extends Controller
             }else{
                 $verify = false;
             }
+           
             if (!$verify) {
                 return response()->json(['response'=>false, 'message' => 'abonnement expired'], 500);
             }

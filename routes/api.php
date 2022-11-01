@@ -48,6 +48,7 @@ use App\Http\Controllers\ResetEmailController;
 use App\Http\Controllers\SubscriberController;
 use App\Http\Controllers\VerificationController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\ContactAutoEcoleController;
 use App\Http\Middleware\VerifyEmail;
 /*
 |--------------------------------------------------------------------------
@@ -422,6 +423,9 @@ Route::middleware(['jwt.verify' ])->group(function() {
     Route::post('/add-note-ministerielle', [NotesMinisterielleController::class,'addNoteMinisterielle']);
     Route::delete('/delete-note-ministerielle/{id}', [NotesMinisterielleController::class, 'deleteNoteMinisterielle']);
     // ****************************************** end midellware rout jwt *************************************
+    // contact all auto ecole;
+    Route::post('/send-email-auto-ecole', [ContactAutoEcoleController::class,'send']);
+    Route::post('/send-to-all-email-auto-ecoles', [ContactAutoEcoleController::class,'sendtoAll']);
 });
 
 

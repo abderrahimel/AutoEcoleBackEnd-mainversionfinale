@@ -22,8 +22,11 @@ class CandidatController extends Controller
         $candidats =  Candidat::withTrashed()->where('auto_ecole_id', $ecole_id)->get();
         foreach($candidats as $candidat){
             if($candidat->deleted_at != null){
-                    $candidat->prenom_fr = $candidat->prenom_fr . ' (s)';
-                    $candidat->prenom_ar = $candidat->prenom_ar . ' (s)';
+                if($candidat->image){
+                    $candidat->image = 'http://' . request()->getHttpHost() . '/' . 'candidat_img/' .  $candidat->image; 
+                }
+                $candidat->prenom_fr = $candidat->prenom_fr . ' (s)';
+                $candidat->prenom_ar = $candidat->prenom_ar . ' (s)';    
             }
     }
         return response()->json($candidats,200);
@@ -37,8 +40,15 @@ class CandidatController extends Controller
         }
         
         $candidats =  Candidat::where('auto_ecole_id', $ecole_id)->where('type_formation', 'basic')->get();
-       
-        //
+        foreach($candidats as $candidat){
+            if($candidat->image){
+                $candidat->image = 'http://' . request()->getHttpHost() . '/' . 'candidat_img/' .  $candidat->image; 
+            }
+            $candidat['MoniteurTheorique'] = MoniteurTheorique::find($candidat->moniteur_theorique_id);
+            $candidat['MoniteurPratique']  = MoniteurPratique::find($candidat->moniteur_pratique_id);
+            $candidat['vehicule'] = Vehicule::find($candidat->vehicule_id);
+    }
+    
         return response()->json($candidats,200);
         
     }
@@ -50,8 +60,14 @@ class CandidatController extends Controller
         }
         
         $candidats =  Candidat::where('auto_ecole_id', $ecole_id)->where('type_formation', 'supplementaire')->get();
-       
-        //
+        foreach($candidats as $candidat){
+            if($candidat->image){
+                $candidat->image = 'http://' . request()->getHttpHost() . '/' . 'candidat_img/' .  $candidat->image; 
+            }
+            $candidat['MoniteurTheorique'] = MoniteurTheorique::find($candidat->moniteur_theorique_id);
+            $candidat['MoniteurPratique']  = MoniteurPratique::find($candidat->moniteur_pratique_id);
+            $candidat['vehicule'] = Vehicule::find($candidat->vehicule_id);
+    }
         return response()->json($candidats,200);
         
     }

@@ -15,7 +15,7 @@ class DepenseVehiculeFactory extends Factory
     public function definition()
     {
         return [
-            'auto_ecole_id'=>31,
+            'auto_ecole_id'=>2,
             'categorie_depence_id'=>CategorieDepence::factory(),
             'vehicule_id'=>Vehicule::factory(),
             'date'=>$this->faker->date($format = 'Y-m-d', $max = 'now'),

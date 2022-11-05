@@ -15,7 +15,7 @@ class PaimentCandidatFactory extends Factory
     public function definition()
     {
         return [
-            'auto_ecole_id'=>31,
+            'auto_ecole_id'=>2,
             'candidat_id'=>Candidat::factory(),
             'date'=>$this->faker->date($format = 'Y-m-d', $max = 'now'),
             'montant'=>'2000',

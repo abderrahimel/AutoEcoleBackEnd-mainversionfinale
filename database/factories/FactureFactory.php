@@ -17,7 +17,7 @@ class FactureFactory extends Factory
     public function definition()
     {
         return [
-            'auto_ecole_id'=>31,
+            'auto_ecole_id'=>2,
             'date'=>$this->faker->date($format = 'Y-m-d', $max = 'now'),
             'candidat_id'=> Candidat::factory(),
             'montant_ttc'=>25,

@@ -16,7 +16,7 @@ class ExamenFactory extends Factory
     public function definition()
     {
         return [
-            'auto_ecole_id'=>31,
+            'auto_ecole_id'=>2,
             'candidat_id' => Candidat::factory(),
             'moniteur_pratique_id'=> MoniteurPratique::factory(),
             'categorie'=>$this->faker->randomElement(['A', 'B', 'C', 'D', 'E']),

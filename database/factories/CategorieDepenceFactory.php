@@ -16,7 +16,7 @@ class CategorieDepenceFactory extends Factory
     public function definition()
     { //personnel  personnel personnel
         return [ // personnel   personnel  personnel
-            'auto_ecole_id'=>31,
+            'auto_ecole_id'=>2,
             'categorie'=> 'categorie vehicule '. $this->faker->numberBetween(1,300),
             'type'=>'vehicule'
         ];

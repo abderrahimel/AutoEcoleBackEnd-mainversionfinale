@@ -14,7 +14,7 @@ class VehiculeFactory extends Factory
     public function definition()
     {
         return [
-            'auto_ecole_id'=>31,
+            'auto_ecole_id'=>2,
             'matricule'=>'1245698',
             'type'=>'Voiture',
             'marque'=>'tesla',

@@ -17,7 +17,7 @@ class AbsencePratiqueMoniteurFactory extends Factory
     public function definition()
     {
         return [
-            'auto_ecole_id'=>31,
+            'auto_ecole_id'=>2,
             'moniteur_pratique_id'=>MoniteurPratique::factory(),
             'type_absence'=>$this->faker->randomElement(['Congé', 'Maladie', 'Non justifié', 'Préparation papier', 'Problèmes familiaux']),
             'date_debut'=>$this->faker->date($format = 'Y-m-d', $max = 'now'),

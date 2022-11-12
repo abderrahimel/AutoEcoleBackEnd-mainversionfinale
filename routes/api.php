@@ -292,7 +292,7 @@ Route::middleware(['jwt.verify' ])->group(function() {
     Route::get('/examen/{id}', [ExamenController::class,'getExamenById']);
     Route::post('/add-examen/{ecole_id}', [ExamenController::class,'addExamen']);
     Route::post('/add-note-candidat/{id}', [ExamenController::class, 'addNoteCandidat']); 
-    Route::put('/update-examen/{id}', [vehicule::class,'updateExamen']);
+    Route::put('/update-examen/{id}', [ExamenController::class,'updateExamen']);
     Route::delete('/delete-examen/{id}', [ExamenController::class,'deleteExamen']);
 
 

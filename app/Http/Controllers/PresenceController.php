@@ -16,27 +16,8 @@ use App\Models\Vehicule;
 use Illuminate\Support\Facades\DB;
 class PresenceController extends Controller
 {
-    // public function getPresencecourP($auto_id){
-    //     $ecole = AutoEcole::find($auto_id);
-    //     if (is_null($ecole)) {
-    //         return response()->json(['message'=>"auto ecole n'est pas trouvée"],404);
-    //     }
-    //     $presences = cour_pratique_presence::where('auto_ecole_id',$auto_id)->get();
-    //     return response()->json($presences,200);
-    // }
+    
     public function getPresencecourP($ecole_id){
-        // $ecole = AutoEcole::find($ecole_id);
-        // if (is_null($ecole)) {
-        //     return response()->json(['message'=>"auto ecole n'est pas trouvée"],404);
-        // }
-        // $presences = cour_pratique_presence::where('auto_ecole_id', $ecole_id)->get();
-        // //
-        // foreach($presences as $key => $presence) {
-        //     $moniteur = MoniteurPratique::find($presence->moniteur_pratique_id);
-        //     $presence->moniteur = $moniteur->nom . " " . $moniteur->prenom;
-        // }
-        // return response()->json($presences,200);
-        // ****************************************
         $ecole = AutoEcole::find($ecole_id);
         if (is_null($ecole)) {
             return response()->json(['message'=>"auto ecole n'est pas trouvée"],404);
@@ -49,7 +30,9 @@ class PresenceController extends Controller
             $presence->moniteur = $moniteur->nom . " " . $moniteur->prenom;
             $coursPratique = CourPratique::find($presence->cour_pratique_id);
             $vehicule = Vehicule::find($coursPratique->vehicule_id);
-            $presence['matricule'] =  $vehicule->matricule;
+            if(!is_null($vehicule)){
+                $presence['matricule'] =  $vehicule->matricule;
+            }
         }
         //
         foreach ($presences as $presence) {

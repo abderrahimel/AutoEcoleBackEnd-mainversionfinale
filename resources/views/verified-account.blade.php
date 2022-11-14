@@ -1,1 +1,1 @@
-Congrats! Your account has been verified 
+Félicitations! Votre compte a été vérifié

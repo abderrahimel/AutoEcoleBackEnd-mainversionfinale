@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\Storage;
 class NotesMinisterielleController extends Controller
 {         
     public function getNoteMinisterielle(){
-
         $Notes_Ministerielles = Notes_Ministerielles::all();
         foreach($Notes_Ministerielles as $key => $Notes_Ministerielle) {
             $Notes_Ministerielle['date'] = explode(" ", $Notes_Ministerielle->created_at)[0];
@@ -18,7 +17,7 @@ class NotesMinisterielleController extends Controller
         foreach($Notes_Ministerielles as $key => $Notes_Ministerielle) {
             if($Notes_Ministerielle->fichier){
                 $namepdf = $Notes_Ministerielle->fichier;
-                $Notes_Ministerielle->fichier =  'http://' . request()->getHttpHost() . '/' . 'storage/' .  $namepdf;  
+                $Notes_Ministerielle->fichier =   request()->getHttpHost() . '/' . 'storage/' .  $namepdf;  
             }
         }
         ///
@@ -76,7 +75,7 @@ class NotesMinisterielleController extends Controller
         }
         $Notes_Ministerielle->category =  $request->category;
         $Notes_Ministerielle->titre = $request->titre;
-        $Notes_Ministerielle->fichier = "request->date";
+        $Notes_Ministerielle->fichier = $request->fichier;
         $Notes_Ministerielle->lien = $request->lien;
         $Notes_Ministerielle->save();
 

@@ -68,6 +68,6 @@ class UserController extends Controller
         }
         $user->delete();
         $autoEcole->delete();
-        return response()->json(['message'=>'user deleted from db '],204);
+        return response()->json(['message'=>'user deleted from db '],200);
     }
 }

@@ -108,9 +108,8 @@ class AutoEcoleController extends Controller
    }
 
    public function getAutoEcoleByIdDeleted($id){ 
-
-    $autoEcole = DB::table('auto_ecoles')->whereNotNull('deleted_at')->get();
-
+    $autoEcole = AutoEcole::withTrashed()->where('id', $id)->first();
+    // withTrashed
     if(is_null($autoEcole)){
      return response()->json(['message'=>'auto ecole does not exist'], 404);
       }

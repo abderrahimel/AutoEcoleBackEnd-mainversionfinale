@@ -363,9 +363,14 @@ class AuthController extends Controller
         $id = data_get($logged, 'original.user.id');
         // $user = $logged->original;
 
-        $autoEcole = ModelsAutoEcole::where('user_id', $id)->get();
+        $autoEcole = ModelsAutoEcole::where('user_id', $id)->first();
+        if($autoEcole->image){
+            $autoEcole->image = 'http://' . request()->getHttpHost() . '/' . 'images/' .  $autoEcole->image; 
+        }
         $idAuto = data_get($autoEcole, 'id');
-        return response()->json($autoEcole[0]['id'], 200);
+    
+        // return response()->json($autoEcole[0]['id'], 200);
+        return response()->json($autoEcole, 200);
     }
 
     protected function respondWithToken($token, $user)

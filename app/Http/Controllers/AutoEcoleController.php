@@ -47,13 +47,13 @@ class AutoEcoleController extends Controller
         $autoEcole->tel_responsable = $request->tel_responsable;
         $autoEcole->adresse_responsable = $request->adresse_responsable;
         $autoEcole->save();
-
        return response()->json($autoEcole,200);
      }
     public function getAutoEcolesApprouve(){
         $autoEcolesApprouves = AutoEcole::where('etat', "approuve")->get();
         foreach($autoEcolesApprouves as $key => $autoEcolesApprouve) {
             $autoEcolesApprouve->abonnement;
+            $autoEcolesApprouve['gmail'] = User::find($autoEcolesApprouve->user_id)['email'];
         }
         return response()->json($autoEcolesApprouves,200);
     }

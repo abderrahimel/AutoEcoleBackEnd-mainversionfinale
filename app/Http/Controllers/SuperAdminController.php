@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\AutoEcole;
+use App\Models\User;
 use Illuminate\Support\Facades\DB;
-
 
 class SuperAdminController extends Controller
 {
@@ -18,8 +18,12 @@ class SuperAdminController extends Controller
     return response()->json(['totalAE'=>$totalAutoecoles, 'totalAEA'=>$totalAutoecolesapprouve, 'totalAE_Attente'=>$totalAutoecolesen_attente, 'totalAECOLEarchive'=>$totalAutoecolesarchive], 200);
    }
    public function getautoecolesEnattente(){
-      $autoecoles_en_attente =  AutoEcole::where('etat','=', 'en_attente')->get();
-      return response()->json($autoecoles_en_attente, 200);
+      $autoEcolesApprouves = AutoEcole::where('etat','=',"en_attente")->get();
+      foreach($autoEcolesApprouves as $key => $autoEcolesApprouve) {
+          $autoEcolesApprouve->abonnement;
+          $autoEcolesApprouve['gmail'] = User::find($autoEcolesApprouve->user_id)['email'];
+      }
+      return response()->json($autoEcolesApprouves, 200);
 
    }
   

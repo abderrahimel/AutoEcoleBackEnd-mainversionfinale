@@ -7,6 +7,7 @@ use App\Models\AutoEcole;
 use Illuminate\Http\Request;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Validator;
 
 class VehiculeController extends Controller
 {

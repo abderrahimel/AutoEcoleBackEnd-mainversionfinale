@@ -5,8 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\DepenseVehicule;
 use App\Models\AutoEcole;
-
+use Illuminate\Support\Facades\Validator;
 use App\Models\CategorieDepence;
+
 class Depense_vehiculeController extends Controller
 {
     public function getDepencevehicule($ecole_id)
@@ -46,6 +47,17 @@ class Depense_vehiculeController extends Controller
         if(is_null($ecole)){
             return response()->json(['message'=> "Ecole n'est pas trouvé"],404);
         }
+        $validator = Validator::make($request->all(), [
+            'id_categorie'=> 'required',
+            'id_vehicule'=> 'required',
+            'date'=> 'required',
+            'montant'=> 'required',
+            'remarque'=> 'required'
+        ]);
+       
+        if ($validator->fails()) {
+            return new JsonResponse(['success' => false, 'message' => $validator->errors()], 422);
+        }
         $depence_vehicule = DepenseVehicule::create([
             'auto_ecole_id'=>$ecole_id,
             'categorie_depence_id'=>$request->id_categorie,
@@ -63,6 +75,17 @@ class Depense_vehiculeController extends Controller
         $depencevehicule = DepenseVehicule::find($id);
         if (is_null($depencevehicule)) {
             return response()->json(['message'=>"Depence vehicule n'est pas trouvée"],404);
+        }
+        $validator = Validator::make($request->all(), [
+            'id_categorie'=> 'required',
+            'id_vehicule'=> 'required',
+            'date'=> 'required',
+            'montant'=> 'required',
+            'remarque'=> 'required'
+        ]);
+       
+        if ($validator->fails()) {
+            return new JsonResponse(['success' => false, 'message' => $validator->errors()], 422);
         }
         $depencevehicule->categorie_depence_id = $request->id_categorie;
         $depencevehicule->vehicule_id = $request->id_vehicule;

@@ -19,33 +19,33 @@ class CreateAutoEcolesTable extends Migration
                   ->onUpdate('cascade')
                   ->onDelete('cascade');
                   $table->string('etat')->default('en_attente');
-                  $table->string('nom_auto_ecole')->nullable();
-                  $table->string('telephone')->nullable();
-                  $table->string('pays')->nullable();
-                  $table->string('ville')->nullable();
-                  $table->string('fax')->nullable();
-                  $table->string('site_web')->nullable();
-                  $table->longText('adresse')->nullable();
-                  $table->string('image')->nullable();
-                  $table->string('image_rc')->nullable();
-                  $table->string('image_cin')->nullable();
-                  $table->string('image_agrement')->nullable();
-                  $table->string('n_cnss')->nullable();
-                  $table->string('ice')->nullable();
-                  $table->string('tva')->nullable();
-                  $table->string('n_register_de_commerce')->nullable();
-                  $table->string('n_compte_bancaire')->nullable();
-                  $table->string('n_agrement')->nullable();
-                  $table->string('n_patente')->nullable();
-                  $table->string('date_autorisation')->nullable();
-                  $table->string('date_ouverture')->nullable();
-                  $table->string('identification_fiscale')->nullable();
-                  $table->string('cin_responsable')->nullable();
-                  $table->string('nom_responsable')->nullable();
-                  $table->string('prenom_responsable')->nullable();
-                  $table->string('tel_responsable')->nullable();
-                  $table->longText('adresse_responsable')->nullable();
-                  $table->string('contrat')->nullable();
+                  $table->string('nom_auto_ecole');
+                  $table->string('telephone');
+                  $table->string('pays');
+                  $table->string('ville');
+                  $table->string('fax')->nullable();//not required
+                  $table->string('site_web')->nullable();//not required
+                  $table->longText('adresse')->nullable(); //not required
+                  $table->string('image');
+                  $table->string('image_rc');
+                  $table->string('image_cin');
+                  $table->string('image_agrement');
+                  $table->string('n_cnss');
+                  $table->string('ice');
+                  $table->string('tva');
+                  $table->string('n_register_de_commerce');
+                  $table->string('n_compte_bancaire');
+                  $table->string('n_agrement');
+                  $table->string('n_patente');
+                  $table->string('date_autorisation');
+                  $table->string('date_ouverture');
+                  $table->string('identification_fiscale');
+                  $table->string('cin_responsable');
+                  $table->string('nom_responsable');
+                  $table->string('prenom_responsable');
+                  $table->string('tel_responsable');
+                  $table->longText('adresse_responsable')->nullable();//not required
+                  $table->string('contrat')->nullable();//not required
                   $table->timestamps();
                   $table->softDeletes();
         });

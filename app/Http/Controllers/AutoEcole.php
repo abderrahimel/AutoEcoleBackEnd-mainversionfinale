@@ -6,6 +6,7 @@ use App\Models\AutoEcole as ModelsAutoEcole;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 class AutoEcole extends Controller
 {

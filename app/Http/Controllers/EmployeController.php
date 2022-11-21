@@ -8,6 +8,8 @@ use App\Models\Employe;
 use App\Models\MoniteurPratique;
 use App\Models\MoniteurTheorique;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
+
 
 class EmployeController extends Controller
 {

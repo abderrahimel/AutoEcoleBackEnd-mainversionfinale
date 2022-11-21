@@ -149,7 +149,6 @@ Route::middleware(['jwt.verify' ])->group(function() {
     Route::put('/update-categorie-depence/{id}', [CategorieDepenceController::class,'updateCategorieDepence']);
     Route::delete('/delete-categorie-depence/{id}', [CategorieDepenceController::class,'deleteCategorieDepence']);
 
-
     //Depence routes personnel
     Route::get('/auto-ecole/{ecole_id}/depence', [DepenceController::class,'getDepence']);
     Route::get('/depence/{id}', [DepenceController::class,'getDepenceById']);

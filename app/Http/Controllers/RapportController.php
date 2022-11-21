@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\Employe;
 use App\Models\AutoEcole; 
 use App\Models\Rapport;
+use Illuminate\Support\Facades\Validator;
+
 
 class RapportController extends Controller
 {

@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Recette;
 use App\Models\AutoEcole;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+
 
 class RecetteController extends Controller
 {

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\AutoEcole;
 use App\Models\CategorieDepence;
+use Illuminate\Support\Facades\Validator;
 
 class CategorieDepenceController extends Controller
 {
@@ -74,6 +75,14 @@ class CategorieDepenceController extends Controller
         $ecole = AutoEcole::find($ecole_id);
         if(is_null($ecole)){
             return response()->json(['message'=> "Ecole n'est pas trouvé"],404);
+        }
+        $validator = Validator::make($request->all(), [
+            'categorie' =>'required',
+            'type' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return new JsonResponse(['success' => false, 'message' => $validator->errors()], 422);
         }
         $categorie = CategorieDepence::create([
             'auto_ecole_id'=>$ecole_id,

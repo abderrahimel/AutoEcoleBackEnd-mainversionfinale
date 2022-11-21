@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\AutoEcole;
 use App\Models\Fournisseur;
+use Illuminate\Support\Facades\Validator;
+
 
 class FournisseurController extends Controller
 {

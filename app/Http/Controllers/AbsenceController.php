@@ -7,7 +7,7 @@ use App\Models\AutoEcole;
 use App\Models\Employe;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-
+use Illuminate\Support\Facades\Validator;
 class AbsenceController extends Controller
 {
     public function getAbsence($ecole_id)
@@ -52,6 +52,17 @@ class AbsenceController extends Controller
         if(is_null($ecole)){
             return response()->json(['message'=> "Ecole n'est pas trouvé"],404);
         }
+        $validator = Validator::make($request->all(), [
+            'employe_id'=>'required',
+            'type_absence'=>'required',
+            'date_debut'=>'required',
+            'date_fin'=>'required',
+            'remarque'=>'required',
+        ]);
+        
+        if ($validator->fails()) {
+            return new JsonResponse(['success' => false, 'message' => $validator->errors()], 422);
+        }
         $absence = Absence::create([
             'auto_ecole_id' =>$ecole_id,
             'employe_id'    => $request->employe_id,
@@ -70,6 +81,17 @@ class AbsenceController extends Controller
         $absence= Absence::find($id);
         if(is_null($absence)){
             return response()->json(['message'=> "absence n'est pas trouvé"],404);
+        }
+        $validator = Validator::make($request->all(), [
+            'employe_id'=>'required',
+            'type_absence'=>'required',
+            'date_debut'=>'required',
+            'date_fin'=>'required',
+            'remarque'=>'required',
+        ]);
+        
+        if ($validator->fails()) {
+            return new JsonResponse(['success' => false, 'message' => $validator->errors()], 422);
         }
         $absence->employe_id   = $request->employe_id;
         $absence->type_absence = $request->type_absence;

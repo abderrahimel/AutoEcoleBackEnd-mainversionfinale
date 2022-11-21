@@ -11,6 +11,7 @@ use App\Models\CategoriePermis;
 use App\Models\MoniteurPratique;
 use App\Models\Employe;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 
 class ExamenController extends Controller

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\autoEcole_Vendre;
+use Illuminate\Support\Facades\Validator;
 
 class AutoEcoleVendreController extends Controller
 {     

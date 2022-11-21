@@ -3,6 +3,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Produit_admin_auto_ecole; 
+use Illuminate\Support\Facades\Validator;
+
 
 class ProduitAdminController extends Controller
 {   

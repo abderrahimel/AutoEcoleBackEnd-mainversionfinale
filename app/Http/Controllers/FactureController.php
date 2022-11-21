@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\AutoEcole;
 use App\Models\Facture;
+use Illuminate\Support\Facades\Validator;
 
 class FactureController extends Controller
 {
@@ -35,6 +36,18 @@ class FactureController extends Controller
         $ecole = AutoEcole::find($ecole_id);
         if(is_null($ecole)){
             return response()->json(['message'=> "Ecole n'est pas trouvé"],404);
+        }
+        $validator = Validator::make($request->all(), [
+            'date'=>'required',
+            'candidat_id'=>'required',
+            'tva'=>'required',
+            'montant_ttc'=>'required',
+            'montant_ht'=>'required',
+            'remarque'=>'required',
+        ]);
+       
+        if ($validator->fails()) {
+            return new JsonResponse(['success' => false, 'message' => $validator->errors()], 422);
         }
         $facture = Facture::create([
                     'auto_ecole_id'=>$ecole_id,

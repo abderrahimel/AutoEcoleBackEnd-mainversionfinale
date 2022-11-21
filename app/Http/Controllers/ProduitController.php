@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\AutoEcole;
 use App\Models\Produit;
+use Illuminate\Support\Facades\Validator;
+
 
 class ProduitController extends Controller
 {
@@ -34,6 +36,21 @@ class ProduitController extends Controller
     public function addProduit($ecole_id,Request $request)
     {
         $ecole = AutoEcole::find($ecole_id);
+        if(is_null($ecole)){
+            return response()->json(['message'=> "ecole n'est pas trouvée"],404);
+        }
+        $validator = Validator::make($request->all(), [
+            'fournisseur'=>'required',
+            'telephone'=>'required',
+            'libelle'=>'required',
+            'prix'=>'required',
+            'quantite'=>'required',
+            'description'=>'required',
+        ]);
+        
+        if ($validator->fails()) {
+            return new JsonResponse(['success' => false, 'message' => $validator->errors()], 422);
+        }
         $produit = Produit::create([
             'auto_ecole_id'=>$ecole_id,
             'fournisseur'=>$request->fournisseur,
@@ -52,6 +69,18 @@ class ProduitController extends Controller
         $produit = Produit::find($id);
         if (is_null($produit)) {
             return response()->json(['message'=>"Produit n'est pas trouvée"],404);
+        }
+        $validator = Validator::make($request->all(), [
+            'fournisseur'=>'required',
+            'telephone'=>'required',
+            'libelle'=>'required',
+            'prix'=>'required',
+            'quantite'=>'required',
+            'description'=>'required',
+        ]);
+        
+        if ($validator->fails()) {
+            return new JsonResponse(['success' => false, 'message' => $validator->errors()], 422);
         }
         $produit->fournisseur = $request->fournisseur;
         $produit->telephone = $request->telephone;

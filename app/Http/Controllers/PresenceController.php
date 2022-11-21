@@ -14,6 +14,9 @@ use App\Models\Employe;
 use App\Models\Candidat;
 use App\Models\Vehicule;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
+
+
 class PresenceController extends Controller
 {
     

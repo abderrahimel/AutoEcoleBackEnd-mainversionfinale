@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\AutoEcole;
 use App\Models\Paiement;
 use App\Models\Employe;
+use Illuminate\Support\Facades\Validator;
+
 
 class PaiementController extends Controller
 {

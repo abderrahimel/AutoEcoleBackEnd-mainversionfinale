@@ -6,6 +6,7 @@ use App\Models\AutoEcole;
 use App\Models\Vente;
 use App\Models\Candidat;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class VenteController extends Controller
 {
@@ -53,6 +54,20 @@ class VenteController extends Controller
         if (is_null($ecole)) {
             return response()->json(['message'=>"auto ecole n'est pas trouvée"],404);
         }
+        $validator = Validator::make($request->all(), [
+            'date'=>'required',
+            'produit_id'=>'required',
+            'candidat_id'=>'required',
+            'prixUnitaire'=>'required',
+            'prixTotale'=>'required',
+            'quantiteDisponible'=>'required',
+            'quantite'=>'required',
+            'date'=>'required',
+        ]);
+       
+        if ($validator->fails()) {
+            return new JsonResponse(['success' => false, 'message' => $validator->errors()], 422);
+        }
         $vente = Vente::create([
             'auto_ecole_id' => $ecole_id,
             'produit_id'  => $request->produit_id,
@@ -73,7 +88,19 @@ class VenteController extends Controller
         if (is_null($vente)) {
             return response()->json(['message'=>"Vente n'est pas trouvée"],404);
         }
-     
+        $validator = Validator::make($request->all(), [
+            'produit_id'=>'required',
+            'candidat_id'=>'required',
+            'prixUnitaire'=>'required',
+            'prixTotale'=>'required',
+            'quantiteDisponible'=>'required',
+            'quantite'=>'required',
+            'date'=>'required',
+        ]);
+       
+        if ($validator->fails()) {
+            return new JsonResponse(['success' => false, 'message' => $validator->errors()], 422);
+        }
         $vente->candidat_id = $request->candidat_id;
         $vente->date = $request->date;
         $vente->produit_id = $request->produit_id;

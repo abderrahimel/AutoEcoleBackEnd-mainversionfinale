@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\Depense_local;
 use App\Models\AutoEcole;
 use App\Models\CategorieDepence;
+use Illuminate\Support\Facades\Validator;
+
 class Depense_localController extends Controller
 {
     public function getDepencelocal($ecole_id)
@@ -44,7 +46,16 @@ class Depense_localController extends Controller
         if(is_null($ecole)){
             return response()->json(['message'=> "Ecole n'est pas trouvé"],404);
         }
-     
+        $validator = Validator::make($request->all(), [
+            'id_categorie' =>'required',
+            'date' => 'required',
+            'montant' => 'required',
+            'remarque' => 'required',
+        ]);
+       
+        if ($validator->fails()) {
+            return new JsonResponse(['success' => false, 'message' => $validator->errors()], 422);
+        }
         $depence_local = Depense_local::create([
             'auto_ecole_id'=>$ecole_id,
             'categorie_depence_id'=>$request->id_categorie,
@@ -62,7 +73,16 @@ class Depense_localController extends Controller
         if (is_null($depencelocal)) {
             return response()->json(['message'=>"Depence local n'est pas trouvée"],404);
         }
-
+        $validator = Validator::make($request->all(), [
+            'id_categorie' =>'required',
+            'date' => 'required',
+            'montant' => 'required',
+            'remarque' => 'required',
+        ]);
+       
+        if ($validator->fails()) {
+            return new JsonResponse(['success' => false, 'message' => $validator->errors()], 422);
+        }
         $depencelocal->categorie_depence_id = $request->id_categorie;
         $depencelocal->date = $request->date;
         $depencelocal->montant = $request->montant;

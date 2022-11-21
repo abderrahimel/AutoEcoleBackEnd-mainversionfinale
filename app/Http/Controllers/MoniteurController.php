@@ -7,6 +7,8 @@ use App\Models\Employe;
 use App\Models\MoniteurTheorique;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
+
 
 class MoniteurController extends Controller
 {
@@ -154,12 +156,31 @@ class MoniteurController extends Controller
 
     public function addMoniteurt($ecole_id,Request $request)
     {   
-         
         $ecole=AutoEcole::find($ecole_id);
         if(is_null($ecole)){
             return response()->json(['message'=> "ecole n'est pas trouvé"],404);
         }
-       
+        $validator = Validator::make($request->all(), [
+            'nom'=>'required',
+            'prenom'=>'required',
+            'cin'=>'required',
+            'type'=>'required',
+            'date_naissance'=>'required',
+            'lieu_naissance'=>'required',
+            'email'=>'required',
+            'telephone'=>'required',
+            'date_embauche'=>'required',
+            'capn'=>'required',
+            'conduire'=>'required',
+            'adresse'=>'required',
+            'observations'=>'required',
+            'carteMoniteur'=>'required',
+             'categorie'=>'required',
+        ]);
+        
+        if ($validator->fails()) {
+            return new JsonResponse(['success' => false, 'message' => $validator->errors()], 422);
+        }
         if($request->carteMoniteur != ''){
             $namecarteMoniteur = time().'.' . explode('/', explode(':', substr($request->carteMoniteur, 0, strpos($request->carteMoniteur, ';')))[1])[1];
             \Image::make($request->carteMoniteur)->save(public_path('carteMoniteur/').$namecarteMoniteur);
@@ -192,7 +213,27 @@ class MoniteurController extends Controller
         if(is_null($ecole)){
             return response()->json(['message'=> "ecole n'est pas trouvé"],404);
         }
-
+        $validator = Validator::make($request->all(), [
+            'nom'=>'required',
+            'prenom'=>'required',
+            'cin'=>'required',
+            'type'=>'required',
+            'date_naissance'=>'required',
+            'lieu_naissance'=>'required',
+            'email'=>'required',
+            'telephone'=>'required',
+            'date_embauche'=>'required',
+            'capn'=>'required',
+            'conduire'=>'required',
+            'adresse'=>'required',
+            'observations'=>'required',
+            'carteMoniteur'=>'required',
+             'categorie'=>'required',
+        ]);
+        
+        if ($validator->fails()) {
+            return new JsonResponse(['success' => false, 'message' => $validator->errors()], 422);
+        }
         if($request->carteMoniteur != ''){
             $namecarteMoniteur = time().'.' . explode('/', explode(':', substr($request->carteMoniteur, 0, strpos($request->carteMoniteur, ';')))[1])[1];
             \Image::make($request->carteMoniteur)->save(public_path('carteMoniteur/').$namecarteMoniteur);

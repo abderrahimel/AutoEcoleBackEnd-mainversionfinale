@@ -8,6 +8,8 @@ use App\Models\CategorieDepence;
 use App\Models\Depence;
 use App\Models\Employe;
 use App\Models\Depense_local;
+use Illuminate\Support\Facades\Validator;
+
 
 class DepenceController extends Controller
 {
@@ -42,7 +44,18 @@ class DepenceController extends Controller
         if(is_null($ecole)){
             return response()->json(['message'=> "Ecole n'est pas trouvé"],404);
         }
-        // var_dump($request->all());
+        
+        $validator = Validator::make($request->all(), [
+            'id_categorie' =>'required',
+            'id_employe' =>'required',
+            'date' =>'required',
+            'montant' =>'required',
+            'remarque' =>'required',
+        ]);
+
+        if ($validator->fails()) {
+            return new JsonResponse(['success' => false, 'message' => $validator->errors()], 422);
+        }
 
         $depence = Depence::create([
             'auto_ecole_id'=>$ecole_id,
@@ -62,6 +75,17 @@ class DepenceController extends Controller
         $depence = Depence::find($id);
         if (is_null($depence)) {
             return response()->json(['message'=>"Depence n'est pas trouvée"],404);
+        }
+        $validator = Validator::make($request->all(), [
+            'id_categorie' =>'required',
+            'id_employe' =>'required',
+            'date' =>'required',
+            'montant' =>'required',
+            'remarque' =>'required',
+        ]);
+
+        if ($validator->fails()) {
+            return new JsonResponse(['success' => false, 'message' => $validator->errors()], 422);
         }
         $depence->categorie_depence_id = $request->id_categorie;
         $depence->employe_id = $request->id_employe;

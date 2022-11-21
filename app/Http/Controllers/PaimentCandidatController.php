@@ -7,6 +7,8 @@ use App\Models\AutoEcole;
 use App\Models\PaimentCandidat;
 use App\Models\Examen;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
+
 
 class PaimentCandidatController extends Controller
 {

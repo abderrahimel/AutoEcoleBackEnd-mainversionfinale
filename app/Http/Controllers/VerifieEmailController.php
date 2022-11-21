@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\URL;
 use App\Mail\VerifyEmail;
 use App\Models\User;
 use Auth;
+use Illuminate\Support\Facades\Validator;
 
 class VerifieEmailController extends Controller
 {

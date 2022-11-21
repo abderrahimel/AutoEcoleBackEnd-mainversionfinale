@@ -7,6 +7,7 @@ use App\Models\AutoEcole;
 use App\Models\Controle;
 use App\Models\Employe;
 use App\Models\Fournisseur;
+use Illuminate\Support\Facades\Validator;
 class ControleController extends Controller
 {
     public function getControle($ecole_id)

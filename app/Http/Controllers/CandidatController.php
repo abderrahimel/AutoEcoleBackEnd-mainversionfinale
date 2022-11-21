@@ -9,6 +9,7 @@ use App\Models\MoniteurPratique;
 use App\Models\MoniteurTheorique;
 use App\Models\Vehicule;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 class CandidatController extends Controller
 {

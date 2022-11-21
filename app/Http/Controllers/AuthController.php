@@ -40,12 +40,34 @@ class AuthController extends Controller
 
 
     public function register(Request $request)
-    {     
+    {    
         $validator = Validator::make($request->all(), [
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8'],
+            'nom_auto_ecole' => 'required',
+            'telephone' => 'required|digits:10',
+            'nom_responsable' => 'required',
+            'pays' => 'required',
+            'ville' =>'required',
+            'ice' => 'required',
+            'tva' => 'required',  
+            'n_register_de_commerce' => 'required',
+            'n_compte_bancaire' => 'required',
+            'n_agrement' => 'required',
+            'n_patente' => 'required',
+            'date_autorisation' => 'required',
+            'date_ouverture' => 'required',
+            'identification_fiscale' => 'required',
+            'cin_responsable' => 'required',
+            'nom_responsable' => 'required',
+            'prenom_responsable' => 'required',
+            'tel_responsable' => 'required',
+            'image' => 'required',
+            'image_rc' => 'required',
+            'image_cin' => 'required',
+            'image_agrement' => 'required'
         ]);
-    
+       
         if ($validator->fails()) {
             return new JsonResponse(['success' => false, 'message' => $validator->errors()], 422);
         }
@@ -86,7 +108,6 @@ class AuthController extends Controller
        
         // get the id of this user 
         $user= User::find($user->id);
-   
         // create auto ecole
         $ecole = ModelsAutoEcole::create([
              'user_id' => $user->id,

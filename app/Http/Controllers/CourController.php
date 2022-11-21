@@ -12,6 +12,8 @@ use App\Models\Employe;
 use App\Models\Candidat;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
+
 
 class CourController extends Controller
 {

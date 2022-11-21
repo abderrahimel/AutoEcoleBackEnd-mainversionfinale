@@ -7,6 +7,8 @@ use App\Models\Salaire;
 use App\Models\AutoEcole;
 use App\Models\Employe;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+
 
 class SalaireController extends Controller
 {

@@ -7,6 +7,8 @@ use App\Models\Dossier;
 use App\Models\MoniteurPratique;
 use App\Models\MoniteurTheorique;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+
 
 class DossierController extends Controller
 {

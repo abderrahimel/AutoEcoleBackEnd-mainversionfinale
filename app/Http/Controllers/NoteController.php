@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;  
 use App\Models\Note; 
-use App\Models\AutoEcole; 
+use App\Models\AutoEcole;
+use Illuminate\Support\Facades\Validator;
+
 class NoteController extends Controller
 {   public function getNotes($auto_id)
     {
@@ -23,7 +25,14 @@ class NoteController extends Controller
         if(is_null($ecole)){
             return response()->json(['message'=> "Ecole n'est pas trouvé"],404);
         }
-
+        $validator = Validator::make($request->all(), [
+            'categorie' =>'required',
+            'moyen' => 'required',
+            'note_generale' => 'required',
+        ]);
+        if ($validator->fails()) {
+            return new JsonResponse(['success' => false, 'message' => $validator->errors()], 422);
+        }
         $note = Note::create([
                     'auto_ecole_id'=>$ecole_id,
                     'categorie'=>$request->categorie,
@@ -31,8 +40,8 @@ class NoteController extends Controller
                     'note_generale'=>$request->note_generale,
         ]);
 
-        $ecole ->notes()->save($note);
-        return response($note,201);
+        $ecole->save();
+        return response($note,200);
     }
 
     public function updateNote($id, Request $request)

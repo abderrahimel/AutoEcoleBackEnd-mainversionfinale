@@ -5,6 +5,8 @@ use Illuminate\Http\Request;
 use App\Models\AbsenceTheoriqueMoniteur;
 use App\Models\AutoEcole;
 use App\Models\MoniteurTheorique;
+use Illuminate\Support\Facades\Validator;
+
 class AbsenceTheoriqueMoniteurController extends Controller
 {
     public function getAbsence($ecole_id)
@@ -40,6 +42,17 @@ class AbsenceTheoriqueMoniteurController extends Controller
         if(is_null($ecole)){
             return response()->json(['message'=> "Ecole n'est pas trouvé"],404);
         }
+        $validator = Validator::make($request->all(), [
+            'moniteur_theorique_id'=>'required',
+            'type_absence'=>'required',
+            'date_debut'=>'required',
+            'date_fin'=>'required',
+            'remarque'=>'required',
+        ]);
+       
+        if ($validator->fails()) {
+            return new JsonResponse(['success' => false, 'message' => $validator->errors()], 422);
+        }
         $absence = AbsenceTheoriqueMoniteur::create([
             'auto_ecole_id' =>$ecole_id,
             'moniteur_theorique_id'    => $request->moniteur_theorique_id,
@@ -53,10 +66,20 @@ class AbsenceTheoriqueMoniteurController extends Controller
     }
 
     public function updateAbsence($id,Request $request)
-    {   //dd($request->all());
+    {   
         $absence= AbsenceTheoriqueMoniteur::find($id);
         if(is_null($absence)){
             return response()->json(['message'=> "absence moniteur theorique n'est pas trouvé"],404);
+        }
+        $validator = Validator::make($request->all(), [
+            'type_absence'=>'required',
+            'date_debut'=>'required',
+            'date_fin'=>'required',
+            'remarque'=>'required',
+        ]);
+       
+        if ($validator->fails()) {
+            return new JsonResponse(['success' => false, 'message' => $validator->errors()], 422);
         }
         $absence->type_absence = $request->type_absence;
         $absence->date_debut   = $request->date_debut;

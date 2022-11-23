@@ -82,6 +82,16 @@ class ExamenController extends Controller
         if (is_null($ecole_id)) {
             return response()->json(['message'=>"Auto Ecole n'est pas trouvée"],404);
         }
+        $validator = Validator::make($request->all(), [
+            'candidat_id' => 'required',
+            'categorie' => 'required',
+            'date_examen' => 'required',
+            'date_depot' => 'required',
+            'moniteur_pratique_id' => 'required',
+        ]);
+        if ($validator->fails()) {
+            return new JsonResponse(['success' => false, 'message' => $validator->errors()], 422);
+        }
         $examen = Examen::create([
         'auto_ecole_id'=>$ecole_id,
         'candidat_id'=> $request->candidat_id,
@@ -100,7 +110,16 @@ class ExamenController extends Controller
         if (is_null($examen)) {
             return response()->json(['message'=>"examen n'est pas trouvée"],404);
         }
-      
+        $validator = Validator::make($request->all(), [
+            'candidat_id' => 'required',
+            'categorie' => 'required',
+            'date_examen' => 'required',
+            'date_depot' => 'required',
+            'moniteur_pratique_id' => 'required',
+        ]);
+        if ($validator->fails()) {
+            return new JsonResponse(['success' => false, 'message' => $validator->errors()], 422);
+        }
         $examen->candidat_id = $request->candidat_id;
         $examen->categorie = $request->categorie;
         $examen->date_examen = $request->date_examen;

@@ -146,6 +146,36 @@ class CandidatController extends Controller
         if (is_null($ecole)) {
             return response()->json(['message'=>"ecole n'est pas trouvée"],200);
         }
+                   
+        $validator = Validator::make($request->all(), [
+            'cin' =>'required',
+            'date_inscription' =>'required',
+            'numero_contrat' =>'required',
+            'ref_web' =>'required',
+            'nom_fr' =>'required',
+            'prenom_fr' =>'required',
+            'nom_ar' =>'required',
+            'prenom_ar' =>'required',
+            'adresse_fr' =>'required',
+            'adresse_ar' =>'required',
+            'telephone' =>'required',
+            'type_formation' =>'required',
+            'langue' =>'required',
+            'date_fin_contrat' =>'required',
+            'categorie_demandee' =>'required',
+            'nbr_heure_pratique' =>'required',
+            'nbr_heure_theorique' =>'required',
+            'montant' =>'required',
+            'categorie' =>'required',
+            'observations' =>'required',
+            'moniteur_theorique_id' =>'required',
+            'moniteur_pratique_id' =>'required',
+            'vehicule_id' =>'required',
+        ]);
+       
+        if ($validator->fails()) {
+            return new JsonResponse(['success' => false, 'message' => $validator->errors()], 422);
+        }
         $name_image = '';
         if($request->image != ''){
             $name_image = time().'.' . explode('/', explode(':', substr($request->image, 0, strpos($request->image, ';')))[1])[1];

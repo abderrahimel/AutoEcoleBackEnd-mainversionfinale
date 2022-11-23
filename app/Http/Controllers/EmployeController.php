@@ -34,7 +34,24 @@ class EmployeController extends Controller
     public function  addEmploye($ecole_id,Request $request)
     {
         $ecole=AutoEcole::find($ecole_id);
-        // $employe = new Employe($request->all()); 
+        if(is_null($ecole)){
+            return response()->json(['message'=>"Employé n'est pas trouvée"],404);
+        }
+        $validator = Validator::make($request->all(), [
+            'nom' =>'required',
+            'prenom' => 'required',
+            'cin' => 'required',
+            'date_naissance' => 'required',
+            'lieu_naissance' => 'required',
+            'email' => 'required',
+            'type' => 'required',
+            'telephone' => 'required',
+            'date_embauche' => 'required',
+            'adresse' => 'required',
+        ]);
+        if ($validator->fails()) {
+            return new JsonResponse(['success' => false, 'message' => $validator->errors()], 422);
+        }
         $employe = Employe::create([
         'auto_ecole_id'=> $ecole_id,
         'nom'=> $request->nom,
@@ -78,6 +95,21 @@ class EmployeController extends Controller
         $employe = Employe::find($id);
         if (is_null($employe)) {
             return response()->json(['message'=>"Employé n'est pas trouvée"],404);
+        }
+        $validator = Validator::make($request->all(), [
+            'nom' =>'required',
+            'prenom' => 'required',
+            'cin' => 'required',
+            'date_naissance' => 'required',
+            'lieu_naissance' => 'required',
+            'email' => 'required',
+            'type' => 'required',
+            'telephone' => 'required',
+            'date_embauche' => 'required',
+            'adresse' => 'required',
+        ]);
+        if ($validator->fails()) {
+            return new JsonResponse(['success' => false, 'message' => $validator->errors()], 422);
         }
         $employe->nom = $request->nom;
         $employe->prenom =$request->prenom;

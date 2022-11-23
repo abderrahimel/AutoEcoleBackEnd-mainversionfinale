@@ -86,6 +86,28 @@ class VehiculeController extends Controller
         if(is_null($ecole)){
             return response()->json(['message'=> "Ecole n'est pas trouvée"],404);
         }
+        $validator = Validator::make($request->all(), [
+            'carte_grise'=>'required',
+            'assurance'=>'required',
+            'visite'=>'required',
+            'vignette'=>'required',
+            'matricule'=>'required',
+            'type'=>'required',
+            'marque'=>'required',
+            'fourniseur'=>'required',
+            'date_assurance'=>'required',
+            'modele'=>'required',
+            'categorie'=>'required',
+            'date_prochain_vidange'=>'required',
+            'date_expiration_assurance'=>'required',
+            'date_visite'=>'required',
+            'date_prochain_visite'=>'required',
+            'date_vidange'=>'required',
+        ]);
+       
+        if ($validator->fails()) {
+            return new JsonResponse(['success' => false, 'message' => $validator->errors()], 422);
+        }
         // carte grise
         if($request->carte_grise != ''){
             $name_carte_grise = time().'.' . explode('/', explode(':', substr($request->carte_grise, 0, strpos($request->carte_grise, ';')))[1])[1];
@@ -134,7 +156,28 @@ class VehiculeController extends Controller
         if (is_null($vehicule)) {
             return response()->json(['message'=>"véhicule n'est pas trouvée"],404);
         }
-
+        $validator = Validator::make($request->all(), [
+            'carte_grise'=>'required',
+            'assurance'=>'required',
+            'visite'=>'required',
+            'vignette'=>'required',
+            'matricule'=>'required',
+            'type'=>'required',
+            'marque'=>'required',
+            'fourniseur'=>'required',
+            'date_assurance'=>'required',
+            'modele'=>'required',
+            'categorie'=>'required',
+            'date_prochain_vidange'=>'required',
+            'date_expiration_assurance'=>'required',
+            'date_visite'=>'required',
+            'date_prochain_visite'=>'required',
+            'date_vidange'=>'required',
+        ]);
+       
+        if ($validator->fails()) {
+            return new JsonResponse(['success' => false, 'message' => $validator->errors()], 422);
+        }
         if($request->carte_grise != ''){
             $name_carte_grise = time().'.' . explode('/', explode(':', substr($request->carte_grise, 0, strpos($request->carte_grise, ';')))[1])[1];
             \Image::make($request->carte_grise)->save(public_path('carte_grise/').$name_carte_grise);

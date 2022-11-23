@@ -74,7 +74,7 @@ class ForgotPasswordController extends Controller
     }
     $verify = User::where('email', $request->all()['email'])->exists();
     if(!$verify){
-        return new JsonResponse(['success' => false, 'message' => "This email does not exist"], 400);
+        return new JsonResponse(['success' => false, 'message' => "email n'existe pas"], 400);
     }
     $check = DB::table('password_resets')->where([
         ['email', $request->all()['email']],

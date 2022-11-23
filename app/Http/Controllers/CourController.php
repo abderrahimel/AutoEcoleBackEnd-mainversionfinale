@@ -99,6 +99,22 @@ class CourController extends Controller
     public function addcourT($ecole_id, Request $request)
     {    
         $ecole=AutoEcole::find($ecole_id);
+        if(is_null($ecole)){
+            return response()->json(['message'=> "auto ecole n'est pas trouvée"],404);
+        }
+        
+        $validator = Validator::make($request->all(), [
+            'date' => 'required',
+            'date_debut' => 'required',
+            'date_fin' => 'required',
+            'permis' => 'required',
+            'type' => 'required',
+            'moniteur_theorique_id' => 'required',
+            'candidat' => 'required',
+        ]);
+        if ($validator->fails()) {
+            return new JsonResponse(['success' => false, 'message' => $validator->errors()], 422);
+        }
         $array = array_map('intval', explode(',', $request->candidat));
         foreach( $array as $val){
             if($val != null){
@@ -178,6 +194,18 @@ class CourController extends Controller
         $cour = CourTheorique::find($id);
         if (is_null($cour)) {
             return response()->json(['message'=>"Cour n'est pas trouvée"],404);
+        }
+        $validator = Validator::make($request->all(), [
+            'date' => 'required',
+            'date_debut' => 'required',
+            'date_fin' => 'required',
+            'permis' => 'required',
+            'type' => 'required',
+            'moniteur_theorique_id' => 'required',
+            'candidat' => 'required',
+        ]);
+        if ($validator->fails()) {
+            return new JsonResponse(['success' => false, 'message' => $validator->errors()], 422);
         }
         $array = array_map('intval', explode(',', $request->candidat));
         

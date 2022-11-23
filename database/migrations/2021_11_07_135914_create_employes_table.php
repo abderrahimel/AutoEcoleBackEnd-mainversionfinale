@@ -28,9 +28,9 @@ class CreateEmployesTable extends Migration
             $table->string('type');
             $table->string('telephone');
             $table->date('date_embauche');
-            $table->string('capn');
+            $table->string('capn')->nullable();
             $table->text('adresse');
-            $table->text('conduire');
+            $table->text('conduire')->nullable();
             $table->text('observations')->nullable();
             $table->timestamps();
             $table->softDeletes();

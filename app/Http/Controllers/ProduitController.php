@@ -49,7 +49,7 @@ class ProduitController extends Controller
         ]);
         
         if ($validator->fails()) {
-            return new JsonResponse(['success' => false, 'message' => $validator->errors()], 422);
+            return response()->json(['success' => false, 'message' => $validator->errors()], 422);
         }
         $produit = Produit::create([
             'auto_ecole_id'=>$ecole_id,
@@ -80,7 +80,7 @@ class ProduitController extends Controller
         ]);
         
         if ($validator->fails()) {
-            return new JsonResponse(['success' => false, 'message' => $validator->errors()], 422);
+            return response()->json(['success' => false, 'message' => $validator->errors()], 422);
         }
         $produit->fournisseur = $request->fournisseur;
         $produit->telephone = $request->telephone;

@@ -69,7 +69,7 @@ class AuthController extends Controller
         ]);
        
         if ($validator->fails()) {
-            return new JsonResponse(['success' => false, 'message' => $validator->errors()], 422);
+            return response()->json(['success' => false, 'message' => $validator->errors()], 422);
         }
          // create user inside table users
         $user = User::create([
@@ -156,7 +156,7 @@ class AuthController extends Controller
         );
         Mail::to($request->email)->send(new VerifyEmail($url));
         $token = $user->createToken('myapptoken')->plainTextToken;
-         return new JsonResponse(
+         return response()->json(
         [
             'success' => true, 
             'message' => 'Successful created user. Please check your email to verify your email.', 
@@ -172,7 +172,7 @@ class AuthController extends Controller
     ]);
 
     if ($validator->fails()) {
-        return new JsonResponse(['success' => false, 'message' => $validator->errors()], 422);
+        return response()->json(['success' => false, 'message' => $validator->errors()], 422);
     }
 
     $verify =  DB::table('password_resets')->where([
@@ -193,7 +193,7 @@ class AuthController extends Controller
     if ($password_reset) {
         Mail::to($request->all()['email'])->send(new VerifyEmail($token));
 
-        return new JsonResponse(
+        return response()->json(
             [
                 'success' => true, 
                 'message' => "A verification mail has been resent"
@@ -217,7 +217,7 @@ class AuthController extends Controller
             ->where('token', $request->token);
     
         if ($select->get()->isEmpty()) {
-            return new JsonResponse(['success' => false, 'message' => "Invalid PIN"], 400);
+            return response()->json(['success' => false, 'message' => "Invalid PIN"], 400);
         }
     
         $select = DB::table('password_resets')
@@ -229,7 +229,7 @@ class AuthController extends Controller
         $user->email_verified_at = date("Y-m-d H:i:s");  // laravel not accept this format Carbon::now()->getTimestamp();
         $user->save();
     
-        return new JsonResponse(['success' => true, 'message' => "Email is verified"], 200);
+        return response()->json(['success' => true, 'message' => "Email is verified"], 200);
     }
     
     public function setlogo($id, Request $request)

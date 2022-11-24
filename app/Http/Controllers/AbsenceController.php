@@ -8,6 +8,7 @@ use App\Models\Employe;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+
 class AbsenceController extends Controller
 {
     public function getAbsence($ecole_id)
@@ -61,7 +62,7 @@ class AbsenceController extends Controller
         ]);
         
         if ($validator->fails()) {
-            return new JsonResponse(['success' => false, 'message' => $validator->errors()], 422);
+            return response()->json(['success' => false, 'message' => $validator->errors()], 422);
         }
         $absence = Absence::create([
             'auto_ecole_id' =>$ecole_id,
@@ -91,7 +92,7 @@ class AbsenceController extends Controller
         ]);
         
         if ($validator->fails()) {
-            return new JsonResponse(['success' => false, 'message' => $validator->errors()], 422);
+            return response()->json(['success' => false, 'message' => $validator->errors()], 422);
         }
         $absence->employe_id   = $request->employe_id;
         $absence->type_absence = $request->type_absence;

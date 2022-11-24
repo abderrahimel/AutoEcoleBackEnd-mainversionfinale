@@ -11,6 +11,7 @@ class SendPdfMail extends Mailable
 {
     use Queueable, SerializesModels;
     public $imagesendbymailwithstore;
+    public $message;
     /**
      * Create a new message instance.
      *
@@ -19,6 +20,7 @@ class SendPdfMail extends Mailable
     public function __construct($imagesendbymailwithstore)
     {
         $this->imagesendbymailwithstore = $imagesendbymailwithstore;
+        $this->message = $this->imagesendbymailwithstore['message'];
     }
 
     /**
@@ -30,13 +32,14 @@ class SendPdfMail extends Mailable
     {   
        
         // return $this->subject($this->object)->markdown('emails.sendpdf');
-        return $this->from('info@scmgalaxy.com')
-        ->subject('New image from Devops Team')
+        return $this->from('jhb.plus@yahoo.com')
+        ->subject($this->imagesendbymailwithstore['object'])
         ->markdown('emails.sendpdf')
         ->with('data', $this->imagesendbymailwithstore)
-        ->attach('./storage/app/public/1662456961.pdf',
+        // ->attach('./storage/app/public/1668510840.pdf',
+        ->attach('./storage/'.$this->imagesendbymailwithstore['fichier'],
             [
-                'as' => '1662456961.pdf',
+                'as' => $this->imagesendbymailwithstore['fichier'],
                 'mime' => 'application/pdf',
             ]);
       

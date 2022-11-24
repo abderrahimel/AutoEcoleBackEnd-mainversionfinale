@@ -106,7 +106,7 @@ class VehiculeController extends Controller
         ]);
        
         if ($validator->fails()) {
-            return new JsonResponse(['success' => false, 'message' => $validator->errors()], 422);
+            return response()->json(['success' => false, 'message' => $validator->errors()], 422);
         }
         // carte grise
         if($request->carte_grise != ''){
@@ -176,7 +176,7 @@ class VehiculeController extends Controller
         ]);
        
         if ($validator->fails()) {
-            return new JsonResponse(['success' => false, 'message' => $validator->errors()], 422);
+            return response()->json(['success' => false, 'message' => $validator->errors()], 422);
         }
         if($request->carte_grise != ''){
             $name_carte_grise = time().'.' . explode('/', explode(':', substr($request->carte_grise, 0, strpos($request->carte_grise, ';')))[1])[1];

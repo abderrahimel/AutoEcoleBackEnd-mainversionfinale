@@ -51,7 +51,7 @@ class AbsenceTheoriqueMoniteurController extends Controller
         ]);
        
         if ($validator->fails()) {
-            return new JsonResponse(['success' => false, 'message' => $validator->errors()], 422);
+            return response()->json(['success' => false, 'message' => $validator->errors()], 422);
         }
         $absence = AbsenceTheoriqueMoniteur::create([
             'auto_ecole_id' =>$ecole_id,
@@ -79,7 +79,7 @@ class AbsenceTheoriqueMoniteurController extends Controller
         ]);
        
         if ($validator->fails()) {
-            return new JsonResponse(['success' => false, 'message' => $validator->errors()], 422);
+            return response()->json(['success' => false, 'message' => $validator->errors()], 422);
         }
         $absence->type_absence = $request->type_absence;
         $absence->date_debut   = $request->date_debut;

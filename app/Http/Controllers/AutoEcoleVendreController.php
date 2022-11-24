@@ -25,7 +25,17 @@ class AutoEcoleVendreController extends Controller
         return response()->json($autoEcole_Vendre, 200);
     }
     public function addAutoecoleVendre(Request $request){
-
+        $validator = Validator::make($request->all(), [
+            'titre' =>'required',
+            'description' =>'required',
+            'prix' =>'required',
+            'date' =>'required',
+        ]);
+        
+        if ($validator->fails()) {
+            return response()->json(['success' => false, 'message' => $validator->errors()], 422);
+        }
+        $name_image = '';
         if($request->image != ''){
             $name_image = time().'.' . explode('/', explode(':', substr($request->image, 0, strpos($request->image, ';')))[1])[1];
             \Image::make($request->image)->save(public_path('autoEcoleVendre/').$name_image);

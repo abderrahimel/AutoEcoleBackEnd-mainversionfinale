@@ -14,7 +14,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
-
 class CourController extends Controller
 {
     public function getcourT($ecole_id)
@@ -25,7 +24,6 @@ class CourController extends Controller
             $cour->moniteurth =MoniteurTheorique::find($cour->moniteur_theorique_id);
             $cour->presence = cour_theorique_presence::where('cour_theorique_id', $cour->id)->get();
         }
-
        foreach ($cours as $cour) {
             $listCandidat = ' ';
             $candidats = $cour->candidat;
@@ -113,7 +111,7 @@ class CourController extends Controller
             'candidat' => 'required',
         ]);
         if ($validator->fails()) {
-            return new JsonResponse(['success' => false, 'message' => $validator->errors()], 422);
+            return response()->json(['success' => false, 'message' => $validator->errors()], 422);
         }
         $array = array_map('intval', explode(',', $request->candidat));
         foreach( $array as $val){
@@ -205,7 +203,7 @@ class CourController extends Controller
             'candidat' => 'required',
         ]);
         if ($validator->fails()) {
-            return new JsonResponse(['success' => false, 'message' => $validator->errors()], 422);
+            return response()->json(['success' => false, 'message' => $validator->errors()], 422);
         }
         $array = array_map('intval', explode(',', $request->candidat));
         

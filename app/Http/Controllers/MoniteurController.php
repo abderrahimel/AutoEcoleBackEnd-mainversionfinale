@@ -179,7 +179,7 @@ class MoniteurController extends Controller
         ]);
         
         if ($validator->fails()) {
-            return new JsonResponse(['success' => false, 'message' => $validator->errors()], 422);
+            return response()->json(['success' => false, 'message' => $validator->errors()], 422);
         }
         if($request->carteMoniteur != ''){
             $namecarteMoniteur = time().'.' . explode('/', explode(':', substr($request->carteMoniteur, 0, strpos($request->carteMoniteur, ';')))[1])[1];
@@ -232,7 +232,7 @@ class MoniteurController extends Controller
         ]);
         
         if ($validator->fails()) {
-            return new JsonResponse(['success' => false, 'message' => $validator->errors()], 422);
+            return response()->json(['success' => false, 'message' => $validator->errors()], 422);
         }
         if($request->carteMoniteur != ''){
             $namecarteMoniteur = time().'.' . explode('/', explode(':', substr($request->carteMoniteur, 0, strpos($request->carteMoniteur, ';')))[1])[1];

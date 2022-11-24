@@ -54,7 +54,7 @@ class Depense_localController extends Controller
         ]);
        
         if ($validator->fails()) {
-            return new JsonResponse(['success' => false, 'message' => $validator->errors()], 422);
+            return response()->json(['success' => false, 'message' => $validator->errors()], 422);
         }
         $depence_local = Depense_local::create([
             'auto_ecole_id'=>$ecole_id,
@@ -81,7 +81,7 @@ class Depense_localController extends Controller
         ]);
        
         if ($validator->fails()) {
-            return new JsonResponse(['success' => false, 'message' => $validator->errors()], 422);
+            return response()->json(['success' => false, 'message' => $validator->errors()], 422);
         }
         $depencelocal->categorie_depence_id = $request->id_categorie;
         $depencelocal->date = $request->date;

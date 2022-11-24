@@ -174,7 +174,7 @@ class CandidatController extends Controller
         ]);
        
         if ($validator->fails()) {
-            return new JsonResponse(['success' => false, 'message' => $validator->errors()], 422);
+            return response()->json(['success' => false, 'message' => $validator->errors()], 422);
         }
         $name_image = '';
         if($request->image != ''){

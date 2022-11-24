@@ -47,7 +47,7 @@ class FactureController extends Controller
         ]);
        
         if ($validator->fails()) {
-            return new JsonResponse(['success' => false, 'message' => $validator->errors()], 422);
+            return response()->json(['success' => false, 'message' => $validator->errors()], 422);
         }
         $facture = Facture::create([
                     'auto_ecole_id'=>$ecole_id,

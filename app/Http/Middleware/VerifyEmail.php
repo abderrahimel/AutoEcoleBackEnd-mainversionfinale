@@ -19,7 +19,7 @@ class VerifyEmail
     public function handle(Request $request, Closure $next)
     {
         if (Auth::user()->email_verified_at === null) {
-            return new JsonResponse(
+            return response()->json(
                 [
                     'success' => false, 
                     'message' => 'Please verify your email before you can continue'

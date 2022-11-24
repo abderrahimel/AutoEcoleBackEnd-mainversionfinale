@@ -54,7 +54,7 @@ class DepenceController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return new JsonResponse(['success' => false, 'message' => $validator->errors()], 422);
+            return response()->json(['success' => false, 'message' => $validator->errors()], 422);
         }
 
         $depence = Depence::create([
@@ -85,7 +85,7 @@ class DepenceController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return new JsonResponse(['success' => false, 'message' => $validator->errors()], 422);
+            return response()->json(['success' => false, 'message' => $validator->errors()], 422);
         }
         $depence->categorie_depence_id = $request->id_categorie;
         $depence->employe_id = $request->id_employe;

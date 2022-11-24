@@ -20,7 +20,7 @@ class ForgotPasswordController extends Controller
         ]);
     
         if ($validator->fails()) {
-            return new JsonResponse(['success' => false, 'message' => $validator->errors()], 422);
+            return response()->json(['success' => false, 'message' => $validator->errors()], 422);
         }
     
         $verify = User::where('email', $request->all()['email'])->exists();
@@ -44,7 +44,7 @@ class ForgotPasswordController extends Controller
             if ($password_reset) {
                 Mail::to($request->all()['email'])->send(new ResetPassword($token));
     
-                return new JsonResponse(
+                return response()->json(
                     [
                         'success' => true, 
                         'message' => "Please check your email for a 6 digit pin"
@@ -53,7 +53,7 @@ class ForgotPasswordController extends Controller
                 );
             }
         } else {
-            return new JsonResponse(
+            return response()->json(
                 [
                     'success' => false, 
                     'message' => "This email does not exist"
@@ -70,11 +70,11 @@ class ForgotPasswordController extends Controller
     ]);
 
     if ($validator->fails()) {
-        return new JsonResponse(['success' => false, 'message' => $validator->errors()], 422);
+        return response()->json(['success' => false, 'message' => $validator->errors()], 422);
     }
     $verify = User::where('email', $request->all()['email'])->exists();
     if(!$verify){
-        return new JsonResponse(['success' => false, 'message' => "email n'existe pas"], 400);
+        return response()->json(['success' => false, 'message' => "email n'existe pas"], 400);
     }
     $check = DB::table('password_resets')->where([
         ['email', $request->all()['email']],
@@ -84,7 +84,7 @@ class ForgotPasswordController extends Controller
     if ($check->exists()) {
         $difference = Carbon::now()->diffInSeconds($check->first()->created_at);
         if ($difference > 3600) {
-            return new JsonResponse(['success' => false, 'message' => "Token Expired"], 400);
+            return response()->json(['success' => false, 'message' => "Token Expired"], 400);
         }
 
         $delete = DB::table('password_resets')->where([
@@ -92,7 +92,7 @@ class ForgotPasswordController extends Controller
             ['token', $request->all()['token']],
         ])->delete();
 
-        return new JsonResponse(
+        return response()->json(
             [
                 'success' => true, 
                 'message' => "You can now reset your password"
@@ -100,7 +100,7 @@ class ForgotPasswordController extends Controller
             200
             );
     } else {
-        return new JsonResponse(
+        return response()->json(
             [
                 'success' => false, 
                 'message' => "Invalid pin"

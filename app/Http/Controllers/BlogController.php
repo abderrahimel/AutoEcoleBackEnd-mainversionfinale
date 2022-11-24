@@ -21,7 +21,6 @@ class BlogController extends Controller
 
     public function getBlogById($id){
         $blog = Blog::find($id);
-        // here we convert the image to base 64 
         if($blog->image){
             $blog->image = 'http://' . request()->getHttpHost() . '/' . 'blog/' .  $blog->image;  
         }
@@ -33,11 +32,21 @@ class BlogController extends Controller
     }
         
     public function newBlog(request $request){
+        $validator = Validator::make($request->all(), [
+            'titre' =>'required',
+            'description' =>'required',
+            'image' =>'required',
+        ]);
+       
+        if ($validator->fails()) {
+            return response()->json(['success' => false, 'message' => $validator->errors()], 422);
+        }
+        
         if($request->image != ''){
             $name_image = time().'.' . explode('/', explode(':', substr($request->image, 0, strpos($request->image, ';')))[1])[1];
             \Image::make($request->image)->save(public_path('blog/').$name_image);
         }
-         $blog = Blog::create([
+        $blog = Blog::create([
             'titre'=>$request->titre,
             'description'=>$request->description,
             'image'=>$name_image,
@@ -50,13 +59,21 @@ class BlogController extends Controller
         if(is_null($blog)){
             return reponse()->json(['message'=>'blog does not exist in db'], 404);
         }
+        $validator = Validator::make($request->all(), [
+            'titre' =>'required',
+            'description' =>'required',
+        ]);
+       
+        if ($validator->fails()) {
+            return response()->json(['success' => false, 'message' => $validator->errors()], 422);
+        }
         if($request->image != ''){
             $name_image = time().'.' . explode('/', explode(':', substr($request->image, 0, strpos($request->image, ';')))[1])[1];
             \Image::make($request->image)->save(public_path('blog/').$name_image);
+            $blog->image = $name_image;
         }
          $blog->titre = $request->titre;
          $blog->description = $request->description;
-         $blog->image = $name_image;
          $blog->save();
         return  response()->json($blog, 200);        
     }

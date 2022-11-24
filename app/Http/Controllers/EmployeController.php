@@ -50,7 +50,7 @@ class EmployeController extends Controller
             'adresse' => 'required',
         ]);
         if ($validator->fails()) {
-            return new JsonResponse(['success' => false, 'message' => $validator->errors()], 422);
+            return response()->json(['success' => false, 'message' => $validator->errors()], 422);
         }
         $employe = Employe::create([
         'auto_ecole_id'=> $ecole_id,
@@ -109,7 +109,7 @@ class EmployeController extends Controller
             'adresse' => 'required',
         ]);
         if ($validator->fails()) {
-            return new JsonResponse(['success' => false, 'message' => $validator->errors()], 422);
+            return response()->json(['success' => false, 'message' => $validator->errors()], 422);
         }
         $employe->nom = $request->nom;
         $employe->prenom =$request->prenom;

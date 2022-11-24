@@ -66,7 +66,7 @@ class VenteController extends Controller
         ]);
        
         if ($validator->fails()) {
-            return new JsonResponse(['success' => false, 'message' => $validator->errors()], 422);
+            return response()->json(['success' => false, 'message' => $validator->errors()], 422);
         }
         $vente = Vente::create([
             'auto_ecole_id' => $ecole_id,
@@ -99,7 +99,7 @@ class VenteController extends Controller
         ]);
        
         if ($validator->fails()) {
-            return new JsonResponse(['success' => false, 'message' => $validator->errors()], 422);
+            return response()->json(['success' => false, 'message' => $validator->errors()], 422);
         }
         $vente->candidat_id = $request->candidat_id;
         $vente->date = $request->date;

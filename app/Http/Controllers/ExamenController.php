@@ -90,7 +90,7 @@ class ExamenController extends Controller
             'moniteur_pratique_id' => 'required',
         ]);
         if ($validator->fails()) {
-            return new JsonResponse(['success' => false, 'message' => $validator->errors()], 422);
+            return response()->json(['success' => false, 'message' => $validator->errors()], 422);
         }
         $examen = Examen::create([
         'auto_ecole_id'=>$ecole_id,
@@ -118,7 +118,7 @@ class ExamenController extends Controller
             'moniteur_pratique_id' => 'required',
         ]);
         if ($validator->fails()) {
-            return new JsonResponse(['success' => false, 'message' => $validator->errors()], 422);
+            return response()->json(['success' => false, 'message' => $validator->errors()], 422);
         }
         $examen->candidat_id = $request->candidat_id;
         $examen->categorie = $request->categorie;

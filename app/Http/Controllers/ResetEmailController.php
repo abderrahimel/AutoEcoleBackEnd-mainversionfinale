@@ -19,19 +19,19 @@ class ResetEmailController extends Controller
         ]);
     
         if ($validator->fails()) {
-            return new JsonResponse(['success' => false, 'message' => $validator->errors()], 422);
+            return response()->json(['success' => false, 'message' => $validator->errors()], 422);
         }
     
         $user = User::where('email',$request->email);
          if(!$user->exists()){
-            return new JsonResponse(['success' => false, 'message' => 'the email doesn\'t exist'], 422);
+            return response()->json(['success' => false, 'message' => 'the email doesn\'t exist'], 422);
          }
         $user->update([
             'email'=>$request->newEmail
         ]);
     
         
-        return new JsonResponse(
+        return response()->json(
             [
                 'success' => true, 
                 'message' => "Your email has been reset", 

@@ -22,7 +22,6 @@ class NotesMinisterielleController extends Controller
                 $Notes_Ministerielle->fichier =   request()->getHttpHost() . '/' . 'storage/' .  $namepdf;  
             }
         }
-        ///
         return response()->json($Notes_Ministerielles, 200);
     }
 
@@ -44,8 +43,17 @@ class NotesMinisterielleController extends Controller
     }
 
     public function addNoteMinisterielle(Request $request){
-        //    var_dump($request->all());
         // http://localhost:8000/storage/1662456961.pdf
+        $validator = Validator::make($request->all(), [
+            'category' =>'required',
+            'titre' =>'required',
+            'lien' =>'required',
+        ]);
+        
+        if ($validator->fails()) {
+            return response()->json(['success' => false, 'message' => $validator->errors()], 422);
+        }
+        $name_fichier = '';
         if($request->fichier != ''){
             $name_fichier = time().'.' . explode('/', explode(':', substr($request->fichier, 0, strpos($request->fichier, ';')))[1])[1];
             $pdf_64 = $request->fichier; //your base64 encoded data
@@ -55,7 +63,7 @@ class NotesMinisterielleController extends Controller
            $pdf = str_replace(' ', '+', $pdf); 
            Storage::disk('public')->put($name_fichier, base64_decode($pdf));
         }
-        
+       
         $Notes_Ministerielle = Notes_Ministerielles::create([
             'category'=> $request->category,
             'titre'=> $request->titre,
@@ -67,17 +75,31 @@ class NotesMinisterielleController extends Controller
     }
 
     public function updateNoteMinisterielle($id, Request $request){
-
         $Notes_Ministerielle = Notes_Ministerielles::find($id);
-
+        if(is_null($Notes_Ministerielle)){
+            return response()->json(['note ministerielle not exist'], 200);
+        }
+        $validator = Validator::make($request->all(), [
+            'category' =>'required',
+            'titre' =>'required',
+            'lien' =>'required',
+        ]);
+        
+        if ($validator->fails()) {
+            return response()->json(['success' => false, 'message' => $validator->errors()], 422);
+        }
         if($request->fichier != ''){
-            $name_image = time().'.' . explode('/', explode(':', substr($request->fichier, 0, strpos($request->fichier, ';')))[1])[1];
-            \Image::make($request->fichier)->save(public_path('notes_Ministerielle/').$name_fichier);
-            $Notes_Ministerielle->fichier = $request->fichier;
+            $name_fichier = time().'.' . explode('/', explode(':', substr($request->fichier, 0, strpos($request->fichier, ';')))[1])[1];
+            $pdf_64 = $request->fichier; //your base64 encoded data
+            $replace = substr($pdf_64, 0, strpos($pdf_64, ',')+1); 
+          // find substring fro replace here eg: data:image/png;base64,
+           $pdf = str_replace($replace, '', $pdf_64); 
+           $pdf = str_replace(' ', '+', $pdf); 
+           Storage::disk('public')->put($name_fichier, base64_decode($pdf));
+           $Notes_Ministerielle->fichier = $name_fichier;
         }
         $Notes_Ministerielle->category =  $request->category;
         $Notes_Ministerielle->titre = $request->titre;
-        $Notes_Ministerielle->fichier = $request->fichier;
         $Notes_Ministerielle->lien = $request->lien;
         $Notes_Ministerielle->save();
 

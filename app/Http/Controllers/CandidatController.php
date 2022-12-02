@@ -146,8 +146,8 @@ class CandidatController extends Controller
         if (is_null($ecole)) {
             return response()->json(['message'=>"ecole n'est pas trouvée"],200);
         }
-                   
-        $validator = Validator::make($request->all(), [
+                   // image  observations pcn  date_obtention lieu_obtention_fr lieu_obtention_ar email
+        $validator = Validator::make($request->all(), [ 
             'cin' =>'required',
             'date_inscription' =>'required',
             'numero_contrat' =>'required',
@@ -163,11 +163,10 @@ class CandidatController extends Controller
             'langue' =>'required',
             'date_fin_contrat' =>'required',
             'categorie_demandee' =>'required',
-            'nbr_heure_pratique' =>'required',
-            'nbr_heure_theorique' =>'required',
+            'nbr_heur_pratique' =>'required',
+            'nbr_heur_theorique' =>'required',
             'montant' =>'required',
-            'categorie' =>'required',
-            'observations' =>'required',
+            // 'categorie' =>'required',
             'moniteur_theorique_id' =>'required',
             'moniteur_pratique_id' =>'required',
             'vehicule_id' =>'required',
@@ -250,6 +249,34 @@ class CandidatController extends Controller
         $candidat=Candidat::find($id);
         if (is_null($candidat)) {
             return response()->json(['message'=>"Candidat n'est pas trouvée"],200);
+        }
+        $validator = Validator::make($request->all(), [ 
+            'cin' =>'required',
+            'date_inscription' =>'required',
+            'numero_contrat' =>'required',
+            'ref_web' =>'required',
+            'nom_fr' =>'required',
+            'prenom_fr' =>'required',
+            'nom_ar' =>'required',
+            'prenom_ar' =>'required',
+            'adresse_fr' =>'required',
+            'adresse_ar' =>'required',
+            'telephone' =>'required',
+            'type_formation' =>'required',
+            'langue' =>'required',
+            'date_fin_contrat' =>'required',
+            'categorie_demandee' =>'required',
+            'nbr_heur_pratique' =>'required',
+            'nbr_heur_theorique' =>'required',
+            'montant' =>'required',
+            // 'categorie' =>'required',
+            'moniteur_theorique_id' =>'required',
+            'moniteur_pratique_id' =>'required',
+            'vehicule_id' =>'required',
+        ]);
+       
+        if ($validator->fails()) {
+            return response()->json(['success' => false, 'message' => $validator->errors()], 422);
         }
         $idt = (int) $request->moniteur_theorique_id;
         $idp = (int) $request->moniteur_pratique_id;

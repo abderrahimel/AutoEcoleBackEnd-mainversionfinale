@@ -177,7 +177,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         Spatie\Permission\PermissionServiceProvider::class,
         Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
-        
+        Propaganistas\LaravelDisposableEmail\DisposableEmailServiceProvider::class,// email disposable
     ],
 
     /*

@@ -23,7 +23,7 @@ class ExamenController extends Controller
             return response()->json(['message'=>"Auto Ecole n'est pas trouvée"],404);
         }
         
-        $examens = Examen::where('resultat','!=', 1)->where('resultat','!=', 0)->get();
+        $examens = Examen::where('resultat', -1)->get();
         foreach ($examens as $examen) {
 
             $examen['candidat'] = Candidat::find($examen->candidat_id);

@@ -63,13 +63,24 @@ class ProduitAdminController extends Controller
     
     public function updateProduitAdmin($id, Request $request)
     {
+        
         $produit = Produit_admin_auto_ecole::find($id);
+        $validator = Validator::make($request->all(), [
+            'titre'=>'required',
+            'prix'=>'required',
+            'categorie'=>'required'
+        ]);
+        
+        if ($validator->fails()) {
+            return response()->json(['success' => false, 'message' => $validator->errors()], 422);
+        }
         if (is_null($produit)) {
             return response()->json(['message'=>"produit Admin n'est pas trouvée"],404);
         }
         if($request->image != ''){
             $name_image = time().'.' . explode('/', explode(':', substr($request->image, 0, strpos($request->image, ';')))[1])[1];
             \Image::make($request->image)->save(public_path('produitsAdmin/').$name_image);
+            $produit->image = $name_image;
         }
         
         $produit->nomCategorie = $request->categorie;
@@ -81,12 +92,21 @@ class ProduitAdminController extends Controller
         $produit->kilometrage = $request->kilometrage;
         $produit->prixPromotion = $request->prixPromotion;
         $produit->description = $request->description;
-        $produit->image = $name_image;
         $produit->save();
         return response()->json($produit, 200);
     }
+    
     public function newProduit(Request $request)
     {   
+        $validator = Validator::make($request->all(), [
+            'titre'=>'required',
+            'prix'=>'required',
+            'categorie'=>'required'
+        ]);
+        
+        if ($validator->fails()) {
+            return response()->json(['success' => false, 'message' => $validator->errors()], 422);
+        }
          $name_image = '';
         if($request->image != ''){
             $name_image = time().'.' . explode('/', explode(':', substr($request->image, 0, strpos($request->image, ';')))[1])[1];

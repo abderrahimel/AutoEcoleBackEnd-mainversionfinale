@@ -56,7 +56,7 @@ class ForgotPasswordController extends Controller
             return response()->json(
                 [
                     'success' => false, 
-                    'message' => "This email does not exist"
+                    'message' => "Aucun utilisateur n'a été trouvé avec cette adresse email."
                 ], 
                 400
             );

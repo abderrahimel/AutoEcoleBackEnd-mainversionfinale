@@ -29,6 +29,16 @@ class MoniteurJobController extends Controller
         return response()->json($moniteurJob, 200);
     }
     public function addMoniteurJob( Request $request){ 
+        $validator = Validator::make($request->all(), [
+            'nom'=>'required',
+            'description'=>'required',
+            'salaire'=>'required',
+            'date'=>'required',
+        ]);
+       
+        if ($validator->fails()) {
+            return response()->json(['success' => false, 'message' => $validator->errors()], 422);
+        }
         $name_image = '';
         if($request->image != ''){
             $name_image = time().'.' . explode('/', explode(':', substr($request->image, 0, strpos($request->image, ';')))[1])[1];
@@ -48,6 +58,16 @@ class MoniteurJobController extends Controller
     public function updateMoniteurJob($id, Request $request){ 
 
         $moniteurJob = MoniteurJob::find($id);
+        $validator = Validator::make($request->all(), [
+            'nom'=>'required',
+            'description'=>'required',
+            'salaire'=>'required',
+            'date'=>'required',
+        ]);
+       
+        if ($validator->fails()) {
+            return response()->json(['success' => false, 'message' => $validator->errors()], 422);
+        }
         if($request->image != ''){
             $name_image = time().'.' . explode('/', explode(':', substr($request->image, 0, strpos($request->image, ';')))[1])[1];
             \Image::make($request->image)->save(public_path('MoniteurJob/').$name_image);

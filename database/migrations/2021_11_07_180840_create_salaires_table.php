@@ -22,7 +22,7 @@ class CreateSalairesTable extends Migration
                   ->onUpdate('cascade')
                   ->onDelete('cascade');
             $table->date('date');
-            $table->double('montant');
+            $table->string('montant');
             $table->timestamps();
             $table->softDeletes();
         });

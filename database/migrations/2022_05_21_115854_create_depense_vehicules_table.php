@@ -25,7 +25,7 @@ class CreateDepenseVehiculesTable extends Migration
             ->onUpdate('cascade')
             ->onDelete('cascade'); 
             $table->date('date');
-            $table->double('montant');
+            $table->string('montant');
             $table->text('remarques');
             $table->timestamps();
             $table->softDeletes();

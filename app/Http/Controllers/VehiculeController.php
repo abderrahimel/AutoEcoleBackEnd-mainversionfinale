@@ -157,10 +157,6 @@ class VehiculeController extends Controller
             return response()->json(['message'=>"véhicule n'est pas trouvée"],404);
         }
         $validator = Validator::make($request->all(), [
-            'carte_grise'=>'required',
-            'assurance'=>'required',
-            'visite'=>'required',
-            'vignette'=>'required',
             'matricule'=>'required',
             'type'=>'required',
             'marque'=>'required',
@@ -207,6 +203,11 @@ class VehiculeController extends Controller
         $vehicule->modele = $request->modele;
         $vehicule->date_visite = $request->date_visite;
         $vehicule->date_vidange = $request->date_vidange;
+        $vehicule->date_expiration_assurance = $request->date_expiration_assurance;
+        $vehicule->date_prochain_vidange = $request->date_prochain_vidange;
+        $vehicule->date_expiration_assurance = $request->date_expiration_assurance;
+        $vehicule->date_visite = $request->date_visite;
+        $vehicule->date_prochain_visite = $request->date_prochain_visite;
         $vehicule->save();
         return response($vehicule,200);
     }

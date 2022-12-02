@@ -19,7 +19,7 @@ class CreateRecettesTable extends Migration
                   ->onUpdate('cascade')
                   ->onDelete('cascade');
             $table->string('type');
-            $table->double('montant');
+            $table->string('montant');
             $table->date('date');
             $table->text('remarques');
             $table->timestamps();

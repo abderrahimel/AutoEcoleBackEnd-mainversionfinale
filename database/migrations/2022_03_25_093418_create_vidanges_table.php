@@ -15,7 +15,7 @@ class CreateVidangesTable extends Migration
     {
         Schema::create('vidanges', function (Blueprint $table) {
             $table->id();
-            $table->double('montant')->nullable();
+            $table->string('montant')->nullable();
             $table->boolean('etat')->nullable();
             $table->string('date_vidange')->nullable();
             $table->string('date_prochain_vidange')->nullable();

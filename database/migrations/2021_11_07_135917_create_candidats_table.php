@@ -12,7 +12,7 @@ class CreateCandidatsTable extends Migration
      * @return void
      */
     public function up()
-    {
+    { // image  observations pcn  date_obtention lieu_obtention_fr lieu_obtention_ar not required
         Schema::create('candidats', function (Blueprint $table) {
             $table->id();
             $table->foreignId('auto_ecole_id')->constrained()
@@ -37,13 +37,13 @@ class CreateCandidatsTable extends Migration
                   $table->string('image')->nullable();
                   $table->string('date_fin_contrat')->nullable();
                   $table->string('categorie_demandee')->nullable();
-                  $table->integer('nbr_heure_pratique')->nullable();
-                  $table->integer('nbr_heure_theorique')->nullable();
+                  $table->string('nbr_heure_pratique')->nullable();
+                  $table->string('nbr_heure_theorique')->nullable();
                   $table->string('possede_permis')->nullable();
                   $table->string('date_obtention')->nullable();
                   $table->longText('lieu_obtention_fr')->nullable();
                   $table->longText('lieu_obtention_ar')->nullable();
-                  $table->double('montant')->nullable();
+                  $table->string('montant')->nullable();
                   $table->string('pcn')->nullable();
                   $table->string('categorie')->nullable();
                   $table->longText('observations')->nullable();

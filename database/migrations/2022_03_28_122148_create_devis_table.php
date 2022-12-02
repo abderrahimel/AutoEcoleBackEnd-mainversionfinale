@@ -18,8 +18,8 @@ class CreateDevisTable extends Migration
             $table->string('numero')->nullable();
             $table->string('date')->nullable();
             $table->string('societe')->nullable();
-            $table->double('montant_ht')->nullable();
-            $table->double('montant_ttc')->nullable();
+            $table->string('montant_ht')->nullable();
+            $table->string('montant_ttc')->nullable();
             $table->longText('remarques')->nullable();
             $table->foreignId('auto_ecole_id')->constrained()
                   ->onUpdate('cascade')

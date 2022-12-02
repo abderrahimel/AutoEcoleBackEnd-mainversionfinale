@@ -186,6 +186,7 @@ Route::middleware(['jwt.verify' ])->group(function() {
     // 
     //Recette
     Route::get('/auto-ecole/{ecole_id}/recette', [RecetteController::class,'getFacture']);
+    Route::get('/auto-ecole/{ecole_id}/recette-general', [RecetteController::class,'getrecettegeneral']);
     Route::get('/recette/{id}', [RecetteController::class,'getFactureById']);
     Route::post('/add-recette/{ecole_id}', [RecetteController::class,'addFacture']);
     Route::put('/update-recette/{id}', [FactureController::class,'updateFacture']);

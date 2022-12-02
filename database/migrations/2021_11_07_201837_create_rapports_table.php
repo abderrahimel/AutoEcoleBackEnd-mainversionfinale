@@ -22,10 +22,10 @@ class CreateRapportsTable extends Migration
             $table->foreignId('employe_id')->constrained()
                   ->onUpdate('cascade')
                   ->onDelete('cascade');
-            $table->integer('nombre_cours');
-            $table->integer('valeur_carburant')->nullable();
-            $table->double('km_aller')->nullable();
-            $table->double('km_retour')->nullable();
+            $table->string('nombre_cours');
+            $table->string('valeur_carburant')->nullable();
+            $table->string('km_aller')->nullable();
+            $table->string('km_retour')->nullable();
             $table->text('description');
             $table->timestamps();
             $table->softDeletes();

@@ -19,12 +19,12 @@ class CreateDepenseLocalsTable extends Migration
             $table->foreignId('auto_ecole_id')->constrained()
             ->onUpdate('cascade')
             ->onDelete('cascade');
-      $table->foreignId('categorie_depence_id')->constrained()
+        $table->foreignId('categorie_depence_id')->constrained()
             ->onUpdate('cascade')
             ->onDelete('cascade'); 
-      $table->date('date');
-      $table->double('montant');
-      $table->text('remarques');
+        $table->date('date');
+        $table->string('montant');
+        $table->text('remarques');
             $table->timestamps();
             $table->softDeletes();
         });

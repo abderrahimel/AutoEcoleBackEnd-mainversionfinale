@@ -58,14 +58,11 @@ class AutoEcoleVendreController extends Controller
             \Image::make($request->image)->save(public_path('autoEcoleVendre/').$name_image);
             $autoEcole_Vendre->image = $name_image;
         }
-        
         $autoEcole_Vendre->titre = $request->titre;
         $autoEcole_Vendre->description = $request->description;
         $autoEcole_Vendre->prix = $request->prix;
         $autoEcole_Vendre->date = $request->date;
-      
         $autoEcole_Vendre->save();
-
         return response()->json($autoEcole_Vendre, 200);
     }
 

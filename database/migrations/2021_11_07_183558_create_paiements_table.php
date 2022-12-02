@@ -21,7 +21,7 @@ class CreatePaiementsTable extends Migration
             $table->foreignId('employe_id')->constrained()
                   ->onUpdate('cascade')
                   ->onDelete('cascade');
-            $table->double('montant');
+            $table->string('montant');
             $table->date('date');
             $table->text('reamarques');
             $table->timestamps();

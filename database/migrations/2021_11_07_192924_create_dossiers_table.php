@@ -27,13 +27,13 @@ class CreateDossiersTable extends Migration
             $table->foreignId('moniteur_pratique_id')->constrained()
                   ->onUpdate('cascade')
                   ->onDelete('cascade');
-            $table->double('prix');
-            $table->double('prix_inscription');
-            $table->float('heures_pratiques');
-            $table->float('heures_theoriques');
+            $table->string('prix');
+            $table->string('prix_inscription');
+            $table->string('heures_pratiques');
+            $table->string('heures_theoriques');
             $table->date('date_dossier');
-            $table->float('prix_examen');
-            $table->float('avance');
+            $table->string('prix_examen');
+            $table->string('avance');
             $table->timestamps();
             $table->softDeletes();
         });

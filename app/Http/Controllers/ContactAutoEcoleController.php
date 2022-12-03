@@ -17,7 +17,6 @@ class ContactAutoEcoleController extends Controller
             'fichier' =>'required',
             'message' =>'required',
         ]);
-        
         if ($validator->fails()) {
             return new JsonResponse(['success' => false, 'message' => $validator->errors()], 422);
         }

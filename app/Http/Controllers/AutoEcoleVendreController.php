@@ -53,6 +53,19 @@ class AutoEcoleVendreController extends Controller
     }
     public function updateAutoecoleVendre($id, Request $request){
         $autoEcole_Vendre = autoEcole_Vendre::find($id);
+        if(is_null($autoEcole_Vendre)){
+            return response()->json(['message'=>'auto ecole n\'existe pas'], 404);
+        }
+        $validator = Validator::make($request->all(), [
+            'titre' =>'required',
+            'description' =>'required',
+            'prix' =>'required',
+            'date' =>'required',
+        ]);
+        
+        if ($validator->fails()) {
+            return response()->json(['success' => false, 'message' => $validator->errors()], 422);
+        }
         if($request->image != ''){
             $name_image = time().'.' . explode('/', explode(':', substr($request->image, 0, strpos($request->image, ';')))[1])[1];
             \Image::make($request->image)->save(public_path('autoEcoleVendre/').$name_image);
@@ -68,6 +81,9 @@ class AutoEcoleVendreController extends Controller
 
     public function  deleteAutoecoleVendre($id){
         $autoEcole_Vendre = autoEcole_Vendre::find($id);
+        if(is_null($autoEcole_Vendre)){
+            return response()->json(['message'=>'auto ecole n\'existe pas'], 404);
+        }
         $autoEcole_Vendre->delete();
         return response()->json(['message'=>'autoEcole Vendre deleted'], 200);
     }

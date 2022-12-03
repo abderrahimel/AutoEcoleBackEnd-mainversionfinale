@@ -13,8 +13,14 @@ class VehiculeController extends Controller
 {
     public function getVehicule($ecole_id)
     {   
-        $ecole = AutoEcole::findOrFail($ecole_id);
+        $ecole = AutoEcole::find($ecole_id);
+        if(is_null($ecole)){
+            return response()->json(['message'=> "Ecole n'est pas trouvée"],404);
+        }
         $vehicules = Vehicule::where('auto_ecole_id', $ecole_id)->get();
+        if(is_null($vehicules)){
+            return response()->json(['message'=> "vehicule n'est pas trouvée"],404);
+        }
         foreach($vehicules as $key => $vehicule) {
             if($vehicule->carte_grise){
                 $vehicule->carte_grise = 'http://' . request()->getHttpHost() . '/' . 'carte_grise/' .  $vehicule->carte_grise; 
@@ -31,25 +37,71 @@ class VehiculeController extends Controller
             }
         return response()->json($vehicules, 200);
     }
-    // public function getVidanges($ecole_id){
+      public function getVisiteTechnique($ecole_id)
+      {
+        $ecole = AutoEcole::find($ecole_id);
+        if(is_null($ecole)){
+            return response()->json(['message'=> "Ecole n'est pas trouvée"],404);
+        }
+        $today = date("Y/m/d");
+        $vehiculespasencore = Vehicule::where('auto_ecole_id', $ecole_id)->whereDate('date_prochain_visite','>=', $today)->get();
+        $vehiculesurgent= Vehicule::where('auto_ecole_id', $ecole_id)->whereDate('date_visite','>=', $today)->get();
+        $vehiculedata = array();
+        foreach ($vehiculesurgent as $vehicule) {
+           $vehiculedata[] = $vehicule;
+        }
+        foreach ($vehiculespasencore as $vehicule) {
+            if(!in_array($vehicule, $vehiculedata)){
+                $vehiculedata[] = $vehicule;
+            }
+   
+        }
+        if($vehiculedata){
+            return response()->json($vehiculedata, 200);
+        }
+        return response()->json(null, 200);
+      }
 
-    //     $collection = Vehicule::where('auto_ecole_id', $ecole_id)->get();
-    //     $featured = [];
-    //     $unfeatured = [];
+      public function getVidange($ecole_id)
+      {
+        $ecole = AutoEcole::find($ecole_id);
+        if(is_null($ecole)){
+            return response()->json(['message'=> "Ecole n'est pas trouvée"],404);
+        }
+        $today = date("Y/m/d");
+        $vehiculespasencore = Vehicule::where('auto_ecole_id', $ecole_id)->whereDate('date_prochain_vidange','>=', $today)->get();
+        $vehiculesurgent= Vehicule::where('auto_ecole_id', $ecole_id)->whereDate('date_vidange','>=', $today)->get();
+        $vehiculedata = array();
+        foreach ($vehiculesurgent as $vehicule) {
+            $vehiculedata[] = $vehicule;
+        }
+        foreach ($vehiculespasencore as $vehicule) {
+           $vehiculedata[] = $vehicule;
+        }
+        return response()->json($vehiculedata, 200);
+      }
 
-    //     $collection->each(function ($item) use (&$featured, &$unfeatured) {
-    //         // $dateexpiration = Carbon::createFromFormat('Y-m-d', $item->date_expiration_assurance);
-    //         // $currentDate = Carbon::now()->format('y-m-d');
-    //         if ($dateexpiration->eq($currentDate)) {
-    //             $featured[] = $item;
-    //         } else {
-    //             $unfeatured[] = $item;
-    //         }
-    //         });
-           
-       
-    //    return response()->json(['featured'=>$featured, 'unfeatured'=>$unfeatured],200);
-    //  }
+      public function getAssurance($ecole_id)
+      {
+        $ecole = AutoEcole::find($ecole_id);
+        if(is_null($ecole)){
+            return response()->json(['message'=> "Ecole n'est pas trouvée"],404);
+        }
+        $today = date("Y/m/d");
+        $vehiculespasencore = Vehicule::where('auto_ecole_id', $ecole_id)->whereDate('date_expiration_assurance','>=', $today)->get();
+        $vehiculesurgent= Vehicule::where('auto_ecole_id', $ecole_id)->whereDate('date_assurance','>=', $today)->get();
+        $vehiculedata = array();
+        foreach ($vehiculesurgent as $vehicule) {
+           $vehiculedata[] = $vehicule;
+        }
+        foreach ($vehiculespasencore as $vehicule) {
+            if(!in_array($vehicule, $vehiculedata)){
+                $vehiculedata[] = $vehicule;
+            }
+   
+        }
+        return response()->json($vehiculedata, 200);
+      }
 
     public function getVehiculeById($id)
     {

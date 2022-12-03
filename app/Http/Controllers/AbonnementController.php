@@ -71,9 +71,17 @@ class AbonnementController extends Controller
         if(is_null($auto_id)){
             return response()->json(['message'=>'auto ecole does not exist'],404);
         }
-
+        $validator = Validator::make($request->all(), [
+            'prix'=>'required',
+            'date_fin'=>'required',
+            'date_debut'=>'required',
+        ]);
+        
+        if ($validator->fails()) {
+            return response()->json(['success' => false, 'message' => $validator->errors()], 422);
+        }
         $abonnement = Abonnement::create([
-            'auto_ecole_id'=>$autoEcole_id,
+            'auto_ecole_id'=>$auto_id,
             'prix'=>$request->prix,
             'date_fin'=>$request->date_fin,
             'date_debut'=>$request->date_debut 
@@ -85,6 +93,15 @@ class AbonnementController extends Controller
     public function updateAbonnementAutoEcole($id, request $request){
          
         $abonnement = Abonnement::find($id);
+        $validator = Validator::make($request->all(), [
+            'prix'=>'required',
+            'date_fin'=>'required',
+            'date_debut'=>'required',
+        ]);
+        
+        if ($validator->fails()) {
+            return response()->json(['success' => false, 'message' => $validator->errors()], 422);
+        }
         if(is_null($abonnement)){
             return reponse()->json(['message'=>'abonnement does not exist in db'], 404);
         }

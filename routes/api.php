@@ -108,6 +108,10 @@ Route::middleware(['jwt.verify' ])->group(function() {
     Route::put('/update-vehicule/{id}', [VehiculeController::class,'updateVehicule']);
     Route::delete('/delete-vehicule/{id}', [VehiculeController::class,'deleteVehicule']);
 
+    // visite technique
+    Route::get('/auto-ecole/{ecole_id}/visite-technique', [VehiculeController::class,'getVisiteTechnique']);
+    Route::get('/auto-ecole/{ecole_id}/vidange', [VehiculeController::class,'getVidange']);
+    Route::get('/auto-ecole/{ecole_id}/assurance', [VehiculeController::class,'getAssurance']);
 
     //Employe routes
     Route::get('/auto-ecole/{ecole_id}/employe', [EmployeController::class,'getEmploye']);

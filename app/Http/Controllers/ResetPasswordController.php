@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\NotificationResetPassword;
+
 class ResetPasswordController extends Controller
 {
     public function resetPassword(Request $request)

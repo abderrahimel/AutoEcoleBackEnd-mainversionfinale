@@ -24,6 +24,11 @@ class MoniteurController extends Controller
         return response()->json($moniteurs,200);
         
     }
+    public function count($ecole_id){
+       $countT =  MoniteurTheorique::where('deleted_at','=', null)->count();
+       $countP =  MoniteurPratique::where('deleted_at','=', null)->count();
+       return response()->json(['countT'=>$countT, 'countP'=>$countP],200);
+    }
     public function getMoniteurP($ecole_id){
         $ecole=AutoEcole::find($ecole_id);
         if (is_null($ecole_id)) {

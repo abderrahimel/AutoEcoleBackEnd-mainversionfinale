@@ -69,7 +69,11 @@ class CategorieDepenceController extends Controller
         return response()->json($categories,200);
     }
 
-
+    public function count(){
+        // CategorieDepence
+        $countPersonnel = CategorieDepence::where('type', 'personnel')->where('deleted_at', '!=', null)->count();
+        return response()->json(['countPersonnel'=>$countPersonnel],200);
+    }
     public function addCategorieDepence($ecole_id,Request $request)
     {
         $ecole = AutoEcole::find($ecole_id);

@@ -13,6 +13,7 @@ class AbonnementController extends Controller
         $abonnements = Abonnement::whereNotNull('date_debut')->get();
         foreach($abonnements as $key => $abonnement) {
              $autoecole = AutoEcole::find($abonnement->auto_ecole_id);
+             $autoecole->image = 'http://' . request()->getHttpHost() . '/' . 'images/' .  $autoecole->image;
              $abonnement['autoEcole'] = $autoecole;
              $abonnement['nom_auto_ecole'] = $autoecole->nom_auto_ecole;
         }

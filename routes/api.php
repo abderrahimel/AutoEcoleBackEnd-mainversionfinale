@@ -104,6 +104,7 @@ Route::middleware(['jwt.verify' ])->group(function() {
 
     Route::get('/vehicule/{id}', [VehiculeController::class,'getVehiculeById']);
     Route::get('/auto-ecole/{ecole_id}/vidange', [VehiculeController::class,'getVidanges']);
+    Route::get('/auto-ecole/{ecole_id}/number-of-row', [VehiculeController::class,'getNumber']);
     Route::post('/add-vehicule/{ecole_id}', [VehiculeController::class,'addVehicule']);
     Route::put('/update-vehicule/{id}', [VehiculeController::class,'updateVehicule']);
     Route::delete('/delete-vehicule/{id}', [VehiculeController::class,'deleteVehicule']);
@@ -150,6 +151,7 @@ Route::middleware(['jwt.verify' ])->group(function() {
     
     Route::get('/categorie-depence/{id}', [CategorieDepenceController::class,'getCategorieDepenceById']);
     Route::post('/add-categorie-depence/{ecole_id}', [CategorieDepenceController::class,'addCategorieDepence']);
+    Route::post('/auto-ecole/{ecole_id}/count', [CategorieDepenceController::class,'count']);
     Route::put('/update-categorie-depence/{id}', [CategorieDepenceController::class,'updateCategorieDepence']);
     Route::delete('/delete-categorie-depence/{id}', [CategorieDepenceController::class,'deleteCategorieDepence']);
 
@@ -302,10 +304,11 @@ Route::middleware(['jwt.verify' ])->group(function() {
 
     //Moniteurs routes
     Route::get('/auto-ecole/{ecole_id}/moniteur-theorique', [MoniteurController::class,'getMoniteurT']);
+    Route::get('/auto-ecole/{ecole_id}/count-moniteur-theorique-pratique', [MoniteurController::class,'count']);
     Route::get('/moniteur-theorique/{id}', [MoniteurController::class,'getMoniteurtById']);
     Route::post('/add-moniteur-theorique/{ecole_id}', [MoniteurController::class,'addMoniteurt']);
     Route::put('/update-moniteur-theorique/{id}', [MoniteurController::class,'updateMoniteurT']);
-    Route::delete('/delete-moniteur-theorique/{id}', [MoniteurController::class,'deleteMoniteurt']); 
+    Route::delete('/delete-moniteur-theorique/{id}', [MoniteurController::class,'deleteMoniteurt']);
 
     Route::get('/auto-ecole/{ecole_id}/moniteur-pratiquetrash', [MoniteurController::class,'getMoniteurPtrash']);
     Route::get('/auto-ecole/{ecole_id}/moniteur-pratique', [MoniteurController::class,'getMoniteurP']);
@@ -430,35 +433,30 @@ Route::middleware(['jwt.verify' ])->group(function() {
     // contact all auto ecole;
     Route::post('/send-email-auto-ecole', [ContactAutoEcoleController::class,'send']);
     Route::post('/send-to-all-email-auto-ecoles', [ContactAutoEcoleController::class,'sendtoAll']);
+    //categorie-depence
+    Route::get('/auto-ecole/{ecole_id}/categorie-depence-vehicule', [CategorieDepenceController::class,'getCategorieDepenceVehicule']);
+    Route::get('/auto-ecole/{ecole_id}/categorie-depence-personnel', [CategorieDepenceController::class,'getCategorieDepencePersonnel']);
+    Route::get('/auto-ecole/{ecole_id}/categorie-depence-local', [CategorieDepenceController::class,'getCategorieDepenceLocal']);
+    // current auto ecole logged
+    Route::get('/current-auto-ecole-id', [AuthController::class,'currentAutoEcole']);
+    Route::get('/auto-ecole/{ecole_id}/vehicule', [VehiculeController::class,'getVehicule']);
+    // super aadmin routes
+    Route::post('/send-email-toSuperAdmin', [ContactController::class,'sendEmailToSuperAdmin']);
+    Route::get('/get-boutique', [ProduitAdminController::class,'getboutique']);
+    Route::get('/get-blogs', [BlogController::class,'getBlog']);
+    Route::get('/get-blogId/{id}', [BlogController::class,'getBlogById']);
+    Route::put('/reset-email', [ResetEmailController::class, 'resetemail']);
 });
 
-
-
-Route::get('/current-auto-ecole-id', [AuthController::class,'currentAutoEcole']);
-Route::get('/auto-ecole/{ecole_id}/vehicule', [VehiculeController::class,'getVehicule']);
-Route::post('/resend/email/token', [AuthController::class, 'resendPin'])->name('resendPin');
 Route::middleware('auth:sanctum')->group(function () {
         Route::post('email/verify',[AuthController::class, 'verifyEmail']);
 });
-Route::post(
-    '/forgot-password', 
-    [ForgotPasswordController::class, 'forgotPassword'] 
-);
-Route::post(
-    '/verify/pin', 
-    [ForgotPasswordController::class, 'verifyPin']
-);
-Route::post(
-    '/reset-password', 
-    [ResetPasswordController::class, 'resetPassword']
-);
-// endpoint for user is logged into their account
 
-Route::put(
-    '/reset-email', 
-    [ResetEmailController::class, 'resetemail']
-);
-//
+Route::post('/resend/email/token', [AuthController::class, 'resendPin'])->name('resendPin');
+Route::post('/forgot-password', [ForgotPasswordController::class, 'forgotPassword']);
+Route::post('/verify/pin', [ForgotPasswordController::class, 'verifyPin']);
+Route::post('/reset-password', [ResetPasswordController::class, 'resetPassword']);
+
 Route::middleware('auth:sanctum')->group(function ($route) {
     $route->post(
         '/email/verify/{id}/{token}',
@@ -470,12 +468,3 @@ Route::middleware('auth:sanctum')->group(function ($route) {
 });
 // this endpoint not require from user to be authenticated
 Route::get('/email/verify/{id}/{hash}', [VerifieEmailController::class, 'send_email'])->middleware(['signed'])->name('verification.verify');
-
-// super aadmin routes
-Route::post('/send-email-toSuperAdmin', [ContactController::class,'sendEmailToSuperAdmin']);
-Route::get('/get-boutique', [ProduitAdminController::class,'getboutique']);
-Route::get('/get-blogs', [BlogController::class,'getBlog']);
-Route::get('/get-blogId/{id}', [BlogController::class,'getBlogById']);
-Route::get('/auto-ecole/{ecole_id}/categorie-depence-vehicule', [CategorieDepenceController::class,'getCategorieDepenceVehicule']);
-Route::get('/auto-ecole/{ecole_id}/categorie-depence-personnel', [CategorieDepenceController::class,'getCategorieDepencePersonnel']);
-Route::get('/auto-ecole/{ecole_id}/categorie-depence-local', [CategorieDepenceController::class,'getCategorieDepenceLocal']);

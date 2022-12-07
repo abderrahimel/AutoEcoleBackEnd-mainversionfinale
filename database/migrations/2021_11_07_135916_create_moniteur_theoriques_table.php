@@ -32,7 +32,7 @@ class CreateMoniteurTheoriquesTable extends Migration
                   $table->text('adresse');
                   $table->text('conduire');
                   $table->text('observations')->nullable();
-                  $table->text('categorie')->nullable();
+                  $table->text('categorie');
                   $table->string('namecarteMoniteur')->nullable();
                   $table->timestamps();
                   $table->softDeletes();

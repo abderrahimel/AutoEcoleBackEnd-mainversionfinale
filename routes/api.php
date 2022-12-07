@@ -151,7 +151,7 @@ Route::middleware(['jwt.verify' ])->group(function() {
     
     Route::get('/categorie-depence/{id}', [CategorieDepenceController::class,'getCategorieDepenceById']);
     Route::post('/add-categorie-depence/{ecole_id}', [CategorieDepenceController::class,'addCategorieDepence']);
-    Route::post('/auto-ecole/{ecole_id}/count', [CategorieDepenceController::class,'count']);
+    Route::get('/auto-ecole/{ecole_id}/count-categorie-personnel', [CategorieDepenceController::class,'count']);
     Route::put('/update-categorie-depence/{id}', [CategorieDepenceController::class,'updateCategorieDepence']);
     Route::delete('/delete-categorie-depence/{id}', [CategorieDepenceController::class,'deleteCategorieDepence']);
 
@@ -189,7 +189,8 @@ Route::middleware(['jwt.verify' ])->group(function() {
 
     // /add-notes/
     Route::post('/add-notes/{ecole_id}', [NoteController::class,'addNote']);
-    // 
+    Route::get('/auto-ecole/{ecole_id}/count-note', [NoteController::class,'count']);
+
     //Recette
     Route::get('/auto-ecole/{ecole_id}/recette', [RecetteController::class,'getFacture']);
     Route::get('/auto-ecole/{ecole_id}/recette-general', [RecetteController::class,'getrecettegeneral']);

@@ -25,8 +25,8 @@ class MoniteurController extends Controller
         
     }
     public function count($ecole_id){
-       $countT =  MoniteurTheorique::where('deleted_at','=', null)->count();
-       $countP =  MoniteurPratique::where('deleted_at','=', null)->count();
+       $countT =  MoniteurTheorique::where('auto_ecole_id', $ecole_id)->where('deleted_at','=', null)->count();
+       $countP =  MoniteurPratique::where('auto_ecole_id', $ecole_id)->where('deleted_at','=', null)->count();
        return response()->json(['countT'=>$countT, 'countP'=>$countP],200);
     }
     public function getMoniteurP($ecole_id){
@@ -178,11 +178,9 @@ class MoniteurController extends Controller
             'capn'=>'required',
             'conduire'=>'required',
             'adresse'=>'required',
-            'observations'=>'required',
-            'carteMoniteur'=>'required',
-             'categorie'=>'required',
+            'categorie'=>'required',
         ]);
-        
+        $namecarteMoniteur = null;
         if ($validator->fails()) {
             return response()->json(['success' => false, 'message' => $validator->errors()], 422);
         }
@@ -231,14 +229,13 @@ class MoniteurController extends Controller
             'capn'=>'required',
             'conduire'=>'required',
             'adresse'=>'required',
-            'observations'=>'required',
-            'carteMoniteur'=>'required',
              'categorie'=>'required',
         ]);
         
         if ($validator->fails()) {
             return response()->json(['success' => false, 'message' => $validator->errors()], 422);
         }
+        $namecarteMoniteur = null;
         if($request->carteMoniteur != ''){
             $namecarteMoniteur = time().'.' . explode('/', explode(':', substr($request->carteMoniteur, 0, strpos($request->carteMoniteur, ';')))[1])[1];
             \Image::make($request->carteMoniteur)->save(public_path('carteMoniteur/').$namecarteMoniteur);

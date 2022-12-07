@@ -30,8 +30,8 @@ class CreateMoniteurPratiquesTable extends Migration
             $table->string('capn');
             $table->text('adresse');
             $table->text('conduire');
-            $table->text('observations')->nullable();
-            $table->text('categorie')->nullable();
+            $table->text('observations');
+            $table->text('categorie');
             $table->string('namecarteMoniteur')->nullable();
             $table->timestamps();
             $table->softDeletes();

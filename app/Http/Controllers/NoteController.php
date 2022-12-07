@@ -18,7 +18,10 @@ class NoteController extends Controller
         $notes = Note::where('auto_ecole_id',$auto_id)->get();
         return response()->json($notes,201);
     }
-
+    public function count($ecole_id){
+        $count = Note::where('auto_ecole_id', $ecole_id)->where('deleted_at', null)->count();
+        return response()->json($count,200);
+    }
     public function addNote($ecole_id,Request $request)
     {
         $ecole = AutoEcole::find($ecole_id);

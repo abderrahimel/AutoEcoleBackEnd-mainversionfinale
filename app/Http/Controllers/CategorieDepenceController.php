@@ -69,13 +69,14 @@ class CategorieDepenceController extends Controller
         return response()->json($categories,200);
     }
 
-    public function count(){
-        // CategorieDepence
-        $countPersonnel = CategorieDepence::where('type', 'personnel')->where('deleted_at', '!=', null)->count();
-        return response()->json(['countPersonnel'=>$countPersonnel],200);
+    public function count($ecole_id){
+        $countPersonnel = CategorieDepence::where('auto_ecole_id',$ecole_id)->where('type', 'personnel')->where('deleted_at', null)->count();
+        $countVehicule = CategorieDepence::where('auto_ecole_id', $ecole_id)->where('type', 'vehicule')->where('deleted_at', null)->count();
+        $countLocal = CategorieDepence::where('auto_ecole_id',$ecole_id)->where('type', 'local')->where('deleted_at', null)->count();
+        return response()->json(['countPersonnel'=>$countPersonnel, 'countVehicule'=>$countVehicule, 'countLocal'=>$countLocal],200);
     }
     public function addCategorieDepence($ecole_id,Request $request)
-    {
+    {   
         $ecole = AutoEcole::find($ecole_id);
         if(is_null($ecole)){
             return response()->json(['message'=> "Ecole n'est pas trouvé"],404);

@@ -11,7 +11,10 @@ class ProduitAdminController extends Controller
     public function getProduitAdminById($id)
     {
         $produit = Produit_admin_auto_ecole::find($id);
-        if(!is_null($produit->image)){
+        if(is_null($produit)){
+            return response()->json(['message'=>'produit admin does not exist'], 404);
+        }
+        if($produit->image){
             $produit->image = 'http://' . request()->getHttpHost() . '/' . 'produitsAdmin/' .  $produit->image;     
         }
         if (is_null($produit)) {

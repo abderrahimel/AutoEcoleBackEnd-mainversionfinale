@@ -447,6 +447,8 @@ Route::middleware(['jwt.verify' ])->group(function() {
     Route::get('/get-blogs', [BlogController::class,'getBlog']);
     Route::get('/get-blogId/{id}', [BlogController::class,'getBlogById']);
     Route::put('/reset-email', [ResetEmailController::class, 'resetemail']);
+    // configuration 
+    Route::get('/auto-ecole/{ecole_id}/configuration', [SuperAdminController::class,'configuration']);
 });
 
 Route::middleware('auth:sanctum')->group(function () {

@@ -39,7 +39,7 @@ class VehiculeController extends Controller
     }
 
       public function getNumber($ecole_id){
-         $count =  Vehicule::where('deleted_at','=', null)->count();
+         $count =  Vehicule::where('auto_ecole_id', $ecole_id)->where('deleted_at','=', null)->count();
          return response()->json($count, 200);
       }
       public function getVisiteTechnique($ecole_id)

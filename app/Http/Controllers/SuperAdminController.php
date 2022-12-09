@@ -28,5 +28,25 @@ class SuperAdminController extends Controller
       return response()->json($autoEcolesApprouves, 200);
 
    }
+
+   public function configuration($ecole_id){
+       $cvehicules = Vehicule::where('auto_ecole_id', $ecole_id)->where('deleted_at','=', null)->count();
+       $countMoniteurT =  MoniteurTheorique::where('auto_ecole_id', $ecole_id)->where('deleted_at','=', null)->count();
+       $countMoniteurP =  MoniteurPratique::where('auto_ecole_id', $ecole_id)->where('deleted_at','=', null)->count();
+       $countPersonnel = CategorieDepence::where('auto_ecole_id',$ecole_id)->where('type', 'personnel')->where('deleted_at', null)->count();
+       $countVehicule = CategorieDepence::where('auto_ecole_id', $ecole_id)->where('type', 'vehicule')->where('deleted_at', null)->count();
+       $countLocal = CategorieDepence::where('auto_ecole_id',$ecole_id)->where('type', 'local')->where('deleted_at', null)->count();
+       $countNotesCategories = Note::where('auto_ecole_id', $ecole_id)->where('deleted_at', null)->count();
+       $var = $cvehicules * $countMoniteurT * $countMoniteurP * $countPersonnel * $countVehicule * $countLocal * $countNotesCategories;
+       if($var != 0 ){
+         return response()->json(['c'=>true, [$cvehicules, $countMoniteurT ,$countMoniteurP , $countPersonnel ,$countVehicule , $countLocal , $countNotesCategories]], 200);
+       }else{
+         return response()->json(['c'=>false, [$cvehicules, $countMoniteurT ,$countMoniteurP , $countPersonnel ,$countVehicule , $countLocal , $countNotesCategories]], 200);
+       }
+   }
   
 }
+
+/**
+           
+ */

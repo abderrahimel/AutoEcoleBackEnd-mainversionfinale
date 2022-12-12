@@ -303,7 +303,7 @@ class AuthController extends Controller
             }
             $abonnement = Abonnement::where('user_id', $user['id'])->first();
             if (!$abonnement->date_fin) {
-                return response()->json(['response'=>false, 'message' => 'you need abonnement'], 500);
+                return response()->json(['response'=>false, 'message' => 'vous avez besoin d\'un abonnement'], 500);
             }
             $datetoday = new DateTime();
             $datecontrat    = new DateTime($abonnement->date_fin); // 

@@ -29,10 +29,8 @@ class SendPdfMail extends Mailable
      * @return $this
      */
     public function build()
-    {   
-       
-        // return $this->subject($this->object)->markdown('emails.sendpdf');
-        return $this->from('jhb.plus@yahoo.com')
+    {    
+        return $this->from('no-reply@gestionautoecole.com')
         ->subject($this->imagesendbymailwithstore['object'])
         ->markdown('emails.sendpdf')
         ->with('data', $this->imagesendbymailwithstore)

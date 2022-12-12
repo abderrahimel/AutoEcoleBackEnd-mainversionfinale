@@ -28,8 +28,8 @@ class VerifyEmail extends Mailable
      */
     public function build()
     {
-        return $this
-            ->subject("Email Verification")
-            ->markdown('emails.verify');
+        return $this->from('no-reply@gestionautoecole.com')
+               ->subject("Email Verification")
+                ->markdown('emails.verify');
     }
 }

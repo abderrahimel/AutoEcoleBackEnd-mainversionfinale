@@ -5,9 +5,13 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\AutoEcole;
 use App\Models\User;
+use App\Models\Vehicule;
+use App\Models\MoniteurTheorique;
+use App\Models\MoniteurPratique;
+use App\Models\CategorieDepence;
+use App\Models\Note;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
-
 
 class SuperAdminController extends Controller
 {

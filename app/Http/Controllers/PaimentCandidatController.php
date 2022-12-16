@@ -14,11 +14,17 @@ class PaimentCandidatController extends Controller
 {
      public function addPaiementCandidat($ecole_id, $id_candidat,Request $request){
         $ecole = AutoEcole::find($ecole_id);
-
-        // var_dump(intval($ecole_id), intval($id_candidat));
-        // var_dump($request->all());
         if (is_null($ecole_id)) {
             return response()->json(['message'=>"Auto Ecole n'est pas trouvée"],404);
+        }
+        $validator = Validator::make($request->all(), [
+            'date'=>'required',
+            'montant'=>'required',
+            'type'=>'required',
+        ]);
+        
+        if ($validator->fails()) {
+            return response()->json(['success' => false, 'message' => $validator->errors()], 422);
         }
         $name_image = '';
         if($request->image != ''){
@@ -47,6 +53,15 @@ class PaimentCandidatController extends Controller
           if (is_null($paimentCandidat)) {
             return response()->json(['message'=>"paiment candidat doesn't exist"],404);
           }
+          $validator = Validator::make($request->all(), [
+            'date'=>'required',
+            'montant'=>'required',
+            'type'=>'required',
+            ]);
+            
+            if ($validator->fails()) {
+                return response()->json(['success' => false, 'message' => $validator->errors()], 422);
+            }
           $name_image = '';
           if($request->image != ''){
             $name_image = time().'.' . explode('/', explode(':', substr($request->image, 0, strpos($request->image, ';')))[1])[1];

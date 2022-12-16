@@ -18,12 +18,14 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Auth\Events\Registered;
-//
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\URL;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
+use Tymon\JWTAuth\Exceptions\TokenInvalidException;
+use Tymon\JWTAuth\Exceptions\TokenExpiredException;
+use Tymon\JWTAuth\Exceptions\TokenBlacklistedException;
 use DateTime;
 use DateInterval;
 class AuthController extends Controller
@@ -162,7 +164,7 @@ class AuthController extends Controller
             'message' => 'Successful created user. Please check your email to verify your email.', 
             'token' => $token
         ], 
-        201
+        200
     );
     }
     public function resendPin(Request $request)
@@ -315,10 +317,10 @@ class AuthController extends Controller
             }
            
             if (!$verify) {
-                return response()->json(['response'=>false, 'message' => 'abonnement expired'], 500);
+                return response()->json(['response'=>false, 'message' => 'abonnement expiré'], 500);
             }
         } catch (JWTException $e) {
-            return $this->sendError([], $e->getMessage(), 500);
+            return response()->json(['response'=>false, 'message'=>$e->getMessage()] , 500);
         }
         
 
@@ -330,13 +332,13 @@ class AuthController extends Controller
     {  
         auth()->logout();
 
-        return response()->json(['message' => 'User successfully logged out.']);
+        return response()->json(['message' => 'User successfully logged out.'], 200);
     }
      public function role(){
         try {
             $user = JWTAuth::parseToken()->authenticate();
             if (!$user) {
-                return $this->sendError([], "user not found", 403);
+                return response()->json("user not found", 403);
             } 
         } catch (JWTException $e) {
             return response()->json($e->getMessage(), 500);        
@@ -351,10 +353,16 @@ class AuthController extends Controller
         try {
             $user = JWTAuth::parseToken()->authenticate();
             if (!$user) {
-                return $this->sendError([], "user not found", 403);
-            } 
+                return response()->json("user not found", 403);
+            }
+        } catch (TokenInvalidException $e) {
+            return response()->json("The JWT is malformed or has been tampered with", 400);
+        } catch (TokenExpiredException $e) {
+            return response()->json("The JWT is expired", 400);
+        } catch (TokenBlacklistedException $e) {
+            return response()->json("The JWT has been used too many times", 400);
         } catch (JWTException $e) {
-            return response()->json($e->getMessage(), 500);        
+            return response()->json("Error while trying to decode the JWT", 500);
         }
         $isSuperAdmin = false;
         if($user->type == 'adminAuto'){
@@ -367,14 +375,14 @@ class AuthController extends Controller
         try {
             $user = JWTAuth::parseToken()->authenticate();
             if (!$user) {
-                return $this->sendError([], "user not found", 403);
+                return response()->json("user not found", 403);
             } 
         } catch (JWTException $e) {
             return response()->json($e->getMessage(), 500);        
         }
         return response()->json([
             'user' => $user
-        ]);
+        ], 200);
     }
     public function currentAutoEcole(){
         $logged = $this->logged();

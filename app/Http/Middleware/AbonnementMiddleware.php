@@ -24,13 +24,13 @@ class AbonnementMiddleware
                 return response()->json(['response'=>false, 'message' => 'user not found'], 500);
             }
             $abonnement = Abonnement::where('user_id', $user->id)->get;
-            if (!$abonnement->date_fin) {
+            if (!$abonnement->date_fin && $user->type != 'superAdmin') {
                 return response()->json(['response'=>false, 'message' => 'you need abonnement'], 500);
             }
             $paymentDate       = new DateTime('now');
             $contractDateEnd   = new DateTime($abonnement->date_fin);
-            $verify =dateIsInBetween($contractDateEnd, $paymentDate);
-            if (!$verify) {
+            $verify = dateIsInBetween($contractDateEnd, $paymentDate);
+            if (!$verify && $user->type != 'superAdmin') {
                 return response()->json(['response'=>false, 'message' => 'abonnement expired'], 500);
             }
 

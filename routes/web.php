@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Auth\Events\Verified;
 use App\Models\User;
+use App\Http\Controllers\VerifieEmailController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -22,6 +23,4 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-
-
-
+Route::get('/email/verify/{id}/{hash}', [VerifieEmailController::class, 'send_email'])->middleware(['signed'])->name('verification.verify');

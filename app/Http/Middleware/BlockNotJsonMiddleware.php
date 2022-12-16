@@ -16,9 +16,9 @@ class BlockNotJsonMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        if (!$request->expectsJson()) {
-            return abort(404);
-        }
+        // if (!$request->expectsJson()) {
+        //     return abort(404);
+        // }
         return $next($request);
     }
 }

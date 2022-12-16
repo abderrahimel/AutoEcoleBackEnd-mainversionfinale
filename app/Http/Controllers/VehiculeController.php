@@ -262,9 +262,10 @@ class VehiculeController extends Controller
         $vehicule->date_vidange = $request->date_vidange;
         $vehicule->date_expiration_assurance = $request->date_expiration_assurance;
         $vehicule->date_prochain_vidange = $request->date_prochain_vidange;
-        $vehicule->date_expiration_assurance = $request->date_expiration_assurance;
-        $vehicule->date_visite = $request->date_visite;
+        $vehicule->date_visite = $request->date_visite;//
         $vehicule->date_prochain_visite = $request->date_prochain_visite;
+        $vehicule->date_assurance = $request->date_assurance;
+        $vehicule->categorie = $request->categorie;
         $vehicule->save();
         return response($vehicule,200);
     }

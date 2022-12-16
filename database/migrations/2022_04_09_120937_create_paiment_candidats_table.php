@@ -15,11 +15,11 @@ class CreatePaimentCandidatsTable extends Migration
     {      
         Schema::create('paiment_candidats', function (Blueprint $table) {
             $table->id();
-            $table->string('date')->nullable();
-            $table->string('montant')->nullable();
+            $table->string('date');
+            $table->string('montant');
             $table->string('nom_banque')->nullable();
             $table->text('image')->nullable();
-            $table->string('type_p')->nullable();
+            $table->string('type_p');
             $table->string('numero')->nullable();
             $table->string('remarque')->nullable();
             $table->foreignId('auto_ecole_id')->constrained()

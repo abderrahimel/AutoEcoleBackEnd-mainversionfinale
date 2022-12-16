@@ -470,4 +470,3 @@ Route::middleware('auth:sanctum')->group(function ($route) {
     $route->post('/email/verification-notification', [VerifieEmailController::class, 'sendVerificationEmail'])->name('verification.send');
 });
 // this endpoint not require from user to be authenticated
-Route::get('/email/verify/{id}/{hash}', [VerifieEmailController::class, 'send_email'])->middleware(['signed'])->name('verification.verify');

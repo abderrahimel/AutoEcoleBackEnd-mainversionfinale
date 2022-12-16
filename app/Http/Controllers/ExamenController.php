@@ -23,7 +23,7 @@ class ExamenController extends Controller
             return response()->json(['message'=>"Auto Ecole n'est pas trouvée"],404);
         }
         
-        $examens = Examen::where('resultat', -1)->get();
+        $examens = Examen::where('auto_ecole_id', '=', $ecole_id)->where('resultat', '=', -1)->get();
         foreach ($examens as $examen) {
 
             $examen['candidat'] = Candidat::find($examen->candidat_id);
@@ -42,26 +42,31 @@ class ExamenController extends Controller
         if (is_null($ecole_id)) {
             return response()->json(['message'=>"Auto Ecole n'est pas trouvée"],404);
         }
-        $examens = Examen::where('resultat', 1)->get();
+        $examens = Examen::where('auto_ecole_id', '=', $ecole_id)->where('resultat', '=', 1)->get();
         foreach ($examens as $examen) {
             $examen['candidat'] = Candidat::find($examen->candidat_id);
             $examen['moniteur'] = MoniteurPratique::find($examen->moniteur_pratique_id);
         }
         return response()->json($examens,200);
-
     }
+
     public function getCandidatNoreussi($ecole_id){
-        // examen candidat no reussi
-        $ecole=AutoEcole::find($ecole_id);
-        if (is_null($ecole_id)) {
+        $ecole = AutoEcole::find($ecole_id);
+        if (is_null($ecole)) {
             return response()->json(['message'=>"Auto Ecole n'est pas trouvée"],404);
         }
-        $examens = Examen::where('resultat', 0)->get();
+        $examens = Examen::where('auto_ecole_id','=', $ecole_id)->where('resultat','=', 0)->get();
+        $examennoreussi = array();
         foreach ($examens as $examen) {
+            if($examen['resultat'] == 0){
+                $examennoreussi[] = $examen;
+            }
+        }
+        foreach ($examennoreussi as $examen) {
             $examen['candidat'] = Candidat::find($examen->candidat_id);
             $examen['moniteur'] = MoniteurPratique::find($examen->moniteur_pratique_id);
         }
-        return response()->json($examens,200);
+        return response()->json($examennoreussi,200);
 
     }
     public function getExamenById($id)

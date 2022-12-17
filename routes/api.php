@@ -311,7 +311,7 @@ Route::middleware(['jwt.verify' ])->group(function() {
     Route::put('/update-moniteur-theorique/{id}', [MoniteurController::class,'updateMoniteurT']);
     Route::delete('/delete-moniteur-theorique/{id}', [MoniteurController::class,'deleteMoniteurt']);
 
-    Route::get('/auto-ecole/{ecole_id}/moniteur-pratiquetrash', [MoniteurController::class,'getMoniteurPtrash']);
+    Route::get('/auto-ecole/{ecole_id}/moniteur-pratiquetrash', [MoniteurController::class,'getMoniteursP']);
     Route::get('/auto-ecole/{ecole_id}/moniteur-pratique', [MoniteurController::class,'getMoniteurP']);
     Route::get('/moniteur-pratique/{id}', [MoniteurController::class,'getMoniteurpById']);
     Route::post('/add-moniteur-pratique/{ecole_id}', [MoniteurController::class,'addMoniteurp']);

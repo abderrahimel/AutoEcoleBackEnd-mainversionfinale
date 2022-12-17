@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\AutoEcole;
 use App\Models\Vente;
 use App\Models\Candidat;
+use App\Models\Produit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -79,7 +80,10 @@ class VenteController extends Controller
             'date' => $request->date
         ]); 
         $vente->save();
-        return response($vente,201);
+        $produit = Produit::find($request->produit_id);
+        $produit->quantite = intval($produit->quantite) - intval($request->quantite);
+        $produit->save();
+        return response()->json($vente,201);
     }
 
     public function updateVente($id,Request $request)
@@ -101,6 +105,10 @@ class VenteController extends Controller
         if ($validator->fails()) {
             return response()->json(['success' => false, 'message' => $validator->errors()], 422);
         }
+        //  qantite disponible (produit) =  qantite disponible(produit) + quantite (vente) - new quantite 
+        $produit = Produit::find($request->produit_id);
+        $produit->quantite = intval($produit->quantite) + intval($vente->quantite) - intval($request->quantite);
+        $produit->save();
         $vente->candidat_id = $request->candidat_id;
         $vente->date = $request->date;
         $vente->produit_id = $request->produit_id;
@@ -109,6 +117,9 @@ class VenteController extends Controller
         $vente->quantiteDisponible = $request->quantiteDisponible;
         $vente->quantite = $request->quantite;
         $vente->save();
+        $produit = Produit::find($request->produit_id);
+        $produit->quantite = intval($produit->quantite) - intval($request->quantite);
+        $produit->save();
         return response($vente,200);
     }
 

@@ -12,14 +12,17 @@ use Illuminate\Support\Facades\Validator;
 
 class MoniteurController extends Controller
 {
-    public function getMoniteurPtrash($ecole_id)
+    public function getMoniteursP($ecole_id)
     {
         $ecole=AutoEcole::find($ecole_id);
         if (is_null($ecole_id)) {
             return response()->json(['message'=>"Moniteur Pratique n'est pas trouvée"],404);
         }
         $moniteurs = MoniteurPratique::where('auto_ecole_id', $ecole_id)->get();
-        
+        foreach ($moniteurs as $moniteur) {
+            $text = implode('-', $moniteur->categorie);
+            $moniteur['categorie'] = $text;
+        }
 
         return response()->json($moniteurs,200);
         
@@ -122,16 +125,15 @@ class MoniteurController extends Controller
     public function getMoniteurT($ecole_id)
     {
         $ecole=AutoEcole::find($ecole_id);
-        if (is_null($ecole_id)) {
-            return response()->json(['message'=>"Moniteur Théorique n'est pas trouvée"],404);
+        if (is_null($ecole)) {
+            return response()->json(['message'=>"auto ecole n'est pas trouvée"],404);
         }
         $moniteurs = MoniteurTheorique::where('auto_ecole_id',$ecole_id)->get();
         foreach ($moniteurs as $moniteur) {
             $moniteur->employe;
             $categories = $moniteur->employe;
-            // "['A', 'B']"
-            $input = substr("['A', 'B']", 1, -1);
-            $moniteur['categories'] = str_replace("'","", $input);
+            $text = implode('-', $moniteur->categorie);
+            $moniteur['categorie'] = $text;
         }
         
         return response()->json($moniteurs,200);

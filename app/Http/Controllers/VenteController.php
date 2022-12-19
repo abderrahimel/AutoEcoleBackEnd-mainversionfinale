@@ -69,20 +69,21 @@ class VenteController extends Controller
         if ($validator->fails()) {
             return response()->json(['success' => false, 'message' => $validator->errors()], 422);
         }
+       
+        $produit = Produit::find($request->produit_id);
+        $produit->quantite = intval($produit->quantite) - intval($request->quantite);
+        $produit->save();
         $vente = Vente::create([
             'auto_ecole_id' => $ecole_id,
             'produit_id'  => $request->produit_id,
             'candidat_id'  => $request->candidat_id,
             'prixUnitaire' => $request->prixUnitaire,
             'prixTotale' => $request->prixTotale,
-            'quantiteDisponible' => $request->quantiteDisponible,
+            'quantiteDisponible' => $produit->quantite,// 
             'quantite' => $request->quantite,
             'date' => $request->date
         ]); 
         $vente->save();
-        $produit = Produit::find($request->produit_id);
-        $produit->quantite = intval($produit->quantite) - intval($request->quantite);
-        $produit->save();
         return response()->json($vente,201);
     }
 
@@ -111,16 +112,10 @@ class VenteController extends Controller
         $produit->save();
         $vente->candidat_id = $request->candidat_id;
         $vente->date = $request->date;
-        $vente->produit_id = $request->produit_id;
-        $vente->prixUnitaire = $request->prixUnitaire;
         $vente->prixTotale = $request->prixTotale;
-        $vente->quantiteDisponible = $request->quantiteDisponible;
-        $vente->quantite = $request->quantite;
+        $vente->quantite = $produit->quantite;
         $vente->save();
-        $produit = Produit::find($request->produit_id);
-        $produit->quantite = intval($produit->quantite) - intval($request->quantite);
-        $produit->save();
-        return response($vente,200);
+        return response()->json($vente,200);
     }
 
     public function deleteVente($id)

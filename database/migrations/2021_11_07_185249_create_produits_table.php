@@ -23,7 +23,7 @@ class CreateProduitsTable extends Migration
             $table->string('libelle');
             $table->string('prix');
             $table->string('quantite');
-            $table->text('description');
+            $table->text('description')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
